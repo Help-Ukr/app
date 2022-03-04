@@ -9,14 +9,32 @@ import {
 import SaveIcon from "@mui/icons-material/SaveOutlined";
 import UploadIcon from "@mui/icons-material/AddAPhoto";
 
-import React from "react";
+import dynamic from "next/dynamic";
+
+import React, { useState } from "react";
 import { Box } from "@mui/system";
+import type { LocationSelectValue } from "../../GeoLocationRetriavalWithEditableName";
+
+const GeoLocationRetrievalWithEditableName = dynamic(
+  () => import("../../GeoLocationRetriavalWithEditableName"),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {};
 
 const EditGeneralCollectionPointData = (props: Props) => {
+  const [location, setLocation] = useState<LocationSelectValue>({
+    label: "Skalitzer Straße 80",
+    value: {
+      lat: 52.5007117,
+      lon: 13.4392206,
+    },
+  });
+
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <form>
         <Box
           sx={{
@@ -26,21 +44,24 @@ const EditGeneralCollectionPointData = (props: Props) => {
             my: 4,
           }}
         >
+          <GeoLocationRetrievalWithEditableName
+            location={location}
+            onChange={setLocation}
+          />
           <TextField
             required
             fullWidth
             id="orgName"
             label="Organization Name"
             name="orgName"
-            autoComplete="organization"
-            value="Space Medusa"
+            value="Space Meduza"
           />
+
           <TextField
             fullWidth
             id="phoneNr"
             label="Phone Number"
             name="phoneNr"
-            autoComplete="phone"
             type="tel"
           />
           <TextField
@@ -48,13 +69,13 @@ const EditGeneralCollectionPointData = (props: Props) => {
             id="telegramHandle"
             label="Telegram handle"
             name="telegramHandle"
-            autoComplete="telegram"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">@</InputAdornment>
               ),
             }}
           />
+
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <label htmlFor="icon-button-file">
               <input

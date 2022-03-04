@@ -17,26 +17,17 @@ import AddCategoriesDialog from "../AddCategoriesDialog";
 import { Box } from "@mui/system";
 import { AvailableItem, ITEM_CATEGORIES } from "../../../api-client";
 
-type Props = {};
+type Props = {
+  initialData: AvailableItem[];
+  initialItemQuantity?: number;
+};
 
-const availableItemsInitial: AvailableItem[] = [
-  {
-    itemCategoryId: "2",
-    quantity: 50,
-  },
-  {
-    itemCategoryId: "4",
-    quantity: 25,
-  },
-];
-
-const ManageAvailableItems = (props: Props) => {
+const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
   const [showAddCategoryDialog, setShowAddCategoryDialog] =
     useState<boolean>(false);
 
-  const [availableItems, setAvailableItems] = useState<AvailableItem[]>(
-    availableItemsInitial
-  );
+  const [availableItems, setAvailableItems] =
+    useState<AvailableItem[]>(initialData);
 
   function onIncrement(index: number) {
     const newAvailableItems = [...availableItems];
@@ -68,8 +59,10 @@ const ManageAvailableItems = (props: Props) => {
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    {availableItem.quantity}x {itemCategory!.icon}{" "}
-                    {itemCategory!.displayName}
+                    {availableItem.quantity > 0
+                      ? `${availableItem.quantity}x `
+                      : ""}
+                    {itemCategory!.icon} {itemCategory!.displayName}
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -127,7 +120,7 @@ const ManageAvailableItems = (props: Props) => {
             ...availableItems,
             ...itemCategoryIds.map((id) => ({
               itemCategoryId: id,
-              quantity: 1,
+              quantity: initialItemQuantity,
             })),
           ]);
         }}
@@ -136,4 +129,4 @@ const ManageAvailableItems = (props: Props) => {
   );
 };
 
-export default ManageAvailableItems;
+export default ManageItems;

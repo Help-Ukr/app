@@ -2,7 +2,7 @@ import { Container, Tab, Tabs, Paper } from "@mui/material";
 import React, { useState } from "react";
 import CollectionPointHeader from "./CollectionPointHeader";
 import EditGeneralCollectionPointData from "./EditGeneralCollectionPointData";
-import ManageAvailableItems from "./ManageAvailableItems";
+import ManageItems from "./ManageItems";
 
 type Props = {};
 
@@ -33,7 +33,39 @@ const ManageCollectionPoint = (props: Props) => {
       </Tabs>
 
       {activeTab === "general" && <EditGeneralCollectionPointData />}
-      {activeTab === "available-items" && <ManageAvailableItems />}
+      {activeTab === "available-items" && (
+        <ManageItems
+          initialData={[
+            {
+              itemCategoryId: "2",
+              quantity: 50,
+            },
+            {
+              itemCategoryId: "4",
+              quantity: 25,
+            },
+          ]}
+        />
+      )}
+      {activeTab === "needed-items" && (
+        <ManageItems
+          initialItemQuantity={0}
+          initialData={[
+            {
+              itemCategoryId: "2",
+              quantity: 0,
+            },
+            {
+              itemCategoryId: "4",
+              quantity: 0,
+            },
+            {
+              itemCategoryId: "6",
+              quantity: 5,
+            },
+          ]}
+        />
+      )}
     </Paper>
   );
 };

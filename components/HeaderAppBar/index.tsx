@@ -19,6 +19,8 @@ const pages = ["Home", "Collect", "Donate"];
 const settings = ["Logout"];
 
 const HeaderAppBar = () => {
+  const isLoggedIn = false;
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -101,11 +103,17 @@ const HeaderAppBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {isLoggedIn ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Button color="secondary" variant="text">
+                Login
+              </Button>
+            )}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

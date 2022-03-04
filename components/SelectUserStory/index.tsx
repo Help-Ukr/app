@@ -3,6 +3,7 @@ import CollectIcon from "@mui/icons-material/CategoryOutlined";
 import DonateIcon from "@mui/icons-material/VolunteerActivism";
 import TransportIcon from "@mui/icons-material/DirectionsBusFilled";
 import React from "react";
+import Link from "next/link";
 
 type Props = {};
 
@@ -15,13 +16,16 @@ const SelectUserStory = (props: Props) => {
       <Box
         sx={{ display: "flex", marginTop: 4, gap: 1, justifyContent: "center" }}
       >
-        <Button
-          color="secondary"
-          variant="contained"
-          startIcon={<CollectIcon />}
-        >
-          Collect donations
-        </Button>
+        <Link href="/register">
+          <Button
+            color="secondary"
+            variant="contained"
+            startIcon={<CollectIcon />}
+          >
+            Collect donations
+          </Button>
+        </Link>
+
         <Button color="primary" variant="contained" startIcon={<DonateIcon />}>
           Donate goods
         </Button>

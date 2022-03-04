@@ -21,21 +21,32 @@ const SelectUserStory = (props: Props) => {
             color="secondary"
             variant="contained"
             startIcon={<CollectIcon />}
+            component="a"
           >
             Collect donations
           </Button>
         </Link>
 
-        <Button color="primary" variant="contained" startIcon={<DonateIcon />}>
-          Donate goods
-        </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          startIcon={<TransportIcon />}
-        >
-          Transport goods
-        </Button>
+        <Link href="/donate">
+          <Button
+            component="a"
+            color="primary"
+            variant="contained"
+            startIcon={<DonateIcon />}
+          >
+            Donate goods
+          </Button>
+        </Link>
+        <Link href="/transport">
+          <Button
+            color="secondary"
+            variant="contained"
+            startIcon={<TransportIcon />}
+            component="a"
+          >
+            Transport goods
+          </Button>
+        </Link>
       </Box>
     </Container>
   );

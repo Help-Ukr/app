@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import DoneIcon from "@mui/icons-material/DoneOutlined";
 
-import GeoLocationRetrieval, {
+import MapWithLocationSearch, {
   LocationSelectValue,
-} from "./GeoLocationRetrieval";
+} from "../MapWithLocationSearch";
 import { IconButton, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export type { LocationSelectValue } from "./GeoLocationRetrieval";
+export type { LocationSelectValue } from "../MapWithLocationSearch";
 
 interface Props {
   location?: LocationSelectValue;
@@ -70,7 +70,7 @@ const GeoLocationRetriavalWithEditableName = ({
       </Box>
       {status === "show_map" && (
         <Box sx={{ mt: 1 }}>
-          <GeoLocationRetrieval onLocationSelected={onChange} />
+          <MapWithLocationSearch onLocationSelected={onChange} />
         </Box>
       )}
       {status === "show_form" && (

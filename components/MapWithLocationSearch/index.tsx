@@ -54,6 +54,7 @@ interface Props {
    */
   sanitizeLocationName?: boolean;
   onLocationSelected: (selectValue: LocationSelectValue) => void;
+  mode?: "fullscreen" | "inline";
 }
 
 interface MapApiProps {
@@ -83,9 +84,10 @@ const INITIAL_MAP_CENTER: Wgs84Location = {
   lon: 13.2846501,
 };
 
-const GeoLocationRetrieval = ({
+const MapWithLocationSearch = ({
   onLocationSelected,
   sanitizeLocationName: shouldSanitizeLocationName = true,
+  mode = "inline",
 }: Props) => {
   const [locationSearchTerm, setLocationSearchTerm] = useState<string>();
   const [autocompleteOpen, setAutoCompleteOpen] = useState<boolean>(false);
@@ -191,120 +193,148 @@ const GeoLocationRetrieval = ({
     locationRetrievalPinColor = "error";
   }
 
-  console.log({ options });
-
   return (
-    <Box>
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <IconButton onClick={retrieveLocation}>
-          <PinIcon
-            color={locationRetrievalPinColor}
-            sx={{
-              opacity:
-                state === "loading" || reverseGeoCodingState === "loading"
-                  ? 0.5
-                  : 1,
-            }}
-          />
-        </IconButton>
-        <Autocomplete
-          id="place-autocomplete"
-          open={autocompleteOpen}
-          fullWidth
-          onOpen={() => {
-            setAutoCompleteOpen(true);
-          }}
-          onClose={() => {
-            setAutoCompleteOpen(false);
-          }}
-          isOptionEqualToValue={(option, value) =>
-            JSON.stringify(option) === JSON.stringify(value)
+    <Box
+      sx={
+        mode === "fullscreen"
+          ? {
+              position: "absolute",
+              width: "100%",
+              height: "calc(100vh - 65px)",
+              top: "65px",
+            }
+          : undefined
+      }
+    >
+      <div style={{ position: "relative" }}>
+        <Box
+          sx={
+            mode === "fullscreen"
+              ? {
+                  position: "absolute",
+                  top: 1,
+                  zIndex: 10,
+                  width: "30%",
+                }
+              : undefined
           }
-          filterOptions={(x) => x}
-          getOptionLabel={(option) => option.label}
-          options={options}
-          loading={optionsLoading}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Search location.."
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <React.Fragment>
-                    {optionsLoading ? (
-                      <CircularProgress color="inherit" size={20} />
-                    ) : null}
-                    {params.InputProps.endAdornment}
-                  </React.Fragment>
-                ),
-              }}
-            />
+        >
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              p: mode === "fullscreen" ? 2 : 0,
+            }}
+          >
+            <IconButton onClick={retrieveLocation}>
+              <PinIcon
+                color={locationRetrievalPinColor}
+                sx={{
+                  opacity:
+                    state === "loading" || reverseGeoCodingState === "loading"
+                      ? 0.5
+                      : 1,
+                }}
+              />
+            </IconButton>
+            <Paper sx={{ width: "100%" }}>
+              <Autocomplete
+                id="place-autocomplete"
+                open={autocompleteOpen}
+                fullWidth
+                onOpen={() => {
+                  setAutoCompleteOpen(true);
+                }}
+                onClose={() => {
+                  setAutoCompleteOpen(false);
+                }}
+                isOptionEqualToValue={(option, value) =>
+                  JSON.stringify(option) === JSON.stringify(value)
+                }
+                filterOptions={(x) => x}
+                getOptionLabel={(option) => option.label}
+                options={options}
+                loading={optionsLoading}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search location.."
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {optionsLoading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
+                onInputChange={(_, val) => {
+                  if (val) {
+                    setLocationSearchTerm(val);
+                  }
+                }}
+                onChange={(_, val) => {
+                  if (val) {
+                    setSelectValue(val);
+                  }
+                }}
+              />
+            </Paper>
+          </Box>
+          {townName && (
+            <Typography
+              component="p"
+              variant="caption"
+              sx={{ textAlign: "center", mt: 1 }}
+            >
+              {townName}
+            </Typography>
           )}
-          onInputChange={(_, val) => {
-            if (val) {
-              setLocationSearchTerm(val);
-            }
+        </Box>
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: mode === "fullscreen" ? "calc(100vh - 65px)" : "18rem",
+            zIndex: 0,
+            borderRadius: mode === "fullscreen" ? undefined : 2,
+            overflow: "hidden",
+            mt: mode === "fullscreen" ? undefined : 1,
+            position: mode === "fullscreen" ? "absolute" : undefined,
           }}
-          onChange={(_, val) => {
-            if (val) {
-              setSelectValue(val);
-            }
-          }}
-        />
-      </Box>
-      {townName && (
-        <Typography
-          component="p"
-          variant="caption"
-          sx={{ textAlign: "center", mt: 1 }}
         >
-          {townName}
-        </Typography>
-      )}
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "18rem",
-          zIndex: 0,
-          borderRadius: 2,
-          overflow: "hidden",
-          mt: 1,
-        }}
-      >
-        <MapContainer
-          style={{ height: "100%" }}
-          center={[currentLocation.lat, currentLocation.lon]}
-          zoom={13}
-          scrollWheelZoom={false}
-          zoomControl={false}
-          attributionControl={false}
-        >
-          <ZoomControl position="bottomleft" />
-          <MapApi currentLocation={currentLocation} />
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker
-            eventHandlers={{ dragend: onMarkerDragend }}
-            draggable
-            position={[currentLocation.lat, currentLocation.lon]}
-            icon={mapIcon}
-          />
-        </MapContainer>
-      </Box>
+          <MapContainer
+            style={{ height: "100%" }}
+            center={[currentLocation.lat, currentLocation.lon]}
+            zoom={13}
+            scrollWheelZoom={mode === "fullscreen"}
+            zoomControl={false}
+            attributionControl={false}
+          >
+            <ZoomControl position="bottomleft" />
+            <MapApi currentLocation={currentLocation} />
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker
+              eventHandlers={{ dragend: onMarkerDragend }}
+              draggable
+              position={[currentLocation.lat, currentLocation.lon]}
+              icon={mapIcon}
+            />
+          </MapContainer>
+        </Box>
+      </div>
     </Box>
   );
 };
 
-export default GeoLocationRetrieval;
+export default MapWithLocationSearch;

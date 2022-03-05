@@ -8,3 +8,5 @@ export interface AvailableItem {
   itemCategoryId: string;
   quantity: number;
 }
+
+export interface CollectionPoint {}

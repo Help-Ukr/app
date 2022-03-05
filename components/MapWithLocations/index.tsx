@@ -11,7 +11,15 @@ type Props = {};
 
 const MapWithLocations = (props: Props) => {
   return (
-    <MapWithLocationSearch mode="fullscreen" onLocationSelected={() => {}} />
+    <MapWithLocationSearch
+      options={{
+        initialZoom: 13,
+        markerForPositionDetermination: false,
+        autoSetUserLocation: true,
+      }}
+      mode="fullscreen"
+      onLocationSelected={() => {}}
+    />
   );
 };
 

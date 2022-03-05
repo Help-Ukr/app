@@ -55,6 +55,23 @@ interface Props {
   sanitizeLocationName?: boolean;
   onLocationSelected: (selectValue: LocationSelectValue) => void;
   mode?: "fullscreen" | "inline";
+  options?: {
+    /**
+     * If false, no drag and drop marker,
+     * which can be used to set the location,
+     * is shown on the map.
+     */
+    markerForPositionDetermination?: boolean;
+    /**
+     * Default: 13
+     */
+    initialZoom?: number;
+    /**
+     * If true, the user's GPS location
+     * is automatically requested.
+     */
+    autoSetUserLocation?: boolean;
+  };
 }
 
 interface MapApiProps {
@@ -80,15 +97,22 @@ const MapApi: React.FC<MapApiProps> = ({ currentLocation }) => {
 };
 
 const INITIAL_MAP_CENTER: Wgs84Location = {
-  lat: 52.5069704,
-  lon: 13.2846501,
+  lat: 52.5188239,
+  lon: 13.4012708,
 };
 
 const MapWithLocationSearch = ({
   onLocationSelected,
   sanitizeLocationName: shouldSanitizeLocationName = true,
   mode = "inline",
+  options: cmpOptions = {},
 }: Props) => {
+  const {
+    initialZoom = 13,
+    markerForPositionDetermination = true,
+    autoSetUserLocation,
+  } = cmpOptions;
+
   const [locationSearchTerm, setLocationSearchTerm] = useState<string>();
   const [autocompleteOpen, setAutoCompleteOpen] = useState<boolean>(false);
   const {
@@ -96,6 +120,12 @@ const MapWithLocationSearch = ({
     position: userGeoPosition,
     retrieveLocation,
   } = useGeoLocation();
+
+  useEffect(() => {
+    if (autoSetUserLocation) {
+      retrieveLocation();
+    }
+  }, [autoSetUserLocation]);
 
   const [currentLocation, setCurrentLocation] =
     useState<Wgs84Location>(INITIAL_MAP_CENTER);
@@ -313,7 +343,7 @@ const MapWithLocationSearch = ({
           <MapContainer
             style={{ height: "100%" }}
             center={[currentLocation.lat, currentLocation.lon]}
-            zoom={13}
+            zoom={initialZoom}
             scrollWheelZoom={mode === "fullscreen"}
             zoomControl={false}
             attributionControl={false}
@@ -324,12 +354,14 @@ const MapWithLocationSearch = ({
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker
-              eventHandlers={{ dragend: onMarkerDragend }}
-              draggable
-              position={[currentLocation.lat, currentLocation.lon]}
-              icon={mapIcon}
-            />
+            {markerForPositionDetermination && (
+              <Marker
+                eventHandlers={{ dragend: onMarkerDragend }}
+                draggable
+                position={[currentLocation.lat, currentLocation.lon]}
+                icon={mapIcon}
+              />
+            )}
           </MapContainer>
         </Box>
       </div>

@@ -15,10 +15,10 @@ import DeleteIcon from "@mui/icons-material/DeleteForever";
 import React, { useState } from "react";
 import AddCategoriesDialog from "../AddCategoriesDialog";
 import { Box } from "@mui/system";
-import { AvailableItem, ITEM_CATEGORIES } from "../../../api-client";
+import { CollectionPointItem, ITEM_CATEGORIES } from "../../../api-client";
 
 type Props = {
-  initialData: AvailableItem[];
+  initialData: CollectionPointItem[];
   initialItemQuantity?: number;
 };
 
@@ -27,7 +27,7 @@ const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
     useState<boolean>(false);
 
   const [availableItems, setAvailableItems] =
-    useState<AvailableItem[]>(initialData);
+    useState<CollectionPointItem[]>(initialData);
 
   function onIncrement(index: number) {
     const newAvailableItems = [...availableItems];

@@ -15,7 +15,7 @@ const ManageCollectionPoint = (props: Props) => {
     <Paper sx={{ minHeight: "100vh" }}>
       <CollectionPointHeader
         orgName="Space Meduza"
-        bgImg="https://source.unsplash.com/random/1920x1080?pub"
+        bgImg="https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920"
       />
       <Tabs
         value={activeTab}

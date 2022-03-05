@@ -4,9 +4,23 @@ export interface ItemCategory {
   displayName: string;
 }
 
-export interface AvailableItem {
+export interface CollectionPointItem {
   itemCategoryId: string;
-  quantity: number;
+  quantity?: number;
 }
 
-export interface CollectionPoint {}
+export interface CollectionPoint {
+  displayName: string;
+  location: {
+    lat: number;
+    lng: number;
+    address: string;
+  };
+  availableItems: CollectionPointItem[];
+  neededItems: CollectionPointItem[];
+  phoneNr?: string;
+  telegramHandle?: string;
+  coverImg?: string;
+  // TODO: Opening hours
+  // openings?: string[];
+}

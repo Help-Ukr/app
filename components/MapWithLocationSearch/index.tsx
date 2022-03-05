@@ -46,6 +46,12 @@ export interface LocationSelectValue {
   value: Wgs84Location;
 }
 
+export interface MapSidebarProps {
+  children: JSX.Element;
+}
+
+const DefaultSidebar: React.FC<MapSidebarProps> = ({ children }) => children;
+
 interface Props {
   /**
    * Defaults to true.
@@ -71,7 +77,12 @@ interface Props {
      * is automatically requested.
      */
     autoSetUserLocation?: boolean;
+    /**
+     * Defaults to true
+     */
+    showReverseGeoCodedDisplayName?: boolean;
   };
+  MapSidebar?: React.FC<MapSidebarProps>;
 }
 
 interface MapApiProps {
@@ -106,11 +117,13 @@ const MapWithLocationSearch = ({
   sanitizeLocationName: shouldSanitizeLocationName = true,
   mode = "inline",
   options: cmpOptions = {},
+  MapSidebar = DefaultSidebar,
 }: Props) => {
   const {
     initialZoom = 13,
     markerForPositionDetermination = true,
     autoSetUserLocation,
+    showReverseGeoCodedDisplayName = true,
   } = cmpOptions;
 
   const [locationSearchTerm, setLocationSearchTerm] = useState<string>();
@@ -180,16 +193,6 @@ const MapWithLocationSearch = ({
       value: extragWgsPosition(result),
     })) ?? [];
 
-  if (townName && reverseWgsPosition) {
-    options = [
-      {
-        value: reverseWgsPosition,
-        label: townName,
-      },
-      ...options,
-    ];
-  }
-
   function onMarkerDragend(e: DragEndEvent) {
     const targetLocation = e.target.getLatLng() as { lat: number; lng: number };
     const markerCoords: Wgs84Location = {
@@ -244,80 +247,91 @@ const MapWithLocationSearch = ({
                   position: "absolute",
                   top: 1,
                   zIndex: 10,
-                  width: "30%",
+                  width: {
+                    md: "25%",
+                    xs: "100%",
+                  },
+                  minWidth: {
+                    md: "420px",
+                  },
                 }
               : undefined
           }
         >
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              p: mode === "fullscreen" ? 2 : 0,
-            }}
-          >
-            <IconButton onClick={retrieveLocation}>
-              <PinIcon
-                color={locationRetrievalPinColor}
-                sx={{
-                  opacity:
-                    state === "loading" || reverseGeoCodingState === "loading"
-                      ? 0.5
-                      : 1,
-                }}
-              />
-            </IconButton>
-            <Paper sx={{ width: "100%" }}>
-              <Autocomplete
-                id="place-autocomplete"
-                open={autocompleteOpen}
-                fullWidth
-                onOpen={() => {
-                  setAutoCompleteOpen(true);
-                }}
-                onClose={() => {
-                  setAutoCompleteOpen(false);
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  JSON.stringify(option) === JSON.stringify(value)
-                }
-                filterOptions={(x) => x}
-                getOptionLabel={(option) => option.label}
-                options={options}
-                loading={optionsLoading}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search location.."
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <React.Fragment>
-                          {optionsLoading ? (
-                            <CircularProgress color="inherit" size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </React.Fragment>
-                      ),
-                    }}
-                  />
-                )}
-                onInputChange={(_, val) => {
-                  if (val) {
-                    setLocationSearchTerm(val);
+          <MapSidebar>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                p: mode === "fullscreen" ? 2 : 0,
+              }}
+            >
+              <Paper sx={{ width: "100%" }}>
+                <Autocomplete
+                  id="place-autocomplete"
+                  open={autocompleteOpen}
+                  fullWidth
+                  onOpen={() => {
+                    setAutoCompleteOpen(true);
+                  }}
+                  onClose={() => {
+                    setAutoCompleteOpen(false);
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    JSON.stringify(option) === JSON.stringify(value)
                   }
-                }}
-                onChange={(_, val) => {
-                  if (val) {
-                    setSelectValue(val);
-                  }
-                }}
-              />
-            </Paper>
-          </Box>
-          {townName && (
+                  filterOptions={(x) => x}
+                  getOptionLabel={(option) => option.label}
+                  options={options}
+                  loading={optionsLoading}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Search location.."
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <React.Fragment>
+                            {optionsLoading ? (
+                              <CircularProgress color="inherit" size={20} />
+                            ) : null}
+                            {params.InputProps.endAdornment}
+                          </React.Fragment>
+                        ),
+                        startAdornment: (
+                          <IconButton onClick={retrieveLocation}>
+                            <PinIcon
+                              color={locationRetrievalPinColor}
+                              sx={{
+                                opacity:
+                                  state === "loading" ||
+                                  reverseGeoCodingState === "loading"
+                                    ? 0.5
+                                    : 1,
+                              }}
+                            />
+                          </IconButton>
+                        ),
+                      }}
+                    />
+                  )}
+                  onInputChange={(_, val) => {
+                    if (val) {
+                      setLocationSearchTerm(val);
+                    }
+                  }}
+                  onChange={(_, val) => {
+                    if (val) {
+                      setSelectValue(val);
+                    }
+                  }}
+                />
+              </Paper>
+            </Box>
+          </MapSidebar>
+          {showReverseGeoCodedDisplayName && townName && (
             <Typography
               component="p"
               variant="caption"
@@ -348,7 +362,7 @@ const MapWithLocationSearch = ({
             zoomControl={false}
             attributionControl={false}
           >
-            <ZoomControl position="bottomleft" />
+            <ZoomControl position="bottomright" />
             <MapApi currentLocation={currentLocation} />
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

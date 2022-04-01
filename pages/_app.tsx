@@ -1,25 +1,28 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from '@mui/material';
+import type { AppProps } from 'next/app';
+import { TrProvider } from '~/texts';
+import '../styles/globals.css';
 
 export const themeOptions = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#393939",
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: '#393939',
+        },
+        secondary: {
+            main: '#FFD500',
+        },
     },
-    secondary: {
-      main: "#FFD500",
-    },
-  },
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ThemeProvider theme={themeOptions}>
-      <Component {...pageProps} />
-    </ThemeProvider>
-  );
+    return (
+        <TrProvider>
+            <ThemeProvider theme={themeOptions}>
+                <Component {...pageProps} />
+            </ThemeProvider>
+        </TrProvider>
+    );
 }
 
 export default MyApp;

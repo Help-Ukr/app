@@ -1,4 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material';
+import { configure } from 'mobx';
+import { enableStaticRendering } from 'mobx-react-lite';
 import type { AppProps } from 'next/app';
 import 'reflect-metadata';
 import { TrProvider } from '~/texts';
@@ -14,6 +16,12 @@ export const themeOptions = createTheme({
             main: '#FFD500',
         },
     },
+});
+
+enableStaticRendering(typeof window === 'undefined');
+
+configure({
+    enforceActions: 'always',
 });
 
 function MyApp({ Component, pageProps }: AppProps) {

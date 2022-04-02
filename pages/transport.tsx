@@ -1,13 +1,17 @@
-import type { NextPage } from "next";
-import PageLayout from "../components/PageLayout";
-import MapWithLocations from "../components/MapWithLocations";
+import PageLayout from '@cmts/PageLayout';
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+
+const MapDynamic = dynamic(() => import('~/components/Map'), {
+    ssr: false,
+});
 
 const Transport: NextPage = () => {
-  return (
-    <PageLayout>
-      <MapWithLocations />
-    </PageLayout>
-  );
+    return (
+        <PageLayout>
+            <MapDynamic />
+        </PageLayout>
+    );
 };
 
 export default Transport;

@@ -12,7 +12,6 @@ export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R,
         const { locale } = useRouter();
         const i18n = useMemo(() => {
             const inst = i18next.createInstance();
-            console.log({ locale });
 
             inst.use(initReactI18next).init({
                 fallbackLng,

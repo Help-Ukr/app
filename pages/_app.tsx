@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import type { AppProps } from 'next/app';
+import 'reflect-metadata';
 import { TrProvider } from '~/texts';
 import '../styles/globals.css';
 

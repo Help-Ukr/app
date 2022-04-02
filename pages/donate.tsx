@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
-import PageLayout from "../components/PageLayout";
-import MapWithLocations from "../components/MapWithLocations";
+import type { NextPage } from 'next';
+import MapWithLocations from '../components/MapWithLocations';
+import PageLayout from '../components/PageLayout';
 
 const Donate: NextPage = () => {
-  return (
-    <PageLayout>
-      <MapWithLocations />
-    </PageLayout>
-  );
+    return (
+        <PageLayout>
+            <MapWithLocations />
+        </PageLayout>
+    );
 };
 
 export default Donate;

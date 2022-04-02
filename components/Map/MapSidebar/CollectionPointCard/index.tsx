@@ -16,7 +16,7 @@ const CollectionPointCard = ({ collectionPoint }: Props) => {
     const items = collectionPoint.neededItems;
 
     return (
-        <Card sx={{ display: 'flex', width: '100%' }}>
+        <Card sx={{ display: 'flex', width: '100%' }} elevation={3}>
             <CardMedia
                 component="img"
                 sx={{ width: { xs: 80, md: 120 } }}

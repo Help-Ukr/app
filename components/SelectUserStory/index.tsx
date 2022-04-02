@@ -2,8 +2,10 @@ import CollectIcon from '@mui/icons-material/CategoryOutlined';
 import TransportIcon from '@mui/icons-material/DirectionsBusFilled';
 import DonateIcon from '@mui/icons-material/VolunteerActivism';
 import { Box, Button, Container, SxProps, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTr } from '~/texts';
 
 const sxBox: SxProps = {
     display: 'flex',
@@ -20,36 +22,28 @@ const sxBox: SxProps = {
 
 const SelectUserStory = () => {
     const router = useRouter();
+    const [tr] = useTr('home');
     return (
         <Container>
             <Typography sx={{ textAlign: 'center' }} component="h3" variant="h3">
-                I want to...
+                {tr('iWantTo')}
             </Typography>
             <Box sx={sxBox}>
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    startIcon={<CollectIcon />}
-                    onClick={() => router.push('/collect')}
-                >
-                    Collect donations
-                </Button>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    startIcon={<DonateIcon />}
-                    onClick={() => router.push('/donate')}
-                >
-                    Donate goods
-                </Button>
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    startIcon={<TransportIcon />}
-                    onClick={() => router.push('/transport')}
-                >
-                    Transport goods
-                </Button>
+                <Link href={'/collect'} passHref>
+                    <Button color="secondary" variant="contained" startIcon={<CollectIcon />}>
+                        {tr('collect')}
+                    </Button>
+                </Link>
+                <Link href={'/donate'} passHref>
+                    <Button color="primary" variant="contained" startIcon={<DonateIcon />}>
+                        {tr('donate')}
+                    </Button>
+                </Link>
+                <Link href={'/transport'} passHref>
+                    <Button color="secondary" variant="contained" startIcon={<TransportIcon />}>
+                        {tr('transport')}
+                    </Button>
+                </Link>
             </Box>
         </Container>
     );

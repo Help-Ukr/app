@@ -6,10 +6,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router';
 import { FC, MouseEvent, useState } from 'react';
+import { useTr } from '~/texts';
 import { PageLink } from '..';
 
 const NavMenu: FC<{ pages: PageLink[] }> = ({ pages }) => {
     const router = useRouter();
+    const [tr] = useTr('routes');
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -24,7 +26,7 @@ const NavMenu: FC<{ pages: PageLink[] }> = ({ pages }) => {
         setAnchorElNav(null);
     };
     return (
-        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
             <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -59,11 +61,12 @@ const NavMenu: FC<{ pages: PageLink[] }> = ({ pages }) => {
                             <page.Icon color="secondary" />
                         </ListItemIcon>
                         <Typography color="secondary" variant="button">
-                            {page.displayName}
+                            {tr(page.href)}
                         </Typography>
                     </MenuItem>
                 ))}
             </Menu>
+            <Typography variant="button">{tr(router.pathname as any)}</Typography>
         </Box>
     );
 };

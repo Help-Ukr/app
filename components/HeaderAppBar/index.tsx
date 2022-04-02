@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import LangMenu from './LangMenu';
 import NavMenu from './NavMenu';
 import UserMenu from './UserMenu';
 import logoImg from '/images/logo.png';
@@ -70,6 +71,7 @@ const HeaderAppBar = () => {
                     </Box>
 
                     <UserMenu />
+                    <LangMenu />
                 </Toolbar>
             </Container>
         </AppBar>

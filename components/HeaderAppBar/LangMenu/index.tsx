@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useReducer, useRef } from 'react';
 import { languages, useTr } from '~/texts';
 
-export function LangMenu() {
+export default function LangMenu() {
     const [, i18n] = useTr('app');
     const [menuOpen, toggleMenu] = useReducer(x => !x, false);
     const anchor = useRef(null);

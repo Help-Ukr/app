@@ -1,11 +1,17 @@
+import PageLayout from '@cmts/PageLayout';
 import type { NextPage } from 'next';
-import MapWithLocations from '../components/MapWithLocations';
-import PageLayout from '../components/PageLayout';
+import dynamic from 'next/dynamic';
+import MapSidebar from '~/components/Map/MapSidebar';
+
+const MapDynamic = dynamic(() => import('~/components/Map'), {
+    ssr: false,
+});
 
 const Donate: NextPage = () => {
     return (
         <PageLayout>
-            <MapWithLocations />
+            <MapDynamic />
+            <MapSidebar />
         </PageLayout>
     );
 };

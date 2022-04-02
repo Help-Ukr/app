@@ -1,3 +1,3 @@
-export * from "./types";
+export * from './fake-data';
+export * from './types';
 
-export * from "./fake-data";

@@ -1,26 +1,17 @@
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import 'reflect-metadata';
+import '~/styles/globals.css';
+import { themeOptions } from '~/styles/theme';
 import { TrProvider } from '~/texts';
-import '../styles/globals.css';
-
-export const themeOptions = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#393939',
-        },
-        secondary: {
-            main: '#FFD500',
-        },
-    },
-});
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <TrProvider>
             <ThemeProvider theme={themeOptions}>
-                <Component {...pageProps} />
+                <SessionProvider session={pageProps.session}>
+                    <Component {...pageProps} />
+                </SessionProvider>
             </ThemeProvider>
         </TrProvider>
     );

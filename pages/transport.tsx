@@ -1,5 +1,5 @@
+import PageLayout from '@cmts/PageLayout';
 import type { NextPage } from 'next';
-import PageLayout from '../components/PageLayout';
 
 const Transport: NextPage = () => {
     return <PageLayout>Coming soon</PageLayout>;

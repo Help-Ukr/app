@@ -1,6 +1,6 @@
+import CreateAccount from "@cmts/CreateAccount";
+import PageLayout from "@cmts/PageLayout";
 import type { NextPage } from "next";
-import PageLayout from "../components/PageLayout";
-import CreateAccount from "../components/CreateAccount";
 
 const Register: NextPage = () => {
   return (

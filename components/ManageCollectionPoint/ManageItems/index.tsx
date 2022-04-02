@@ -1,20 +1,11 @@
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/DeleteForever";
-import RemoveIcon from "@mui/icons-material/Remove";
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Container,
-    Fab,
-    Grid,
-    IconButton,
-    Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useState } from "react";
-import { CollectionPointItem, ITEM_CATEGORIES } from "../../../api-client";
-import AddCategoriesDialog from "../AddCategoriesDialog";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Card, CardActions, CardContent, Container, Fab, Grid, IconButton, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useState } from 'react';
+import { CollectionPointItem, ITEM_CATEGORIES } from '../../../api-client';
+import AddCategoriesDialog from '../AddCategoriesDialog';
 
 type Props = {
     initialData: CollectionPointItem[];
@@ -22,11 +13,21 @@ type Props = {
 };
 
 const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
-    const [showAddCategoryDialog, setShowAddCategoryDialog] =
-        useState<boolean>(false);
+    const [showAddCategoryDialog, setShowAddCategoryDialog] = useState<boolean>(false);
 
-    const [availableItems, setAvailableItems] =
-        useState<CollectionPointItem[]>(initialData);
+    const [availableItems, setAvailableItems] = useState<CollectionPointItem[]>(initialData || []);
+
+    function onIncrement(index: number) {
+        const newAvailableItems = [...availableItems];
+        // newAvailableItems[index]?.quantity++;
+        setAvailableItems(newAvailableItems);
+    }
+
+    function onDecrement(index: number) {
+        const newAvailableItems = [...availableItems];
+        // newAvailableItems[index].quantity--;
+        setAvailableItems(newAvailableItems);
+    }
 
     function onRemove(index: number) {
         const newAvailableItems = [...availableItems];
@@ -39,35 +40,37 @@ const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
             <Grid container spacing={3}>
                 {availableItems.map((availableItem, idx) => {
                     const itemCategory = ITEM_CATEGORIES.find(
-                        (itemCategory) =>
-                            itemCategory.id === availableItem.itemCategoryId
+                        itemCategory => itemCategory.id === availableItem.itemCategoryId,
                     );
                     return (
-                        <Grid
-                            key={availableItem.itemCategoryId}
-                            item
-                            xs={6}
-                            md={4}
-                        >
+                        <Grid key={availableItem.itemCategoryId} item xs={6} md={4}>
                             <Card>
                                 <CardContent>
-                                    <Typography
-                                        gutterBottom
-                                        variant="h5"
-                                        component="div"
-                                    >
-                                        {itemCategory!.icon}{" "}
-                                        {itemCategory!.displayName}
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {availableItem.quantity && availableItem.quantity > 0
+                                            ? `${availableItem.quantity}x `
+                                            : ''}
+                                        {itemCategory!.icon} {itemCategory!.displayName}
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    <IconButton color="primary">
+                                    <IconButton
+                                        onClick={() => {
+                                            onIncrement(idx);
+                                        }}
+                                        color="primary"
+                                    >
                                         <AddIcon />
                                     </IconButton>
-                                    <IconButton color="primary">
+                                    <IconButton
+                                        onClick={() => {
+                                            onDecrement(idx);
+                                        }}
+                                        color="primary"
+                                    >
                                         <RemoveIcon />
                                     </IconButton>
-                                    <Box sx={{ marginLeft: "auto" }}>
+                                    <Box sx={{ marginLeft: 'auto' }}>
                                         <IconButton
                                             onClick={() => {
                                                 onRemove(idx);
@@ -83,7 +86,7 @@ const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
                     );
                 })}
             </Grid>
-            <Box sx={{ position: "fixed", bottom: "1rem", right: "1rem" }}>
+            <Box sx={{ position: 'fixed', bottom: '1rem', right: '1rem' }}>
                 <Fab
                     onClick={() => {
                         setShowAddCategoryDialog(true);
@@ -97,13 +100,11 @@ const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
             <AddCategoriesDialog
                 open={showAddCategoryDialog}
                 onClose={() => setShowAddCategoryDialog(false)}
-                activeItemCategoryIds={availableItems.map(
-                    (item) => item.itemCategoryId
-                )}
-                onAddCategoryIds={(itemCategoryIds) => {
+                activeItemCategoryIds={availableItems.map(item => item.itemCategoryId)}
+                onAddCategoryIds={itemCategoryIds => {
                     setAvailableItems([
                         ...availableItems,
-                        ...itemCategoryIds.map((id) => ({
+                        ...itemCategoryIds.map(id => ({
                             itemCategoryId: id,
                             quantity: initialItemQuantity,
                         })),

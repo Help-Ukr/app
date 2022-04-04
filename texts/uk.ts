@@ -13,4 +13,8 @@ export const uk = {
         '/donate': 'Пожертвувати',
         '/transport': 'Перевізникам',
     },
+    collect: {
+        tabGeneral: 'Інформація',
+        tabItems: 'Речі',
+    },
 };

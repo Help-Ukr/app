@@ -1,18 +1,24 @@
+import { FormFieldLocation } from '@cmts/Form/Field/Location';
+import { FormFieldText } from '@cmts/Form/Field/Text';
+import type { LocationSelectValue } from '@cmts/GeoLocationRetriavalWithEditableName';
 import UploadIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/SaveOutlined';
-import { Button, Container, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Button, Container, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import type { LocationSelectValue } from '../../GeoLocationRetriavalWithEditableName';
+import { useMemo, useState } from 'react';
+import { CollectinPointDto } from '~/dto/dto.collectionpoint';
+import { MobXForm } from '~/lib/form';
 
-const GeoLocationRetrievalWithEditableName = dynamic(() => import('../../GeoLocationRetriavalWithEditableName'), {
+const GeoLocationRetrievalWithEditableName = dynamic(() => import('@cmts/GeoLocationRetriavalWithEditableName'), {
     ssr: false,
 });
 
 type Props = {};
 
 const EditGeneralCollectionPointData = (props: Props) => {
+    const form = useMemo(() => new MobXForm(CollectinPointDto), []);
+
     const [location, setLocation] = useState<LocationSelectValue>({
         label: 'Skalitzer Straße 80',
         value: {
@@ -24,35 +30,17 @@ const EditGeneralCollectionPointData = (props: Props) => {
     return (
         <Container maxWidth="md">
             <form>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        my: 4,
-                    }}
-                >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <GeoLocationRetrievalWithEditableName location={location} onChange={setLocation} />
-                    <TextField
-                        required
-                        fullWidth
-                        id="orgName"
-                        label="Organization Name"
-                        name="orgName"
-                        value="Space Meduza"
-                    />
-
-                    <TextField fullWidth id="phoneNr" label="Phone Number" name="phoneNr" type="tel" />
-                    <TextField
-                        fullWidth
-                        id="telegramHandle"
-                        label="Telegram handle"
-                        name="telegramHandle"
+                    <FormFieldLocation formField={form.$.location} />
+                    <FormFieldText formField={form.$.orgName} />
+                    <FormFieldText formField={form.$.phone} type="number" />
+                    <FormFieldText
+                        formField={form.$.telegram}
                         InputProps={{
                             startAdornment: <InputAdornment position="start">@</InputAdornment>,
                         }}
                     />
-
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <label htmlFor="icon-button-file">
                             <input style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
@@ -62,7 +50,13 @@ const EditGeneralCollectionPointData = (props: Props) => {
                         </label>
                         <Typography sx={{ opacity: 0.5 }}>Change image</Typography>
                     </Box>
-                    <Button sx={{ mb: 4 }} color="secondary" variant="outlined" startIcon={<SaveIcon />}>
+                    <Button
+                        sx={{ mb: 4 }}
+                        color="secondary"
+                        variant="outlined"
+                        startIcon={<SaveIcon />}
+                        onClick={form.handleSubmit}
+                    >
                         Save
                     </Button>
                 </Box>

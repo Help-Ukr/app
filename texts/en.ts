@@ -14,4 +14,8 @@ export const en = {
         '/donate': 'Donate',
         '/transport': 'Transport',
     },
+    collect: {
+        tabGeneral: 'General',
+        tabItems: 'Needed items',
+    },
 };

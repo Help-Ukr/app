@@ -1,9 +1,9 @@
+import MapSidebar from '@cmts/Map/MapSidebar';
 import PageLayout from '@cmts/PageLayout';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import MapSidebar from '~/components/Map/MapSidebar';
 
-const MapDynamic = dynamic(() => import('~/components/Map'), {
+const MapDynamic = dynamic(() => import('@cmts/Map'), {
     ssr: false,
 });
 

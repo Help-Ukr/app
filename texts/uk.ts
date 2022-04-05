@@ -19,14 +19,14 @@ export const uk = {
     },
     dto: {
         CollectinPointDto: {
-            location: 'Address',
-            orgName: 'Point name',
-            phone: 'Phone number',
-            telegram: 'Telegram link',
+            location: 'Адреса',
+            orgName: 'Назва точки',
+            phone: 'Номер телефону',
+            telegram: 'Посилання на телеграму',
         },
 
-        infoLatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',
-        noOptions: 'No options',
+        infoLatLng: '(широта: {{lat}}, довгота: {{lon}})',
+        noOptions: 'Немає параметрів',
 
         validations: {
             isPhoneNumber: 'Введіть номер телефону у міжнародному форматі ({{isPhoneNumber}})',

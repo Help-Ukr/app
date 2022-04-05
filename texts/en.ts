@@ -18,4 +18,12 @@ export const en = {
         tabGeneral: 'General',
         tabItems: 'Needed items',
     },
+    dto: {
+        CollectinPointDto: {
+            location: 'Address',
+            orgName: 'Point name',
+            phone: 'Phone number',
+            telegram: 'Telegram link',
+        },
+    },
 };

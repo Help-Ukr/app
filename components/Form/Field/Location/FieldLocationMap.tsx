@@ -1,80 +1,60 @@
 import { useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import L from 'leaflet';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { CSSProperties, FC, useCallback, useEffect } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
+import { defaultMarker } from '~/components/Map';
+import { FieldLocationValue } from '.';
 
 const styleMap: CSSProperties = { width: '100%', height: 300 };
-const initialZoom = 13;
-const currentLocation = {
-    lat: 52.5188239,
-    lng: 13.4012708,
-};
 
-const defaultMarker = new L.Icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [13, 0],
-});
-
-const SearchField: FC<SearchFieldProps> = props => {
-    const map = useMap();
-
-    const provider = new OpenStreetMapProvider();
-
-    const searchControl = GeoSearchControl({
-        provider: provider,
-        style: 'bar',
-        marker: {
-            icon: defaultMarker,
-            draggable: true,
-        },
-        searchLabel: props.label,
-    });
-
-    const handleShowLocation = useCallback(
-        (e: any) => {
-            console.log('handleShowLocation', e);
-            const { x, y } = e.location;
-            props.onChange?.({ address: '', lat: x, lng: y });
-        },
-        [props],
-    );
-    const handleMarkerDrag = useCallback(
-        (e: any) => {
-            console.log('handleMarkerDrag', e);
-            const { lat, lng } = e.location;
-            props.onChange?.({ address: '', lat, lng });
-        },
-        [props],
-    );
-
-    useEffect(() => {
-        map.addControl(searchControl);
-        map.on('geosearch/showlocation', handleShowLocation);
-        map.on('geosearch/marker/dragend', handleMarkerDrag);
-        return () => {
-            map.removeControl(searchControl);
-        };
-    }, [handleMarkerDrag, handleShowLocation, map, searchControl]);
-    return <>{props.children}</>;
-};
-
-type SearchFieldProps = {
-    label: string;
-    onChange?: (value: { address: string; lat?: number; lng?: number }) => void;
-};
-const FieldLocationMap: FC<SearchFieldProps> = props => {
+const FieldLocationMap: FC<{ value: FieldLocationValue; onChange: (value: FieldLocationValue) => void }> = ({
+    onChange,
+    value,
+}) => {
     const theme = useTheme();
     return (
         <Box sx={{ color: theme.palette.primary.main }}>
-            <MapContainer style={styleMap} center={[currentLocation.lat, currentLocation.lng]} zoom={initialZoom}>
+            <MapContainer style={styleMap} zoom={13} center={[value.lat, value.lng]}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <SearchField {...props} />
+                <DraggableMarker initPosition={value} onChange={p => onChange({ ...p, address: value.address })} />
             </MapContainer>
         </Box>
     );
+};
+
+const DraggableMarker: FC<{
+    initPosition: { lat: number; lng: number };
+    onChange: (p: { lat: number; lng: number }) => void;
+}> = ({ initPosition, onChange }) => {
+    const [position, setPosition] = useState(initPosition);
+    const markerRef = useRef<L.Marker>(null);
+    const map = useMap();
+
+    useEffect(() => {
+        const marker = markerRef.current;
+        if (marker) {
+            marker?.setLatLng(initPosition);
+            map.setView(initPosition);
+            setPosition(initPosition);
+        }
+    }, [initPosition, map]);
+
+    const eventHandlers = useMemo(
+        () => ({
+            dragend() {
+                const marker = markerRef.current;
+                if (marker != null) {
+                    const p = marker.getLatLng();
+                    setPosition(p);
+                    onChange(p);
+                }
+            },
+        }),
+        [onChange],
+    );
+
+    return <Marker icon={defaultMarker} draggable eventHandlers={eventHandlers} position={position} ref={markerRef} />;
 };
 
 export default FieldLocationMap;

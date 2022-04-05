@@ -1568,14 +1568,7 @@ language-tags@^1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
-leaflet-geosearch@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/leaflet-geosearch/-/leaflet-geosearch-3.6.0.tgz#1e2da4152e473df24467ca019334a981af9330c9"
-  integrity sha512-TkJOi+eVbsQB7wC0ssGzV9eGQv5BgEwDyb0QOunYA64qe53lB+ostUemvQD7Cmari0shtgBr3Patn5galjr3WA==
-  optionalDependencies:
-    leaflet "^1.6.0"
-
-leaflet@^1.6.0, leaflet@^1.7.1:
+leaflet@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
   integrity sha512-/xwPEBidtg69Q3HlqPdU3DnrXQOvQU/CCHA1tcDQVzOwm91YMYaILjNp7L4Eaw5Z4sOYdbBz6koWyibppd8Zqw==
@@ -1742,6 +1735,11 @@ next@12.1.0:
     "@next/swc-win32-arm64-msvc" "12.1.0"
     "@next/swc-win32-ia32-msvc" "12.1.0"
     "@next/swc-win32-x64-msvc" "12.1.0"
+
+nominatim-client@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/nominatim-client/-/nominatim-client-3.2.1.tgz#c6ec49aa07d46b56851715c80d5058158943681e"
+  integrity sha512-i7kGGMvXU37nUhDhlTuj0JhoWntT69BUFeEOHxw40Wf5J++dUCGnPgMCE+6KAJZCOVeK6lqjMAxP2+zyg0CbKw==
 
 oauth@^0.9.15:
   version "0.9.15"

@@ -2,13 +2,13 @@ import { IsLatitude, IsLongitude, IsOptional, IsPhoneNumber, Length, ValidateNes
 
 class Loaction {
     @Length(3, 64)
-    address: string = '';
+    address!: string;
 
     @IsLatitude()
-    lat?: number;
+    lat!: number;
 
     @IsLongitude()
-    lng?: number;
+    lng!: number;
 }
 
 export class CollectinPointDto {
@@ -25,5 +25,7 @@ export class CollectinPointDto {
     @ValidateNested()
     location: Loaction = {
         address: '',
+        lat: 52.5188239,
+        lng: 13.4012708,
     };
 }

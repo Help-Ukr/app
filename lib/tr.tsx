@@ -1,3 +1,4 @@
+import { getMetadataStorage, ValidationError } from 'class-validator';
 import i18next, { i18n, Resource } from 'i18next';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
@@ -30,4 +31,19 @@ export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R,
     };
 
     return { useTr: useTranslation as UseTr<R[L]>, TrProvider };
+}
+
+export function validationTr(tr: TrFunc<any>, error?: ValidationError) {
+    if (!error?.constraints) return '';
+    const errContstraint = Object.entries(error.constraints)[0];
+
+    const storage = getMetadataStorage();
+    const metas = storage.getTargetValidationMetadatas(error.target!.constructor, '', true, false);
+    for (const meta of metas) {
+        const constraints = storage.getTargetValidatorConstraints(meta.constraintCls);
+        const constraint = constraints.find(c => c.name === errContstraint[0]);
+        if (!constraint) continue;
+        return tr('validations.' + constraint.name, { [constraint.name]: meta.constraints?.[0] });
+    }
+    return '';
 }

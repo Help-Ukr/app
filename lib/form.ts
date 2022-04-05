@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer';
-import { validateSync } from 'class-validator';
+import { validateSync, ValidationError } from 'class-validator';
 import { action, makeObservable, observable, toJS } from 'mobx';
 import { O } from 'ts-toolbelt';
 
@@ -12,24 +12,19 @@ export class MobXFormField<T extends new (...any: any) => any, Dto extends Insta
     @observable readonly label = `${this.dto.constructor.name}.${this.name}`;
     @observable readonly value: any = undefined;
 
+    @observable readonly validation?: ValidationError;
     @observable readonly error: boolean = false;
-
-    @observable readonly helperText: string = '';
 
     @action onChange = (value: any) => {
         this.self.value = value;
         if (this.error) {
-            this.setHelperText();
-            this.setError();
+            this.setValidation();
         }
     };
 
-    @action setHelperText = (text: string = '') => {
-        this.self.helperText = text;
-    };
-
-    @action setError = (value = false) => {
-        this.self.error = value;
+    @action setValidation = (err: ValidationError | undefined = undefined) => {
+        this.self.validation = err;
+        this.self.error = !!err;
     };
 
     private get self(): O.Writable<this> {
@@ -58,8 +53,7 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
     readonly handleSubmit = () => {
         for (const fName in this.data) {
             const f = this.fields.get(fName as any);
-            f?.setHelperText();
-            f?.setError();
+            f?.setValidation();
             this.data[fName] = toJS(f?.value);
         }
         const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
@@ -67,8 +61,7 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
             console.error('handleSubmit', { errors, data: toJS(this.data) });
             errors.forEach(error => {
                 const f = this.fields.get(error.property as any);
-                f?.setError(true);
-                f?.setHelperText('error message');
+                f?.setValidation(error);
             });
             return;
         } else {
@@ -87,7 +80,7 @@ export namespace MobXForm {
         readonly label: string;
         readonly value: T;
         readonly error: boolean;
-        readonly helperText: string;
+        readonly validation?: ValidationError;
         readonly onChange: (value: T) => void;
     }
 }

@@ -37,7 +37,7 @@ const ManageCollectionPoint = (props: Props) => {
     };
 
     return (
-        <Paper sx={{ minHeight: '100vh' }}>
+        <Paper sx={{}}>
             <CollectionPointHeader
                 orgName="Space Meduza"
                 bgImg="https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920"

@@ -35,7 +35,7 @@ export class SearchLocationModel {
     search = (query: string) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
-            console.log('search', rv);
+            // console.log('search', rv);
             runInAction(() => {
                 this.locationList = rv
                     .map(item => ({ ...item, lat: +item.lat, lng: +item.lon }))
@@ -47,7 +47,7 @@ export class SearchLocationModel {
     reverse = async (props: { lat: number; lng: number }) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.reverse({ lat: props.lat, lon: props.lng });
-            console.log('reverse', rv);
+            // console.log('reverse', rv);
             runInAction(() => {
                 const l = Object.assign(rv, props);
                 this.location = l;

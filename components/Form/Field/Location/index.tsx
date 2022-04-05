@@ -1,11 +1,19 @@
-import { Autocomplete, AutocompleteRenderInputParams, TextField, TextFieldProps, Typography } from '@mui/material';
+import MapIcon from '@mui/icons-material/MapRounded';
+import {
+    Autocomplete,
+    AutocompleteRenderInputParams,
+    IconButton,
+    TextField,
+    TextFieldProps,
+    Typography
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
-import { FC, HTMLAttributes, useCallback, useEffect } from 'react';
+import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { MobXForm } from '~/lib/form';
 import { SearchLocation, SearchLocationModel } from '~/model/searchlocation.model';
-import { useTr } from '~/texts';
+import { useTr, validationTr } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./FieldLocationMap'), { ssr: false });
 
@@ -14,6 +22,7 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
     ({ formField, ...props }) => {
         const [tr] = useTr('dto');
         const locationModel = SearchLocationModel.useModel();
+        const [showMap, setShowMap] = useState(false);
 
         useEffect(() => {
             if (locationModel.location) {
@@ -29,12 +38,23 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
                 <TextField
                     {...params}
                     label={tr(formField.label as any)}
-                    helperText={formField.helperText}
+                    helperText={validationTr(
+                        tr,
+                        formField.validation?.children?.find(err => err.property === 'address'),
+                    )}
                     error={formField.error}
+                    InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                            <IconButton onClick={() => setShowMap(!showMap)}>
+                                <MapIcon />
+                            </IconButton>
+                        ),
+                    }}
                     {...props}
                 />
             ),
-            [formField.error, formField.helperText, formField.label, props, tr],
+            [tr, formField.label, formField.validation?.children, formField.error, props, showMap],
         );
 
         const renderOption = useCallback(
@@ -58,14 +78,14 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
                     getOptionLabel={o => o.display_name}
                     renderInput={renderInput}
                     renderOption={renderOption}
-                    noOptionsText={tr('NoOptions')}
+                    noOptionsText={tr('noOptions')}
                 />
                 <Box py={1}>
                     <Typography textAlign="center" variant="caption" component="p" sx={{ fontStyle: 'italic' }}>
-                        {tr('LatLng', { lat: locationModel.position.lat, lon: locationModel.position.lng })}
+                        {tr('infoLatLng', { lat: locationModel.position.lat, lon: locationModel.position.lng })}
                     </Typography>
                 </Box>
-                <FieldLocationMap locationModel={locationModel} />
+                {showMap && <FieldLocationMap locationModel={locationModel} />}
             </Box>
         );
     },

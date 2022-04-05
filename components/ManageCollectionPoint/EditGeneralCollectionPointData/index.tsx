@@ -14,37 +14,35 @@ const EditGeneralCollectionPointData = observer(() => {
 
     return (
         <Container maxWidth="md">
-            <form>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <FormFieldLocation formField={form.$.location} />
-                    <FormFieldText formField={form.$.orgName} />
-                    <FormFieldText formField={form.$.phone} type="number" />
-                    <FormFieldText
-                        formField={form.$.telegram}
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">@</InputAdornment>,
-                        }}
-                    />
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <label htmlFor="icon-button-file">
-                            <input style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
-                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                <UploadIcon />
-                            </IconButton>
-                        </label>
-                        <Typography sx={{ opacity: 0.5 }}>Change image</Typography>
-                    </Box>
-                    <Button
-                        sx={{ mb: 4 }}
-                        color="secondary"
-                        variant="outlined"
-                        startIcon={<SaveIcon />}
-                        onClick={form.handleSubmit}
-                    >
-                        Save
-                    </Button>
+            <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <FormFieldLocation formField={form.$.location} />
+                <FormFieldText formField={form.$.orgName} />
+                <FormFieldText formField={form.$.phone} type="number" />
+                <FormFieldText
+                    formField={form.$.telegram}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">@</InputAdornment>,
+                    }}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <label htmlFor="icon-button-file">
+                        <input style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                            <UploadIcon />
+                        </IconButton>
+                    </label>
+                    <Typography sx={{ opacity: 0.5 }}>Change image</Typography>
                 </Box>
-            </form>
+                <Button
+                    sx={{ mb: 4 }}
+                    color="secondary"
+                    variant="outlined"
+                    startIcon={<SaveIcon />}
+                    onClick={form.handleSubmit}
+                >
+                    Save
+                </Button>
+            </Box>
         </Container>
     );
 });

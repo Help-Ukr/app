@@ -1,4 +1,4 @@
-import { TrFactory } from '~/lib/tr';
+import { TrFactory, validationTr } from '~/lib/tr';
 import { de } from './de';
 import { en } from './en';
 import { uk } from './uk';
@@ -9,3 +9,5 @@ export const languages = [
     { key: 'de', title: 'Deutsch' },
     { key: 'uk', title: 'Українська' },
 ];
+
+export { validationTr };

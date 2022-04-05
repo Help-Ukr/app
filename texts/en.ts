@@ -25,7 +25,17 @@ export const en = {
             phone: 'Phone number',
             telegram: 'Telegram link',
         },
-        LatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',
-        NoOptions: 'No options',
+
+        infoLatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',
+        noOptions: 'No options',
+
+        validations: {
+            isPhoneNumber: 'Enter phone number in international format ({{isPhoneNumber}})',
+            isInt: 'Enter an integer',
+            min: 'Number must be greater than or equal to {{min}}',
+            max: 'Number must be less than or equal to {{max}}',
+            minLength: 'Minimum field length {{minLength}}',
+            maxLength: 'Maximum field length {{maxLength}}',
+        },
     },
 };

@@ -1,3 +1,4 @@
+import { plainToClass } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { action, makeObservable, observable, toJS } from 'mobx';
 import { O } from 'ts-toolbelt';
@@ -57,9 +58,9 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
             f?.setError();
             this.data[fName] = toJS(f?.value);
         }
-        const errors = validateSync(this.data);
+        const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
         if (errors.length) {
-            console.error('handleSubmit', { errors, data: this.data });
+            console.error('handleSubmit', { errors, data: toJS(this.data) });
             errors.forEach(error => {
                 const f = this.fields.get(error.property as any);
                 f?.setError(true);
@@ -67,7 +68,7 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
             });
             return;
         } else {
-            console.info('handleSubmit', { errors, data: this.data });
+            console.info('handleSubmit', { errors, data: toJS(this.data) });
             this.props?.onSubmit(this.data);
         }
     };

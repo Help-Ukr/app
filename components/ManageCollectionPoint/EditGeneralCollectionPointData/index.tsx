@@ -4,11 +4,12 @@ import UploadIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/SaveOutlined';
 import { Button, Container, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { observer } from 'mobx-react-lite';
 import { useMemo } from 'react';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
 
-const EditGeneralCollectionPointData = () => {
+const EditGeneralCollectionPointData = observer(() => {
     const form = useMemo(() => new MobXForm(CollectinPointDto), []);
 
     return (
@@ -46,6 +47,6 @@ const EditGeneralCollectionPointData = () => {
             </form>
         </Container>
     );
-};
+});
 
 export default EditGeneralCollectionPointData;

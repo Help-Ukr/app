@@ -1,60 +1,52 @@
 import { useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import L from 'leaflet';
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { CSSProperties, FC, useEffect, useMemo, useRef } from 'react';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import { defaultMarker } from '~/components/Map';
-import { FieldLocationValue } from '.';
+import { SearchLocationModel } from '~/model/searchlocation.model';
 
 const styleMap: CSSProperties = { width: '100%', height: 300 };
 
-const FieldLocationMap: FC<{ value: FieldLocationValue; onChange: (value: FieldLocationValue) => void }> = ({
-    onChange,
-    value,
-}) => {
+const FieldLocationMap: FC<{ locationModel: SearchLocationModel }> = observer(({ locationModel }) => {
     const theme = useTheme();
     return (
         <Box sx={{ color: theme.palette.primary.main }}>
-            <MapContainer style={styleMap} zoom={13} center={[value.lat, value.lng]}>
+            <MapContainer
+                style={styleMap}
+                zoom={13}
+                center={[locationModel.location?.lat || 0, locationModel.location?.lng || 0]}
+            >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <DraggableMarker initPosition={value} onChange={p => onChange({ ...p, address: value.address })} />
+                <DraggableMarker locationModel={locationModel} />
             </MapContainer>
         </Box>
     );
-};
+});
 
-const DraggableMarker: FC<{
-    initPosition: { lat: number; lng: number };
-    onChange: (p: { lat: number; lng: number }) => void;
-}> = ({ initPosition, onChange }) => {
-    const [position, setPosition] = useState(initPosition);
+const DraggableMarker: FC<{ locationModel: SearchLocationModel }> = observer(({ locationModel }) => {
     const markerRef = useRef<L.Marker>(null);
     const map = useMap();
-
+    const position = locationModel.location || locationModel.defaultMapLocation;
     useEffect(() => {
-        const marker = markerRef.current;
-        if (marker) {
-            marker?.setLatLng(initPosition);
-            map.setView(initPosition);
-            setPosition(initPosition);
-        }
-    }, [initPosition, map]);
+        map.setView(position);
+    }, [position, map]);
 
     const eventHandlers = useMemo(
         () => ({
-            dragend() {
+            async dragend() {
                 const marker = markerRef.current;
                 if (marker != null) {
                     const p = marker.getLatLng();
-                    setPosition(p);
-                    onChange(p);
+                    await locationModel.reverse(p);
                 }
             },
         }),
-        [onChange],
+        [locationModel],
     );
 
     return <Marker icon={defaultMarker} draggable eventHandlers={eventHandlers} position={position} ref={markerRef} />;
-};
+});
 
 export default FieldLocationMap;

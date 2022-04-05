@@ -1,14 +1,14 @@
 import { IsLatitude, IsLongitude, IsOptional, IsPhoneNumber, Length, ValidateNested } from 'class-validator';
 
-class Loaction {
+class LocationDto {
     @Length(3, 64)
-    address!: string;
+    address: string = '';
 
     @IsLatitude()
-    lat!: number;
+    lat: number = 52.5188239;
 
     @IsLongitude()
-    lng!: number;
+    lng: number = 13.4012708;
 }
 
 export class CollectinPointDto {
@@ -23,9 +23,5 @@ export class CollectinPointDto {
     telegram?: string;
 
     @ValidateNested()
-    location: Loaction = {
-        address: '',
-        lat: 52.5188239,
-        lng: 13.4012708,
-    };
+    location = new LocationDto();
 }

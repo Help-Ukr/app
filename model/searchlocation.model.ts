@@ -28,6 +28,10 @@ export class SearchLocationModel {
         makeObservable(this);
     }
 
+    get position() {
+        return this.location || this.defaultMapLocation;
+    }
+
     search = (query: string) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
@@ -45,7 +49,9 @@ export class SearchLocationModel {
             const rv = await this.nominatim.reverse({ lat: props.lat, lon: props.lng });
             console.log('reverse', rv);
             runInAction(() => {
-                this.location = { ...rv, ...props };
+                const l = Object.assign(rv, props);
+                this.location = l;
+                this.locationList = [l];
             });
         });
     };
@@ -59,12 +65,12 @@ export class SearchLocationModel {
         if (this.timemOut) clearTimeout(this.timemOut);
         this.timemOut = setTimeout(cb, 400) as any;
     };
-}
 
-export function useSearchLocation() {
-    const model = useMemo(() => new SearchLocationModel(), []);
-    useEffect(() => {
-        return () => clearTimeout(model.timemOut);
-    });
-    return model;
+    static useModel = () => {
+        const model = useMemo(() => new SearchLocationModel(), []);
+        useEffect(() => {
+            return () => clearTimeout(model.timemOut);
+        });
+        return model;
+    };
 }

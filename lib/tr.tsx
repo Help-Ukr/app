@@ -4,7 +4,7 @@ import { FC, useMemo } from 'react';
 import { I18nextProvider, initReactI18next, useTranslation } from 'react-i18next';
 import { StrKey } from './types';
 
-type TrFunc<T> = (key: StrKey<T>) => string;
+type TrFunc<T> = (key: StrKey<T>, opts?: object) => string;
 type UseTr<T> = <N extends StrKey<T>>(ns: N) => [TrFunc<T[N]>, i18n, boolean];
 
 export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R, fallbackLng: L) {

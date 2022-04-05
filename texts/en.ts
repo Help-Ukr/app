@@ -25,5 +25,7 @@ export const en = {
             phone: 'Phone number',
             telegram: 'Telegram link',
         },
+        LatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',
+        NoOptions: 'No options',
     },
 };

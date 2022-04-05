@@ -18,6 +18,10 @@ export class MobXFormField<T extends new (...any: any) => any, Dto extends Insta
 
     @action onChange = (value: any) => {
         this.self.value = value;
+        if (this.error) {
+            this.setHelperText();
+            this.setError();
+        }
     };
 
     @action setHelperText = (text: string = '') => {

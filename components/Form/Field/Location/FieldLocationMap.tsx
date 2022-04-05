@@ -12,12 +12,8 @@ const styleMap: CSSProperties = { width: '100%', height: 300 };
 const FieldLocationMap: FC<{ locationModel: SearchLocationModel }> = observer(({ locationModel }) => {
     const theme = useTheme();
     return (
-        <Box sx={{ color: theme.palette.primary.main }}>
-            <MapContainer
-                style={styleMap}
-                zoom={13}
-                center={[locationModel.location?.lat || 0, locationModel.location?.lng || 0]}
-            >
+        <Box sx={{ color: theme.palette.primary.main, borderRadius: 1, overflow: 'hidden' }}>
+            <MapContainer style={styleMap} zoom={13} center={locationModel.position}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <DraggableMarker locationModel={locationModel} />
             </MapContainer>
@@ -28,25 +24,30 @@ const FieldLocationMap: FC<{ locationModel: SearchLocationModel }> = observer(({
 const DraggableMarker: FC<{ locationModel: SearchLocationModel }> = observer(({ locationModel }) => {
     const markerRef = useRef<L.Marker>(null);
     const map = useMap();
-    const position = locationModel.location || locationModel.defaultMapLocation;
+
     useEffect(() => {
-        map.setView(position);
-    }, [position, map]);
+        map.setView(locationModel.position);
+    }, [locationModel.position, map]);
 
     const eventHandlers = useMemo(
         () => ({
-            async dragend() {
+            dragend() {
                 const marker = markerRef.current;
-                if (marker != null) {
-                    const p = marker.getLatLng();
-                    await locationModel.reverse(p);
-                }
+                marker && locationModel.reverse(marker.getLatLng());
             },
         }),
         [locationModel],
     );
 
-    return <Marker icon={defaultMarker} draggable eventHandlers={eventHandlers} position={position} ref={markerRef} />;
+    return (
+        <Marker
+            draggable
+            ref={markerRef}
+            icon={defaultMarker}
+            eventHandlers={eventHandlers}
+            position={locationModel.position}
+        />
+    );
 });
 
 export default FieldLocationMap;

@@ -1,17 +1,17 @@
 import { FormFieldLocation } from '@cmts/Form/Field/Location';
 import { FormFieldText } from '@cmts/Form/Field/Text';
-import UploadIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/SaveOutlined';
-import { Button, Container, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Button, Container, InputAdornment } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import { useMemo } from 'react';
+import { FormFieldImage } from '~/components/Form/Field/Image';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
 
 const EditGeneralCollectionPointData = observer(() => {
     const form = useMemo(() => new MobXForm(CollectinPointDto), []);
-
+    console.log(form.$);
     return (
         <Container maxWidth="md">
             <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -20,18 +20,10 @@ const EditGeneralCollectionPointData = observer(() => {
                 <FormFieldText formField={form.$.phone} type="number" />
                 <FormFieldText
                     formField={form.$.telegram}
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">@</InputAdornment>,
-                    }}
+                    InputProps={{ startAdornment: <InputAdornment position="start">@</InputAdornment> }}
                 />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <label htmlFor="icon-button-file">
-                        <input style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                            <UploadIcon />
-                        </IconButton>
-                    </label>
-                    <Typography sx={{ opacity: 0.5 }}>Change image</Typography>
+                <Box mr={2} sx={{ width: '100%', height: 125 }}>
+                    <FormFieldImage formField={form.$.image} />
                 </Box>
                 <Button
                     sx={{ mb: 4 }}

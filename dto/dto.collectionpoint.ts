@@ -21,6 +21,11 @@ class LocationDto {
     lng: number = 0;
 }
 
+class ImageDto {
+    dataUrl?: string;
+    file?: File;
+}
+
 export class CollectinPointDto {
     @Length(3, 64)
     orgName: string = '';
@@ -38,4 +43,7 @@ export class CollectinPointDto {
         lat: 0,
         lng: 0,
     };
+
+    @ValidateNested()
+    image?: ImageDto;
 }

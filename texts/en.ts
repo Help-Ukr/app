@@ -13,6 +13,7 @@ export const en = {
         '/collect': 'Collect',
         '/donate': 'Donate',
         '/transport': 'Transport',
+        '/signin': 'SignIn',
     },
     collect: {
         tabGeneral: 'General',

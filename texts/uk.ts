@@ -12,6 +12,7 @@ export const uk = {
         '/collect': 'Збирати',
         '/donate': 'Пожертвувати',
         '/transport': 'Перевізникам',
+        '/signin': 'Увійти',
     },
     collect: {
         tabGeneral: 'Інформація',

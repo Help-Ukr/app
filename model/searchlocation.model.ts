@@ -1,9 +1,9 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
-import nominatim from 'nominatim-client';
 import { useEffect, useMemo } from 'react';
+import { Nominatim } from '~/lib/nominatim';
 
 export type SearchLocation = {
-    address: Exclude<nominatim.SearchResultItem['address'], undefined>;
+    address: Exclude<Nominatim.SearchResultItem['address'], undefined>;
     osm_id: number;
     display_name: string;
     lat: number;
@@ -11,7 +11,7 @@ export type SearchLocation = {
 };
 
 export class SearchLocationModel {
-    readonly nominatim = nominatim.createClient({ useragent: '', referer: '' });
+    readonly nominatim = new Nominatim();
     readonly defaultMapLocation = {
         lat: 52.5188239,
         lng: 13.4012708,
@@ -21,8 +21,7 @@ export class SearchLocationModel {
     @observable
     location?: SearchLocation;
 
-    @observable
-    locationList: SearchLocation[] = [];
+    locationList = observable.array<SearchLocation>([]);
 
     constructor() {
         makeObservable(this);
@@ -35,11 +34,10 @@ export class SearchLocationModel {
     search = (query: string) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
-            // console.log('search', rv);
             runInAction(() => {
-                this.locationList = rv
-                    .map(item => ({ ...item, lat: +item.lat, lng: +item.lon }))
-                    .filter(item => !!item.address) as any;
+                this.locationList.replace(
+                    rv.map(item => ({ ...item, lat: +item.lat, lng: +item.lon })).filter(item => !!item.address) as any,
+                );
             });
         });
     };
@@ -47,11 +45,10 @@ export class SearchLocationModel {
     reverse = async (props: { lat: number; lng: number }) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.reverse({ lat: props.lat, lon: props.lng });
-            // console.log('reverse', rv);
             runInAction(() => {
                 const l = Object.assign(rv, props);
                 this.location = l;
-                this.locationList = [l];
+                this.locationList.replace([l]);
             });
         });
     };

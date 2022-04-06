@@ -1736,11 +1736,6 @@ next@12.1.0:
     "@next/swc-win32-ia32-msvc" "12.1.0"
     "@next/swc-win32-x64-msvc" "12.1.0"
 
-nominatim-client@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/nominatim-client/-/nominatim-client-3.2.1.tgz#c6ec49aa07d46b56851715c80d5058158943681e"
-  integrity sha512-i7kGGMvXU37nUhDhlTuj0JhoWntT69BUFeEOHxw40Wf5J++dUCGnPgMCE+6KAJZCOVeK6lqjMAxP2+zyg0CbKw==
-
 oauth@^0.9.15:
   version "0.9.15"
   resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"

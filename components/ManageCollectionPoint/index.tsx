@@ -24,7 +24,7 @@ function TabPanel(props: TabPanelProps) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
+            {value === index && <Box>{children}</Box>}
         </div>
     );
 }
@@ -56,23 +56,7 @@ const ManageCollectionPoint = (props: Props) => {
                 <EditGeneralCollectionPointData />
             </TabPanel>
             <TabPanel index={1} value={value}>
-                <ManageItems
-                    initialItemQuantity={0}
-                    initialData={[
-                        {
-                            itemCategoryId: '2',
-                            quantity: 0,
-                        },
-                        {
-                            itemCategoryId: '4',
-                            quantity: 0,
-                        },
-                        {
-                            itemCategoryId: '6',
-                            quantity: 5,
-                        },
-                    ]}
-                />
+                <ManageItems />
             </TabPanel>
         </Paper>
     );

@@ -1,7 +1,8 @@
 export interface ItemCategory {
-    id: string;
+    id: number;
     icon: string;
-    displayName: string;
+    name: string;
+    parent?: number;
 }
 
 export interface CollectionPointItem {

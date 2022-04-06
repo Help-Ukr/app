@@ -1,118 +1,60 @@
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { Card, CardActions, CardContent, Container, Fab, Grid, IconButton, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { CollectionPointItem, ITEM_CATEGORIES } from '../../../api-client';
-import AddCategoriesDialog from '../AddCategoriesDialog';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import {
+    Collapse,
+    Container,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemSecondaryAction,
+    ListItemText,
+    Switch,
+} from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { FC } from 'react';
+import { app } from '~/services/app';
+import { CollectItem, CollectItemsService } from '~/services/collectitems.service';
 
-type Props = {
-    initialData: CollectionPointItem[];
-    initialItemQuantity?: number;
-};
-
-const ManageItems = ({ initialData, initialItemQuantity = 1 }: Props) => {
-    const [showAddCategoryDialog, setShowAddCategoryDialog] = useState<boolean>(false);
-
-    const [availableItems, setAvailableItems] = useState<CollectionPointItem[]>(initialData || []);
-
-    function onIncrement(index: number) {
-        const newAvailableItems = [...availableItems];
-        // newAvailableItems[index]?.quantity++;
-        setAvailableItems(newAvailableItems);
-    }
-
-    function onDecrement(index: number) {
-        const newAvailableItems = [...availableItems];
-        // newAvailableItems[index].quantity--;
-        setAvailableItems(newAvailableItems);
-    }
-
-    function onRemove(index: number) {
-        const newAvailableItems = [...availableItems];
-        newAvailableItems.splice(index, 1);
-        setAvailableItems(newAvailableItems);
-    }
-
+const ManageItems = observer(() => {
+    const cisSvc = app.get(CollectItemsService);
     return (
-        <Container sx={{ mt: 4 }}>
-            <Grid container spacing={3}>
-                {availableItems.map((availableItem, idx) => {
-                    const itemCategory = ITEM_CATEGORIES.find(
-                        itemCategory => itemCategory.id === availableItem.itemCategoryId,
-                    );
-                    return (
-                        <Grid key={availableItem.itemCategoryId} item xs={6} md={4}>
-                            <Card>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {availableItem.quantity && availableItem.quantity > 0
-                                            ? `${availableItem.quantity}x `
-                                            : ''}
-                                        {itemCategory!.icon} {itemCategory!.displayName}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <IconButton
-                                        onClick={() => {
-                                            onIncrement(idx);
-                                        }}
-                                        color="primary"
-                                    >
-                                        <AddIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={() => {
-                                            onDecrement(idx);
-                                        }}
-                                        color="primary"
-                                    >
-                                        <RemoveIcon />
-                                    </IconButton>
-                                    <Box sx={{ marginLeft: 'auto' }}>
-                                        <IconButton
-                                            onClick={() => {
-                                                onRemove(idx);
-                                            }}
-                                            color="primary"
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Box>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    );
-                })}
-            </Grid>
-            <Box sx={{ position: 'fixed', bottom: '1rem', right: '1rem' }}>
-                <Fab
-                    onClick={() => {
-                        setShowAddCategoryDialog(true);
-                    }}
-                    color="primary"
-                    aria-label="add"
-                >
-                    <AddIcon />
-                </Fab>
-            </Box>
-            <AddCategoriesDialog
-                open={showAddCategoryDialog}
-                onClose={() => setShowAddCategoryDialog(false)}
-                activeItemCategoryIds={availableItems.map(item => item.itemCategoryId)}
-                onAddCategoryIds={itemCategoryIds => {
-                    setAvailableItems([
-                        ...availableItems,
-                        ...itemCategoryIds.map(id => ({
-                            itemCategoryId: id,
-                            quantity: initialItemQuantity,
-                        })),
-                    ]);
-                }}
-            />
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+            <List>
+                {cisSvc.items.map(item => (
+                    <RenderListItem key={item.id} item={item} cisSvc={cisSvc} />
+                ))}
+            </List>
         </Container>
     );
-};
+});
+
+const RenderListItem: FC<{ item: CollectItem; cisSvc: Readonly<CollectItemsService> }> = observer(
+    ({ item, cisSvc }) => {
+        const { items } = item;
+        const open = cisSvc.openId === item.id;
+        const isCollapsed: boolean = !!items?.length;
+        return (
+            <>
+                <ListItem button onClick={() => isCollapsed && cisSvc.handleOpen(open ? undefined : item.id)}>
+                    <ListItemAvatar>{item.icon}</ListItemAvatar>
+                    {isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}
+                    <ListItemText primary={item.name} />
+                    <ListItemSecondaryAction>
+                        <Switch color="secondary" />
+                    </ListItemSecondaryAction>
+                </ListItem>
+                {isCollapsed && (
+                    <Collapse in={open} unmountOnExit sx={{ ml: 4 }}>
+                        {items?.map(cItem => (
+                            <List key={cItem.id} component="div" disablePadding>
+                                <RenderListItem item={cItem} cisSvc={cisSvc} />
+                            </List>
+                        ))}
+                    </Collapse>
+                )}
+            </>
+        );
+    },
+);
 
 export default ManageItems;

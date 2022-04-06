@@ -1,5 +1,6 @@
-import { action, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { useEffect, useMemo } from 'react';
+import { Service } from 'typedi';
 import { Nominatim } from '~/lib/nominatim';
 
 export type SearchLocation = {
@@ -10,23 +11,25 @@ export type SearchLocation = {
     lng: number;
 };
 
-export class SearchLocationModel {
+@Service()
+export class SearchLocationService {
     readonly nominatim = new Nominatim();
     readonly defaultMapLocation = {
         lat: 52.5188239,
         lng: 13.4012708,
     };
-    timemOut = 0;
 
     @observable
     location?: SearchLocation;
 
-    locationList = observable.array<SearchLocation>([]);
+    @observable
+    locationList: SearchLocation[] = [];
 
     constructor() {
         makeObservable(this);
     }
 
+    @computed
     get position() {
         return this.location || this.defaultMapLocation;
     }
@@ -35,20 +38,20 @@ export class SearchLocationModel {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
             runInAction(() => {
-                this.locationList.replace(
-                    rv.map(item => ({ ...item, lat: +item.lat, lng: +item.lon })).filter(item => !!item.address) as any,
-                );
+                this.locationList = rv
+                    .map(item => ({ ...item, lat: +item.lat, lng: +item.lon }))
+                    .filter(item => !!item.address) as any;
             });
         });
     };
 
-    reverse = async (props: { lat: number; lng: number }) => {
+    reverse = (props: { lat: number; lng: number }) => {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.reverse({ lat: props.lat, lon: props.lng });
             runInAction(() => {
                 const l = Object.assign(rv, props);
                 this.location = l;
-                this.locationList.replace([l]);
+                this.locationList = [l];
             });
         });
     };
@@ -58,16 +61,17 @@ export class SearchLocationModel {
         this.location = value || undefined;
     };
 
-    private setTimeOut = (cb: (...args: any[]) => any) => {
-        if (this.timemOut) clearTimeout(this.timemOut);
-        this.timemOut = setTimeout(cb, 400) as any;
-    };
-
-    static useModel = () => {
-        const model = useMemo(() => new SearchLocationModel(), []);
+    use = () => {
+        const model = useMemo(() => this, []);
         useEffect(() => {
             return () => clearTimeout(model.timemOut);
         });
         return model;
+    };
+
+    private timemOut = 0;
+    private setTimeOut = (cb: (...args: any[]) => any) => {
+        if (this.timemOut) clearTimeout(this.timemOut);
+        this.timemOut = setTimeout(cb, 400) as any;
     };
 }

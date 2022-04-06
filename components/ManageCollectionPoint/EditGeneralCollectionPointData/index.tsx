@@ -11,7 +11,7 @@ import { MobXForm } from '~/lib/form';
 
 const EditGeneralCollectionPointData = observer(() => {
     const form = useMemo(() => new MobXForm(CollectinPointDto), []);
-    console.log(form.$);
+
     return (
         <Container maxWidth="md">
             <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>

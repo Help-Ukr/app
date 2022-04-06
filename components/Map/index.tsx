@@ -4,7 +4,7 @@ import { CSSProperties } from 'react';
 import { MapContainer, Marker, TileLayer, ZoomControl } from 'react-leaflet';
 import { COLLECTION_POINTS } from '~/api-client';
 
-const defaultMarker = new L.Icon({
+export const defaultMarker = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png',
     iconSize: [25, 41],
     iconAnchor: [13, 0],

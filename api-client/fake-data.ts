@@ -1,12 +1,12 @@
 import { CollectionPoint, ItemCategory } from './types';
 
 export const ITEM_CATEGORIES: ItemCategory[] = [
-    { id: '1', icon: '🦺', displayName: 'Military Vest' },
-    { id: '2', icon: '🔋', displayName: 'Powerbank' },
-    { id: '3', icon: '📳', displayName: 'Phone Chargers' },
-    { id: '4', icon: '✨', displayName: 'AAA Batteries' },
-    { id: '5', icon: '🩲', displayName: 'Thermo Underwear' },
-    { id: '6', icon: '🔦', displayName: 'Flashlight' },
+    { id: 1, icon: '🦺', name: 'Military Vest' },
+    { id: 2, icon: '🔋', name: 'Powerbank' },
+    { id: 3, icon: '📳', name: 'Phone Chargers', parent: 2 },
+    { id: 4, icon: '✨', name: 'AAA Batteries', parent: 2 },
+    { id: 5, icon: '🩲', name: 'Thermo Underwear' },
+    { id: 6, icon: '🔦', name: 'Flashlight' },
 ];
 
 export const COLLECTION_POINTS: CollectionPoint[] = [

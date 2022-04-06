@@ -30,7 +30,7 @@ const CollectionPointCard = ({ collectionPoint }: Props) => {
                 </Typography>
                 <Typography sx={{ mt: 1 }} variant="subtitle2">
                     {items.map(item => {
-                        const foundItem = ITEM_CATEGORIES.find(category => category.id === item.itemCategoryId);
+                        const foundItem = ITEM_CATEGORIES.find(category => category.id === +item.itemCategoryId);
                         return foundItem?.icon ?? '';
                     })}
                 </Typography>

@@ -33,7 +33,6 @@ export class CollectItemsService extends AsyncService {
 
     @action
     handleOpen = (id?: number) => {
-        console.log('handleOpen');
         this.openId = id;
     };
 

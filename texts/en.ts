@@ -18,7 +18,7 @@ export const en = {
         tabGeneral: 'General',
         tabItems: 'Needed items',
     },
-    dto: {
+    form: {
         CollectinPointDto: {
             location: 'Address',
             orgName: 'Point name',
@@ -30,12 +30,13 @@ export const en = {
         noOptions: 'No options',
 
         validations: {
-            isPhoneNumber: 'Enter phone number in international format ({{isPhoneNumber}})',
             isInt: 'Enter an integer',
-            min: 'Number must be greater than or equal to {{min}}',
-            max: 'Number must be less than or equal to {{max}}',
-            minLength: 'Minimum field length {{minLength}}',
-            maxLength: 'Maximum field length {{maxLength}}',
+            isPhoneNumber: 'Enter phone number in international format ({{arg1}})',
+            isLength: 'Minimum field length {{arg1}}, maximum - {{arg2}}',
+            min: 'Number must be greater than or equal to {{arg1}}',
+            max: 'Number must be less than or equal to {{arg1}}',
+            minLength: 'Minimum field length {{arg1}}',
+            maxLength: 'Maximum field length {{arg1}}',
         },
     },
 };

@@ -2,9 +2,11 @@ import {
     IsLatitude,
     IsLongitude,
     IsOptional,
-    IsPhoneNumber, MaxLength,
+    IsPhoneNumber,
+    Length,
+    MaxLength,
     MinLength,
-    ValidateNested
+    ValidateNested,
 } from 'class-validator';
 
 class LocationDto {
@@ -20,15 +22,13 @@ class LocationDto {
 }
 
 export class CollectinPointDto {
-    @MinLength(3)
-    @MaxLength(64)
+    @Length(3, 64)
     orgName: string = '';
 
     @IsPhoneNumber('UA') // TODO: UA
     phone: string = '';
 
-    @MinLength(3)
-    @MaxLength(64)
+    @Length(3, 64)
     @IsOptional()
     telegram?: string;
 

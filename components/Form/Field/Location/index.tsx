@@ -5,7 +5,7 @@ import {
     IconButton,
     TextField,
     TextFieldProps,
-    Typography
+    Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
@@ -20,7 +20,7 @@ const FieldLocationMap = dynamic(() => import('./FieldLocationMap'), { ssr: fals
 export type FieldLocationValue = { address: string; lat: number; lng: number };
 export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
-        const [tr] = useTr('dto');
+        const [tr] = useTr('form');
         const locationModel = SearchLocationModel.useModel();
         const [showMap, setShowMap] = useState(false);
 

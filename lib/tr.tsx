@@ -43,7 +43,11 @@ export function validationTr(tr: TrFunc<any>, error?: ValidationError) {
         const constraints = storage.getTargetValidatorConstraints(meta.constraintCls);
         const constraint = constraints.find(c => c.name === errContstraint[0]);
         if (!constraint) continue;
-        return tr('validations.' + constraint.name, { [constraint.name]: meta.constraints?.[0] });
+        const args: { [key: string]: any } = {};
+        meta.constraints.forEach((arg, i) => {
+            args[`arg${i + 1}`] = arg;
+        });
+        return tr('validations.' + constraint.name, args);
     }
     return '';
 }

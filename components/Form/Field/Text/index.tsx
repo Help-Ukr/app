@@ -6,7 +6,7 @@ import { useTr, validationTr } from '~/texts';
 
 export const FormFieldText: FC<{ formField: MobXForm.InputProps } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
-        const [tr] = useTr('dto');
+        const [tr] = useTr('form');
         return (
             <TextField
                 fullWidth

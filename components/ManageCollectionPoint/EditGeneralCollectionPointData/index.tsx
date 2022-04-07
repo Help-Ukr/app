@@ -8,10 +8,19 @@ import { useMemo } from 'react';
 import { FormFieldImage } from '~/components/Form/Field/Image';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
+import { useTr } from '~/texts';
 
 const EditGeneralCollectionPointData = observer(() => {
-    const form = useMemo(() => new MobXForm(CollectinPointDto), []);
-
+    const form = useMemo(
+        () =>
+            new MobXForm(CollectinPointDto, {
+                onSubmit: data => {
+                    console.log('onSubmit', data);
+                },
+            }),
+        [],
+    );
+    const [tr] = useTr('form');
     return (
         <Container maxWidth="md">
             <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -23,16 +32,16 @@ const EditGeneralCollectionPointData = observer(() => {
                     InputProps={{ startAdornment: <InputAdornment position="start">@</InputAdornment> }}
                 />
                 <Box mr={2} sx={{ width: '100%', height: 125 }}>
-                    <FormFieldImage formField={form.$.image} />
+                    <FormFieldImage formField={form.$.image as any} />
                 </Box>
                 <Button
-                    sx={{ mb: 4 }}
+                    sx={{ mb: 4, position: 'fixed', right: 20, bottom: 20 }}
                     color="secondary"
-                    variant="outlined"
+                    variant="contained"
                     startIcon={<SaveIcon />}
                     onClick={form.handleSubmit}
                 >
-                    Save
+                    {tr('save')}
                 </Button>
             </Box>
         </Container>

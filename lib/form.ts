@@ -34,7 +34,7 @@ export class MobXFormField<T extends new (...any: any) => any, Dto extends Insta
 
 export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceType<T>> {
     protected readonly fields = new Map<keyof T, MobXFormField<T, Dto>>();
-    protected readonly data = new this.Dto();
+    protected readonly data = plainToClass(this.Dto, {}, { enableImplicitConversion: true });
 
     constructor(protected Dto: T, private props?: { onSubmit: (data: Dto) => void }) {
         for (const f in this.data) {
@@ -54,9 +54,10 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
         for (const fName in this.data) {
             const f = this.fields.get(fName as any);
             f?.setValidation();
-            this.data[fName] = toJS(f?.value);
+            this.data[fName] = f?.value;
         }
-        const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
+        // const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
+        const errors = validateSync(this.data);
         if (errors.length) {
             console.error('handleSubmit', { errors, data: toJS(this.data) });
             errors.forEach(error => {

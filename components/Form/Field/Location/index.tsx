@@ -61,7 +61,6 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
             ),
             [],
         );
-
         return (
             <Box>
                 <Autocomplete

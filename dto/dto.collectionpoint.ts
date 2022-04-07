@@ -20,7 +20,6 @@ class LocationDto {
     @IsLongitude()
     lng: number = 0;
 }
-
 class ImageDto {
     dataUrl?: string;
     file?: File;
@@ -45,5 +44,5 @@ export class CollectinPointDto {
     };
 
     @ValidateNested()
-    image?: ImageDto;
+    image?: ImageDto = {};
 }

@@ -22,7 +22,7 @@ export class SearchLocationService {
     @observable
     location?: SearchLocation;
 
-    @observable
+    @observable.ref
     locationList: SearchLocation[] = [];
 
     constructor() {

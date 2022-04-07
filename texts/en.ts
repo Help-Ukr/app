@@ -29,6 +29,7 @@ export const en = {
 
         infoLatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',
         noOptions: 'No options',
+        save: 'Save',
 
         validations: {
             isInt: 'Enter an integer',

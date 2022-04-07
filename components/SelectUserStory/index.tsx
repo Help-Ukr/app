@@ -3,13 +3,13 @@ import TransportIcon from '@mui/icons-material/DirectionsBusFilled';
 import DonateIcon from '@mui/icons-material/VolunteerActivism';
 import { Box, Button, Container, SxProps, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useTr } from '~/texts';
 
 const sxBox: SxProps = {
     display: 'flex',
-    my: 4,
+    pt: 4,
+    pb: 8,
     gap: 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -21,7 +21,6 @@ const sxBox: SxProps = {
 };
 
 const SelectUserStory = () => {
-    const router = useRouter();
     const [tr] = useTr('home');
     return (
         <Container>

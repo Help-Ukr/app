@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { observer } from 'mobx-react-lite';
-import { CSSProperties, FC, useEffect, useMemo, useRef } from 'react';
+import { CSSProperties, FC, useEffect, useRef } from 'react';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import { donationMarkerIcon } from '~/lib/markers';
 import { SearchLocationService } from '~/services/searchlocation.service';
@@ -36,28 +36,20 @@ const DraggableMarker: FC<{ locationSvc: Readonly<SearchLocationService> }> = ob
     const map = useMap();
 
     useEffect(() => {
+        map.on('move', () => {
+            const marker = markerRef.current;
+            if (marker) {
+                marker.setLatLng(map.getCenter());
+                locationSvc.reverse(marker.getLatLng());
+            }
+        });
+    }, [locationSvc, map]);
+
+    useEffect(() => {
         map.setView(locationSvc.position);
     }, [locationSvc.position, map]);
 
-    const eventHandlers = useMemo(
-        () => ({
-            dragend() {
-                const marker = markerRef.current;
-                marker && locationSvc.reverse(marker.getLatLng());
-            },
-        }),
-        [locationSvc],
-    );
-
-    return (
-        <Marker
-            draggable
-            ref={markerRef}
-            icon={donationMarkerIcon}
-            eventHandlers={eventHandlers}
-            position={locationSvc.position}
-        />
-    );
+    return <Marker ref={markerRef} icon={donationMarkerIcon} position={locationSvc.position} />;
 });
 
 export default FieldLocationMap;

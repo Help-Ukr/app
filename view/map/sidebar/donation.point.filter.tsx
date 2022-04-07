@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { app } from '~/services/app';
 import { DontationPointsService } from '~/services/donationpoints.service';
 
-const CollectionSearch = observer(() => {
+export const DonationPointSearch = observer(() => {
     const ptsvc = app.get(DontationPointsService);
 
     return (
@@ -25,5 +25,3 @@ const CollectionSearch = observer(() => {
         />
     );
 });
-
-export default CollectionSearch;

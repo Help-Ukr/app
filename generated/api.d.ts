@@ -35,52 +35,52 @@ export interface components {
        * Id
        * @example 1
        */
-      id?: number;
+      id: number;
       /**
        * Is enabled current collect point
        * @example true
        */
-      enabled?: boolean;
+      enabled: boolean;
       /**
        * Collect point name
        * @example Space Meduza
        */
-      name?: string;
+      name: string;
       /**
        * Collect point contact phone number
        * @example +491767890123
        */
-      phone?: string;
+      phone: string;
       /**
        * Collect point telegram account
        * @example @jax21ukr
        */
-      telegram?: string;
+      telegram: string;
       /**
        * Collect point instagram account
        * @example @insta
        */
-      instagram?: string;
+      instagram: string;
       /**
        * Collect point logo image
        * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
        */
-      image?: string;
-      location?: {
+      image: string;
+      location: {
         /** @example Skalitzer Straße 80, 10990 Berlin */
-        address?: string;
+        address: string;
         /**
          * Format: double
          * @example 59.334591
          */
-        latitude?: number;
+        latitude: number;
         /**
          * Format: double
          * @example 18.06324
          */
-        longitude?: number;
+        longitude: number;
       };
-      needed_items?: {
+      needed_items: {
         /** @example 2 */
         item_category_id?: number;
         /** @example University */
@@ -92,61 +92,34 @@ export interface components {
        * Format: date-time
        * @example 2022-03-09T10:01:17.000000Z
        */
-      updated_at?: string;
+      updated_at: string;
       /**
        * Format: date-time
        * @example 2022-03-09T10:01:17.000000Z
        */
-      created_at?: string;
+      created_at: string;
     };
     ItemCategory: {
       /**
        * Id
        * @example 1
        */
-      id?: number;
+      id: number;
       /**
        * Parent Id
        * @example 1
        */
-      item_category_id?: number;
+      item_category_id: number;
       /**
        * Username
        * @example food
        */
-      name?: string;
+      name: string;
       /**
        * icon
        * @example 🔦
        */
-      icon?: string;
-    };
-    User: {
-      /**
-       * Id
-       * @example 1
-       */
-      id?: number;
-      /**
-       * Username
-       * @example James Joseph Brown
-       */
-      name?: string;
-      /**
-       * User email
-       * @example james.j.b@gmail.com
-       */
-      email?: unknown;
-      /**
-       * Format: date-time
-       * @example 2022-03-09T10:01:17.000000Z
-       */
-      updated_at?: string;
-      /**
-       * Format: date-time
-       * @example 2022-03-09T10:01:17.000000Z
-       */
-      created_at?: string;
+      icon: string;
     };
   };
 }

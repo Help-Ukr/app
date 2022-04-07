@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 import { EventOrValue } from '~/lib/types';
 import { DonationPoint } from '~/model/donationpoint.model';
 import { ApiService } from './api.service';
+import { AppUIService } from './appui.service';
 import { AsyncService } from './base.service';
 import { MapService } from './map.service';
 
@@ -23,7 +24,7 @@ export class DontationPointsService extends AsyncService {
         return pts.slice().sort((a, b) => a.distance - b.distance);
     }
 
-    constructor(private api: ApiService, private map: MapService) {
+    constructor(private api: ApiService, private map: MapService, private appUi: AppUIService) {
         super();
         makeObservable(this);
     }
@@ -56,7 +57,7 @@ export class DontationPointsService extends AsyncService {
     @action
     setSelected(pt: DonationPoint | undefined) {
         this.selected = pt;
-        if (pt) this.map.center({ lat: pt.location.latitude, lng: pt.location.longitude });
+        this.appUi.closeDonationSidebar();
         this.log.debug('setSelected', pt);
     }
 }

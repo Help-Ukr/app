@@ -1,6 +1,5 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { Service } from 'typedi';
-import { ITEM_CATEGORIES } from '~/api-client';
 import { ItemCategory } from '~/model/itemcategory.model';
 import { ApiService } from './api.service';
 import { AsyncService } from './base.service';
@@ -16,7 +15,7 @@ export class CollectItemsService extends AsyncService {
     constructor(private api: ApiService) {
         super();
         makeObservable(this);
-        runInAction(() => this.items.replace(CollectItemsService.serialize(ITEM_CATEGORIES)));
+        //        runInAction(() => this.items.replace(CollectItemsService.serialize(ITEM_CATEGORIES)));
     }
 
     use() {

@@ -1,4 +1,5 @@
 /// <reference path="../generated/api.d.ts" />
+/// <reference path="../generated/api.override.d.ts" />
 
 import { Service } from 'typedi';
 import { HttpService } from '~/lib/http';

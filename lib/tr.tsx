@@ -1,10 +1,11 @@
+import { getMetadataStorage, ValidationError } from 'class-validator';
 import i18next, { i18n, Resource } from 'i18next';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 import { I18nextProvider, initReactI18next, useTranslation } from 'react-i18next';
 import { StrKey } from './types';
 
-type TrFunc<T> = (key: StrKey<T>) => string;
+type TrFunc<T> = (key: StrKey<T>, opts?: object) => string;
 type UseTr<T> = <N extends StrKey<T>>(ns: N) => [TrFunc<T[N]>, i18n, boolean];
 
 export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R, fallbackLng: L) {
@@ -30,4 +31,23 @@ export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R,
     };
 
     return { useTr: useTranslation as UseTr<R[L]>, TrProvider };
+}
+
+export function validationTr(tr: TrFunc<any>, error?: ValidationError) {
+    if (!error?.constraints) return '';
+    const errContstraint = Object.entries(error.constraints)[0];
+
+    const storage = getMetadataStorage();
+    const metas = storage.getTargetValidationMetadatas(error.target!.constructor, '', true, false);
+    for (const meta of metas) {
+        const constraints = storage.getTargetValidatorConstraints(meta.constraintCls);
+        const constraint = constraints.find(c => c.name === errContstraint[0]);
+        if (!constraint) continue;
+        const args: { [key: string]: any } = {};
+        meta.constraints.forEach((arg, i) => {
+            args[`arg${i + 1}`] = arg;
+        });
+        return tr('validations.' + constraint.name, args);
+    }
+    return '';
 }

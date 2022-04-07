@@ -7,10 +7,6 @@ namespace API {
  */
 
 export interface paths {
-  "/api/forgot-password": {
-    /** Forgot password request for a restore link */
-    post: operations["authForgotPassword"];
-  };
   "/api/login": {
     /** Login by email, password */
     post: operations["authLogin"];
@@ -19,32 +15,16 @@ export interface paths {
     /** Logout user current token */
     get: operations["authLogout"];
   };
-  "/api/register": {
-    /** Register user by name, email, password */
-    post: operations["authRegister"];
-  };
   "/api/collect-point": {
     get: operations["getCollectionPoint"];
     post: operations["createCollectionPoint"];
+    patch: operations["updateCollectionPoint"];
   };
   "/api/collect-point/my": {
     get: operations["getCollectionPointsMy"];
   };
-  "/api/collect-point/{collectPointId}": {
-    get: operations["queryCollectionPoint"];
-    delete: operations["deleteCollectionPoint"];
-    patch: operations["updateCollectionPoint"];
-  };
   "/api/item-category": {
     get: operations["getItemCategories"];
-    put: operations["createItemCategory"];
-  };
-  "/api/item-category/{item_category_id}": {
-    get: operations["getItemCategoryDetails"];
-  };
-  "/api/item-category/{itemCategoryId}": {
-    delete: operations["deleteItemCategory"];
-    patch: operations["updateItemCategory"];
   };
 }
 
@@ -57,30 +37,35 @@ export interface components {
        */
       id?: number;
       /**
-       * User id
-       * @example 1
+       * Is enabled current collect point
+       * @example true
        */
-      user_id?: number;
+      enabled?: boolean;
       /**
        * Collect point name
        * @example Space Meduza
        */
-      name?: unknown;
+      name?: string;
       /**
        * Collect point contact phone number
        * @example +491767890123
        */
-      phone?: unknown;
+      phone?: string;
       /**
        * Collect point telegram account
        * @example @jax21ukr
        */
-      telegram?: unknown;
+      telegram?: string;
+      /**
+       * Collect point instagram account
+       * @example @insta
+       */
+      instagram?: string;
       /**
        * Collect point logo image
        * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
        */
-      image?: unknown;
+      image?: string;
       location?: {
         /** @example Skalitzer Straße 80, 10990 Berlin */
         address?: string;
@@ -98,12 +83,10 @@ export interface components {
       needed_items?: {
         /** @example 2 */
         item_category_id?: number;
-      }[];
-      available_items?: {
-        /** @example 2 */
-        item_category_id?: number;
-        /** @example 10 */
-        quantity?: number;
+        /** @example University */
+        item_category_name?: string;
+        /** @example 🔦 */
+        item_category_icon?: string;
       }[];
       /**
        * Format: date-time
@@ -123,20 +106,20 @@ export interface components {
        */
       id?: number;
       /**
+       * Parent Id
+       * @example 1
+       */
+      item_category_id?: number;
+      /**
        * Username
        * @example food
        */
-      name?: unknown;
+      name?: string;
       /**
-       * Format: date-time
-       * @example 2022-03-09T10:01:17.000000Z
+       * icon
+       * @example 🔦
        */
-      updated_at?: string;
-      /**
-       * Format: date-time
-       * @example 2022-03-09T10:01:17.000000Z
-       */
-      created_at?: string;
+      icon?: string;
     };
     User: {
       /**
@@ -148,7 +131,7 @@ export interface components {
        * Username
        * @example James Joseph Brown
        */
-      name?: unknown;
+      name?: string;
       /**
        * User email
        * @example james.j.b@gmail.com
@@ -169,40 +152,6 @@ export interface components {
 }
 
 export interface operations {
-  /** Forgot password request for a restore link */
-  authForgotPassword: {
-    responses: {
-      /** Restore password link send successful via email */
-      202: {
-        content: {
-          "application/json": unknown;
-        };
-      };
-      /** Unprocessable Content */
-      422: {
-        content: {
-          "application/json": {
-            /** @example The email field is required. */
-            message?: string;
-          };
-        };
-      };
-      /** Too Many Requests */
-      429: unknown;
-    };
-    /** Forgot password request for a restore link */
-    requestBody: {
-      content: {
-        "application/json": {
-          /**
-           * Format: email
-           * @example james.j.b@gmail.com
-           */
-          email: string;
-        };
-      };
-    };
-  };
   /** Login by email, password */
   authLogin: {
     responses: {
@@ -240,16 +189,10 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
-          /**
-           * Format: email
-           * @example user1@mail.com
-           */
-          email: string;
-          /**
-           * Format: password
-           * @example PassWord12345
-           */
-          password: string;
+          /** @example ya29.A0ARrdaM-Oj2yWacijuQ5L3dH6tJcIkpjjZ4XRC18J82zAZjmOCHsYh9ExipfVLXt-p4iRvjaBTsCPm-Y5RE2F-ztkqec08juCUktRdRl6D9dWg9CB7kJl8GrhvGMZaIOICZdNJwtHjoXSW6IivTSF5AW53TT3 */
+          token: string;
+          /** @example google */
+          name: string;
         };
       };
     };
@@ -263,65 +206,11 @@ export interface operations {
       429: unknown;
     };
   };
-  /** Register user by name, email, password */
-  authRegister: {
-    responses: {
-      /** Successful user registered */
-      201: {
-        content: {
-          "application/json": {
-            /** @example 4|YgqDFR0oCsABfkMES8e65OTVBacZ5fHNnsPFRTMc */
-            token?: string;
-          };
-        };
-      };
-      /** Unprocessable Content */
-      422: {
-        content: {
-          "application/json": {
-            /** @example The email field is required. */
-            message?: string;
-          };
-        };
-      };
-      /** Too Many Requests */
-      429: unknown;
-    };
-    /** Register user details */
-    requestBody: {
-      content: {
-        "application/json": {
-          /**
-           * Format: string
-           * @example James Joseph Brown
-           */
-          name: string;
-          /**
-           * Format: email
-           * @example james.j.b@gmail.com
-           */
-          email: string;
-          /**
-           * Format: password
-           * @example PassWord12345
-           */
-          password: string;
-          /**
-           * Format: password
-           * @example PassWord12345
-           */
-          password_confirmation?: string;
-        };
-      };
-    };
-  };
   getCollectionPoint: {
     parameters: {
       query: {
         /** Filter collect points by coordinate pair 1 - is the upper left corner, coordinate pair 2 - is the lower right corner */
         bbox?: unknown;
-        /** Filter collect points by items category id */
-        itemsAvailable?: unknown;
       };
     };
     responses: {
@@ -331,8 +220,6 @@ export interface operations {
           "application/json": components["schemas"]["CollectPoint"][];
         };
       };
-      /** Unauthenticated */
-      401: unknown;
       /** Too Many Requests */
       429: unknown;
     };
@@ -356,32 +243,28 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
+          /** @example true */
+          enabled?: boolean;
           /** @example Space Meduza */
           name: string;
           /**
            * Collect point contact phone number
            * @example +491767890123
            */
-          phone?: unknown;
+          phone?: string;
           /**
            * Collect point telegram account
            * @example @jax21ukr
            */
-          telegram?: unknown;
+          telegram?: string;
           /**
            * Collect point logo image
            * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
            */
-          image?: unknown;
+          image?: string;
           needed_items?: {
             /** @example 2 */
             item_category_id?: number;
-          }[];
-          available_items?: {
-            /** @example 2 */
-            item_category_id?: number;
-            /** @example 10 */
-            quantity?: number;
           }[];
           location: {
             /** @example Skalitzer Straße 80, 10990 Berlin */
@@ -401,63 +284,7 @@ export interface operations {
       };
     };
   };
-  getCollectionPointsMy: {
-    responses: {
-      /** Successful operation */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CollectPoint"][];
-        };
-      };
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
-  queryCollectionPoint: {
-    parameters: {
-      path: {
-        /** ID collect point */
-        collectPointId: number;
-      };
-    };
-    responses: {
-      /** Successful operation */
-      200: {
-        content: {
-          "application/json": components["schemas"]["CollectPoint"];
-        };
-      };
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
-  deleteCollectionPoint: {
-    parameters: {
-      path: {
-        /** ID collect point */
-        collectPointId: number;
-      };
-    };
-    responses: {
-      /** Successful operation */
-      204: never;
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
   updateCollectionPoint: {
-    parameters: {
-      path: {
-        /** ID collect point */
-        collectPointId: number;
-      };
-    };
     responses: {
       /** Successful operation */
       200: {
@@ -474,23 +301,25 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
+          /** @example true */
+          enabled?: boolean;
           /** @example new name */
           name: string;
           /**
            * Collect point contact phone number
            * @example +491767890123
            */
-          phone?: unknown;
+          phone?: string;
           /**
            * Collect point telegram account
            * @example @jax21ukr
            */
-          telegram?: unknown;
+          telegram?: string;
           /**
            * Collect point logo image
            * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
            */
-          image?: unknown;
+          image?: string;
           location: {
             /** @example new address */
             address: string;
@@ -509,14 +338,22 @@ export interface operations {
             /** @example 2 */
             item_category_id?: number;
           }[];
-          available_items?: {
-            /** @example 2 */
-            item_category_id?: number;
-            /** @example 10 */
-            quantity?: number;
-          }[];
         };
       };
+    };
+  };
+  getCollectionPointsMy: {
+    responses: {
+      /** Successful operation */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CollectPoint"][];
+        };
+      };
+      /** Unauthenticated */
+      401: unknown;
+      /** Too Many Requests */
+      429: unknown;
     };
   };
   getItemCategories: {
@@ -525,90 +362,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["ItemCategory"][];
-        };
-      };
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
-  createItemCategory: {
-    responses: {
-      /** Successful operation */
-      201: {
-        content: {
-          "application/json": components["schemas"]["ItemCategory"];
-        };
-      };
-      /** Unauthenticated */
-      401: unknown;
-      /** Unprocessable Entity */
-      422: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-    /** Input data format */
-    requestBody: {
-      content: {
-        "application/json": {
-          /** @example food */
-          name: string;
-        };
-      };
-    };
-  };
-  getItemCategoryDetails: {
-    parameters: {
-      path: {
-        /** ID item category */
-        item_category_id: number;
-      };
-    };
-    responses: {
-      /** Successful operation */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemCategory"];
-        };
-      };
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
-  deleteItemCategory: {
-    parameters: {
-      path: {
-        /** ID item category */
-        item_category_id: number;
-      };
-    };
-    responses: {
-      /** Successful operation */
-      204: never;
-      /** Unauthenticated */
-      401: unknown;
-      /** Too Many Requests */
-      429: unknown;
-    };
-  };
-  updateItemCategory: {
-    parameters: {
-      path: {
-        /** ID item category */
-        item_category_id: number;
-      };
-      query: {
-        name: string;
-      };
-    };
-    responses: {
-      /** Successful operation */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ItemCategory"];
         };
       };
       /** Unauthenticated */

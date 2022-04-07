@@ -1,13 +1,22 @@
-import PinIcon from '@mui/icons-material/GpsFixedOutlined';
-import { IconButton, TextField } from '@mui/material';
+import PinIcon from '@mui/icons-material/FilterAlt';
+import { CircularProgress, IconButton, TextField } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { app } from '~/services/app';
+import { DontationPointsService } from '~/services/donationpoints.service';
 
-const CollectionSearch = () => {
+const CollectionSearch = observer(() => {
+    const ptsvc = app.get(DontationPointsService);
+
     return (
         <TextField
             fullWidth
-            placeholder="Search location..."
+            onChange={ptsvc.setFilter}
+            value={ptsvc.filter}
+            placeholder="Find donation point"
             InputProps={{
-                startAdornment: (
+                startAdornment: ptsvc.loading ? (
+                    <CircularProgress sx={{ mr: 2 }} size={32} color="secondary" />
+                ) : (
                     <IconButton>
                         <PinIcon color="secondary" />
                     </IconButton>
@@ -15,6 +24,6 @@ const CollectionSearch = () => {
             }}
         />
     );
-};
+});
 
 export default CollectionSearch;

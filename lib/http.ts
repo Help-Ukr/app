@@ -1,3 +1,4 @@
+import Log from '@uk/log';
 import * as queryString from 'query-string';
 import { O } from 'ts-toolbelt';
 
@@ -23,49 +24,43 @@ export type HttpMiddleware<T> = (req: Request, originPath: keyof T) => Promise<a
 
 export class HttpService<T extends ApiDescription<T>> {
     readonly middlewares = new Set<HttpMiddleware<T>>();
+    token?: string | null;
 
-    constructor(private opts: { backendUrl: string }) {}
+    constructor(private opts: { backendUrl: string; credentials?: RequestCredentials; token?: string | null }) {
+        this.token = opts.token;
+    }
 
     async post<U extends O.SelectKeys<T, { post: any }>, TPost extends T[U]['post'] = T[U]['post']>(
         path: U,
         args: ConvertArgs<TPost>,
     ): Promise<ConvertResponse<Exclude<TPost, undefined>['responses']>> {
-        console.log('POST', { path, args });
-        const arg = args as any;
-        const req = new Request(this.getBackendUrl(path, args), {
-            body: arg.body ? JSON.stringify(arg.body) : undefined,
-            method: 'POST',
-            headers: arg.body ? new Headers({ 'content-type': 'application/json' }) : undefined,
-            credentials: 'include',
-        });
-        return await this.call(req, path);
+        return await this.call(this.makeRequest(path, args, { method: 'POST' }), path);
     }
 
     async put<U extends O.SelectKeys<T, { put: any }>, TPost extends T[U]['put'] = T[U]['put']>(
         path: U,
         args: ConvertArgs<TPost>,
     ): Promise<ConvertResponse<Exclude<TPost, undefined>['responses']>> {
-        console.log('PUT', { path, args });
-        const arg = args as any;
-        const req = new Request(this.getBackendUrl(path, args), {
-            body: arg.body ? JSON.stringify(arg.body) : undefined,
-            method: 'PUT',
-            headers: arg.body ? new Headers({ 'content-type': 'application/json' }) : undefined,
-            credentials: 'include',
-        });
-        return await this.call(req, path);
+        return await this.call(this.makeRequest(path, args, { method: 'PUT' }), path);
     }
 
     async get<U extends O.SelectKeys<T, { get: any }>, TGet extends T[U]['get'] = T[U]['get']>(
         path: U,
         args: ConvertArgs<TGet>,
     ): Promise<ConvertResponse<Exclude<TGet, undefined>['responses']>> {
-        console.log('GET', { path });
-        const req = new Request(this.getBackendUrl(path, args), {
-            method: 'GET',
-            credentials: 'include',
+        return await this.call(this.makeRequest(path, args, { method: 'GET' }), path);
+    }
+
+    protected makeRequest(path: string, args: any, init: RequestInit) {
+        const headers = new Headers(init.headers);
+        if (this.token) headers.set('authorization', this.token);
+        if (typeof args.body === 'object') headers.set('content-type', 'application/json');
+        return new Request(this.getBackendUrl(path, args), {
+            body: args.body ? JSON.stringify(args.body) : undefined,
+            credentials: this.opts.credentials,
+            ...init,
+            headers,
         });
-        return await this.call(req, path);
     }
 
     protected getBackendUrl(path: string, args: { query?: any; params?: any }) {
@@ -95,25 +90,31 @@ export class HttpService<T extends ApiDescription<T>> {
     }
 
     protected async call(req: Request, originPath: keyof T) {
-        for (const m of this.middlewares) {
-            await m(req, originPath);
-        }
-        const resp = await fetch(req);
-        const contType = resp.headers.get('content-type') ?? '*/*';
-        let rv;
-        const isJson = contType === 'application/json';
-        if (isJson) {
-            rv = await resp.json();
-        } else {
-            rv = await resp.text();
-        }
-        if (resp.status >= 400) {
-            throw new HttpError(resp.status, rv);
-        } else {
-            const value = isJson ? rv : { [contType]: rv };
-            return resp.status === 200 ? value : { [resp.status]: value };
-        }
+        return await this.log.try(req.method, async p => {
+            p.finally({ url: req.url, body: req.body });
+            for (const m of this.middlewares) {
+                await m(req, originPath);
+            }
+            const resp = await fetch(req);
+            const contType = resp.headers.get('content-type') ?? '*/*';
+            let rv;
+            const isJson = contType === 'application/json';
+            if (isJson) {
+                rv = await resp.json();
+            } else {
+                rv = await resp.text();
+            }
+            p.finally({ rv });
+            if (resp.status >= 400) {
+                throw new HttpError(resp.status, rv);
+            } else {
+                const value = isJson ? rv : { [contType]: rv };
+                return resp.status === 200 ? value : { [resp.status]: value };
+            }
+        });
     }
+
+    private log = new Log('HTTP');
 }
 
 export class HttpError extends Error {

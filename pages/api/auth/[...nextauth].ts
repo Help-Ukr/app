@@ -1,11 +1,15 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { app } from '~/services/app';
+import { EnvService } from '~/services/env.service';
+
+const env = app.get(EnvService);
 
 export default NextAuth({
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_ID || '',
-            clientSecret: process.env.GOOGLE_SECRET || '',
+            clientId: env.GOOGLE_ID,
+            clientSecret: env.GOOGLE_SECRET,
             authorization: {
                 params: {
                     prompt: 'consent',
@@ -15,7 +19,7 @@ export default NextAuth({
             },
         }),
     ],
-    secret: process.env.AUTH_SECRET || '',
+    secret: env.AUTH_SECRET,
     callbacks: {
         jwt: ({ token, account }) => {
             if (account?.access_token) {

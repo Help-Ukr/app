@@ -10,7 +10,7 @@ export default function LangMenu() {
 
     return (
         <>
-            <Button ref={anchor} color="secondary" variant="text" onClick={toggleMenu}>
+            <Button ref={anchor} color="secondary" variant="text" onClick={toggleMenu} sx={{ mr: 1 }}>
                 {i18n.language.toUpperCase()}
             </Button>
             <Menu keepMounted anchorEl={anchor.current} open={menuOpen} onClose={toggleMenu}>

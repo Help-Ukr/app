@@ -7,6 +7,6 @@ import { EnvService } from './env.service';
 @Service()
 export class ApiService extends HttpService<API.paths> {
     constructor(env: EnvService) {
-        super({ backendUrl: env.BACKEND_URL });
+        super({ backendUrl: env.NEXT_PUBLIC_BACKEND_URL, token: env.NEXT_PUBLIC_DEV_TOKEN });
     }
 }

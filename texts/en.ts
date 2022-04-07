@@ -14,4 +14,7 @@ export const en = {
         '/donate': 'Donate',
         '/transport': 'Transport',
     },
+    map: {
+        itsyou: 'You are here',
+    },
 };

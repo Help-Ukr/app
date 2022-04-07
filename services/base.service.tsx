@@ -1,3 +1,4 @@
+import Log from '@uk/log';
 import { action, computed, CreateObservableOptions, IObservableArray, makeObservable, observable } from 'mobx';
 import React from 'react';
 import { O } from 'ts-toolbelt';
@@ -10,10 +11,18 @@ function getContext(ctor: any) {
 }
 
 export abstract class BaseService {
+    protected readonly log;
+
     constructor() {
         const ctor = this.constructor;
-        if (singlestones.has(ctor)) throw new Error('Duplicate service created: ' + ctor.name);
+        if (singlestones.has(ctor)) {
+            console.error('Duplicate service created: ' + ctor.name);
+        }
         singlestones.add(ctor);
+        this.log =
+            process.env.NODE_ENV === 'production'
+                ? Log.dummy()
+                : new Log(ctor.name.replace(/Service$/, '').toUpperCase());
     }
 
     static useState<T extends { new (...args: any[]): BaseService }>(this: T): Readonly<InstanceType<T>> {
@@ -63,6 +72,10 @@ export abstract class AsyncService extends BaseService {
     }
 
     protected async(req: () => Promise<any>) {
+        if (this.asyncState === 'loading') {
+            this.log.warn('Async operation already in progress');
+            return;
+        }
         this.setAsyncState('loading');
         return req().then(
             resp => {

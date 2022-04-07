@@ -25,6 +25,6 @@
             "@cmts/*": ["./components/*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "view/ComingSoon"],
     "exclude": ["node_modules"]
 }

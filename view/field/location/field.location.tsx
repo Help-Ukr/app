@@ -9,10 +9,10 @@ import { app } from '~/services/app';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
 import { useTrAny, validationTr } from '~/texts';
 
-const FieldLocationMap = dynamic(() => import('./FieldLocationMap'), { ssr: false });
+const FieldLocationMap = dynamic(() => import('./field.location.map'), { ssr: false });
 
 export type FieldLocationValue = { address: string; lat: number; lng: number };
-export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
+export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
         const [tr] = useTrAny('form');
         const locationSvc = app.get(SearchLocationService);

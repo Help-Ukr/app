@@ -56,8 +56,7 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
             f?.setValidation();
             this.data[fName] = f?.value;
         }
-        // const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
-        const errors = validateSync(this.data);
+        const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
         if (errors.length) {
             console.error('handleSubmit', { errors, data: toJS(this.data) });
             errors.forEach(error => {
@@ -79,8 +78,8 @@ export namespace MobXForm {
     export interface InputProps<T = any> {
         readonly name: string;
         readonly label: string;
-        readonly value: T;
         readonly error: boolean;
+        readonly value: T;
         readonly validation?: ValidationError;
         readonly onChange: (value: T) => void;
     }

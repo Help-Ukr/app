@@ -1,4 +1,6 @@
+import { Exclude } from 'class-transformer';
 import {
+    IsBoolean,
     IsLatitude,
     IsLongitude,
     IsOptional,
@@ -6,7 +8,7 @@ import {
     Length,
     MaxLength,
     MinLength,
-    ValidateNested,
+    ValidateNested
 } from 'class-validator';
 
 class LocationDto {
@@ -20,12 +22,16 @@ class LocationDto {
     @IsLongitude()
     lng: number = 0;
 }
+
 class ImageDto {
     dataUrl?: string;
     file?: File;
 }
 
 export class CollectinPointDto {
+    @IsBoolean()
+    enabled: boolean = false;
+
     @Length(3, 64)
     orgName: string = '';
 
@@ -44,5 +50,6 @@ export class CollectinPointDto {
     };
 
     @ValidateNested()
-    image?: ImageDto = {};
+    @Exclude()
+    image?: ImageDto;
 }

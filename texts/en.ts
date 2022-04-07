@@ -21,6 +21,7 @@ export const en = {
     },
     form: {
         CollectinPointDto: {
+            enabled: 'Enabled',
             location: 'Address',
             orgName: 'Point name',
             phone: 'Phone number',

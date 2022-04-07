@@ -1,6 +1,7 @@
 import { Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { observer } from 'mobx-react-lite';
 import { CSSProperties, FC, useEffect, useMemo, useRef } from 'react';
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';

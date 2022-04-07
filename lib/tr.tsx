@@ -30,7 +30,7 @@ export function TrFactory<R extends Resource, L extends StrKey<R>>(resources: R,
         return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
     };
 
-    return { useTr: useTranslation as UseTr<R[L]>, TrProvider };
+    return { useTr: useTranslation as UseTr<R[L]>, TrProvider, useTrAny: useTranslation };
 }
 
 export function validationTr(tr: TrFunc<any>, error?: ValidationError) {

@@ -48,3 +48,8 @@ a {
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    color: #fff !important;
+    background-color: #373737 !important;
+}

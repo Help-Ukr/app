@@ -7,14 +7,14 @@ import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { MobXForm } from '~/lib/form';
 import { app } from '~/services/app';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
-import { useTr, validationTr } from '~/texts';
+import { useTrAny, validationTr } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./FieldLocationMap'), { ssr: false });
 
 export type FieldLocationValue = { address: string; lat: number; lng: number };
 export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
-        const [tr] = useTr('form');
+        const [tr] = useTrAny('form');
         const locationSvc = app.get(SearchLocationService);
         const [showMap, setShowMap] = useState(false);
 
@@ -33,7 +33,7 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
             (params: AutocompleteRenderInputParams) => (
                 <TextField
                     {...params}
-                    label={tr(formField.label as any)}
+                    label={tr(formField.label)}
                     helperText={validationTr(
                         tr,
                         formField.validation?.children?.find(err => err.property === 'address'),

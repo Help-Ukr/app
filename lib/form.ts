@@ -3,8 +3,9 @@ import { validateSync, ValidationError } from 'class-validator';
 import { action, makeObservable, observable, toJS } from 'mobx';
 import { O } from 'ts-toolbelt';
 
-export class MobXFormField<T extends new (...any: any) => any, Dto extends InstanceType<T>> {
-    constructor(private dto: Dto, public name: keyof T) {
+type DtoClass = new (...args: any[]) => any;
+export class MobXFormField<T extends DtoClass> {
+    constructor(private dto: T, public name: keyof T) {
         this.value = dto[name];
         makeObservable(this);
     }
@@ -32,11 +33,11 @@ export class MobXFormField<T extends new (...any: any) => any, Dto extends Insta
     }
 }
 
-export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceType<T>> {
-    protected readonly fields = new Map<keyof T, MobXFormField<T, Dto>>();
-    protected readonly data = plainToClass(this.Dto, {}, { enableImplicitConversion: true });
+export class MobXForm<T extends DtoClass, Dto = InstanceType<T>> {
+    protected readonly fields = new Map<keyof Dto, MobXFormField<T>>();
+    protected readonly data = plainToClass(this.Dto, this.props?.initialData || {}, { enableImplicitConversion: true });
 
-    constructor(protected Dto: T, private props?: { onSubmit: (data: Dto) => void }) {
+    constructor(protected Dto: T, private props?: { initialData?: Partial<Dto>; onSubmit?: (data: Dto) => void }) {
         for (const f in this.data) {
             this.fields.set(f as any, new MobXFormField(this.data, f as any));
         }
@@ -66,13 +67,13 @@ export class MobXForm<T extends new (...any: any) => any, Dto extends InstanceTy
             return;
         } else {
             console.info('handleSubmit', { errors, data: toJS(this.data) });
-            this.props?.onSubmit(this.data);
+            this.props?.onSubmit?.(this.data);
         }
     };
 }
 
 export namespace MobXForm {
-    export type FieldData<T = {}> = {
+    export type FieldData<T extends InstanceType<DtoClass>> = {
         [P in keyof T]-?: InputProps<T[P]>;
     };
     export interface InputProps<T = any> {

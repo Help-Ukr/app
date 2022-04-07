@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import {
     IsBoolean,
+    IsInt,
     IsLatitude,
     IsLongitude,
     IsOptional,
@@ -14,13 +15,13 @@ import {
 class LocationDto {
     @MinLength(3)
     @MaxLength(512)
-    address: string = '';
+    address!: string;
 
     @IsLatitude()
-    lat: number = 0;
+    latitude!: number;
 
     @IsLongitude()
-    lng: number = 0;
+    longitude!: number;
 }
 
 class ImageDto {
@@ -28,28 +29,36 @@ class ImageDto {
     file?: File;
 }
 
+class NeededItemsDto {
+    @IsInt()
+    id!: number;
+}
 export class CollectinPointDto {
     @IsBoolean()
     enabled: boolean = false;
 
     @Length(3, 64)
-    orgName: string = '';
+    name: string = '';
+
+    @ValidateNested()
+    location!: LocationDto;
 
     @IsPhoneNumber('UA') // TODO: UA
     phone: string = '';
 
-    @Length(3, 64)
+    @Length(0, 64)
     @IsOptional()
     telegram?: string;
 
-    @ValidateNested()
-    location: LocationDto = {
-        address: '',
-        lat: 0,
-        lng: 0,
-    };
+    @Length(0, 64)
+    @IsOptional()
+    instagram?: string;
 
     @ValidateNested()
+    @IsOptional()
     @Exclude()
-    image?: ImageDto;
+    imageFile?: ImageDto;
+
+    @ValidateNested({ each: true })
+    items: NeededItemsDto[] = [];
 }

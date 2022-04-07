@@ -17,17 +17,21 @@ export const uk = {
     collect: {
         tabGeneral: 'Інформація',
         tabItems: 'Речі',
+        creatingPoint: 'Створення нового пункту збору',
     },
     form: {
         CollectinPointDto: {
+            enabled: 'Увімкнути',
             location: 'Адреса',
-            orgName: 'Назва точки',
+            name: 'Назва точки',
             phone: 'Номер телефону',
-            telegram: 'Посилання на телеграму',
+            telegram: 'Посилання на телеграм',
+            instagram: 'Посилання на інстаграм',
         },
 
         infoLatLng: '(широта: {{lat}}, довгота: {{lon}})',
         noOptions: 'Немає параметрів',
+        save: 'Зберегти',
 
         validations: {
             isInt: 'Введіть ціле число',

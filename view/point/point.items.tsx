@@ -8,15 +8,18 @@ import {
     ListItemAvatar,
     ListItemSecondaryAction,
     ListItemText,
-    Switch,
+    Switch
 } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { FC } from 'react';
 import { app } from '~/services/app';
 import { CollectItem, CollectItemsService } from '~/services/collectitems.service';
+import { CollectinPointForm } from '~/view/point/point.manage';
+import { PointGeneralFormSave } from './point.general';
 
-const ManageItems = observer(() => {
+export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
     const cisSvc = app.get(CollectItemsService);
+    cisSvc.use();
     return (
         <Container maxWidth="md" sx={{ mt: 4 }}>
             <List>
@@ -24,6 +27,7 @@ const ManageItems = observer(() => {
                     <RenderListItem key={item.id} item={item} cisSvc={cisSvc} />
                 ))}
             </List>
+            <PointGeneralFormSave form={form} />
         </Container>
     );
 });
@@ -56,5 +60,3 @@ const RenderListItem: FC<{ item: CollectItem; cisSvc: Readonly<CollectItemsServi
         );
     },
 );
-
-export default ManageItems;

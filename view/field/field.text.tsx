@@ -12,6 +12,7 @@ export const FieldText: FC<
         <TextField
             fullWidth
             {...formField}
+            value={formField.value || ''}
             label={tr(formField.label as any)}
             helperText={validationTr(tr, formField.validation)}
             onChange={e => formField.onChange(e.target.value)}

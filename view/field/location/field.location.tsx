@@ -11,7 +11,7 @@ import { useTrAny, validationTr } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./field.location.map'), { ssr: false });
 
-export type FieldLocationValue = { address: string; lat: number; lng: number };
+export type FieldLocationValue = { address: string; latitude: number; longitude: number };
 export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
         const [tr] = useTrAny('form');
@@ -22,10 +22,10 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
 
         useEffect(() => {
             if (locationSvc.location) {
-                const { display_name, lat, lng } = locationSvc.location;
-                formField.onChange?.({ address: display_name, lat, lng });
+                const { display_name, latitude, longitude } = locationSvc.location;
+                formField.onChange?.({ address: display_name, latitude, longitude });
             } else {
-                formField.onChange?.({ address: '', lat: 0, lng: 0 });
+                formField.onChange?.({ address: '', latitude: 0, longitude: 0 });
             }
         }, [formField, locationSvc.defaultMapLocation, locationSvc.location]);
 

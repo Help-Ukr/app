@@ -18,14 +18,18 @@ export const en = {
     collect: {
         tabGeneral: 'General',
         tabItems: 'Needed items',
+        creatingPoint: 'Creating a new collection point',
+        defaultBgImageUrl:
+            'https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920',
     },
     form: {
         CollectinPointDto: {
-            enabled: 'Enabled',
+            enabled: 'Enable',
             location: 'Address',
-            orgName: 'Point name',
+            name: 'Point name',
             phone: 'Phone number',
             telegram: 'Telegram link',
+            instagram: 'Instagram link',
         },
 
         infoLatLng: '(Latitude: {{lat}}, Longitude: {{lon}})',

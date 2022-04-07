@@ -6,7 +6,6 @@ import { SxProps } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -53,22 +52,20 @@ const HeaderAppBar = () => {
 
     return (
         <AppBar position="sticky">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Logo sx={{ display: { xs: 'none', md: 'block' } }} />
-                    <NavMenu pages={pages} />
-                    {/* <Logo sx={{ display: { xs: 'flex', md: 'none', flexGrow: '1' } }} /> */}
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map(page => (
-                            <Link key={page.href} href={page.href} passHref>
-                                <Button color="secondary">{tr(page.href)}</Button>
-                            </Link>
-                        ))}
-                    </Box>
-                    <LangMenu />
-                    <UserMenu />
-                </Toolbar>
-            </Container>
+            <Toolbar>
+                <Logo sx={{ display: { xs: 'none', md: 'block' } }} />
+                <NavMenu pages={pages} />
+                {/* <Logo sx={{ display: { xs: 'flex', md: 'none', flexGrow: '1' } }} /> */}
+                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    {pages.map(page => (
+                        <Link key={page.href} href={page.href} passHref>
+                            <Button color="secondary">{tr(page.href)}</Button>
+                        </Link>
+                    ))}
+                </Box>
+                <LangMenu />
+                <UserMenu />
+            </Toolbar>
         </AppBar>
     );
 };

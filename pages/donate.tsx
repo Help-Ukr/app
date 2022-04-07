@@ -2,13 +2,13 @@ import PageLayout from '@cmts/PageLayout';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 
-const MapDynamic = dynamic(() => import('~/components/Map'), { ssr: false });
-const MapSidebar = dynamic(() => import('~/components/Map/MapSidebar'), { ssr: false });
+const Map = dynamic(() => import('~/view/map/map'), { ssr: false });
+const MapSidebar = dynamic(() => import('~/view/map/sidebar/map.sidebar'), { ssr: false });
 
 const Donate: NextPage = () => {
     return (
         <PageLayout>
-            <MapDynamic />
+            <Map />
             <MapSidebar />
         </PageLayout>
     );

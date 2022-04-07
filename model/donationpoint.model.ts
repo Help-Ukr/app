@@ -1,13 +1,11 @@
 import { getDistance } from 'geolib';
 import { computed, makeObservable } from 'mobx';
-import { O } from 'ts-toolbelt';
-import { Key } from 'ts-toolbelt/out/Any/Key';
 import { app } from '~/services/app';
 import { LocationService } from '~/services/location.service';
 import { BaseModel } from './base.model';
 
-export class DonationPoint extends BaseModel.factory<O.Required<API.CollectPoint, Key, 'deep'>>() {
-    constructor(data: O.Required<API.CollectPoint, Key, 'deep'>) {
+export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
+    constructor(data: API.CollectPoint) {
         super(data);
         makeObservable(this);
     }

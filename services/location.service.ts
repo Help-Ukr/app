@@ -33,7 +33,7 @@ export class LocationService extends AsyncService {
                         },
                         err => {
                             this.log.error('NavigatorGeoError', err);
-                            reject(err);
+                            reject(new Error(err.message));
                         },
                     );
                 }),

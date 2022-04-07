@@ -11,11 +11,11 @@ import { DontationPointsService } from '~/services/donationpoints.service';
 import { LocationService } from '~/services/location.service';
 import { MapService } from '~/services/map.service';
 import { useTr } from '~/texts';
-import { DonationMarker } from './DonationMarker';
+import { DonationPointMarker } from './markers/donation.point.marker';
 
 const styleMap: CSSProperties = { width: '100%', height: '100%', position: 'fixed', top: 0, left: 0, zIndex: 0 };
 
-const Map = observer(() => {
+export const Map = observer(() => {
     const ptsvc = app.get(DontationPointsService).use();
     const map = app.get(MapService);
     const location = app.get(LocationService).use();
@@ -47,7 +47,7 @@ const Map = observer(() => {
                     />
                 )}
                 {ptsvc.filtered.map(pt => (
-                    <DonationMarker key={pt.id} pt={pt} />
+                    <DonationPointMarker key={pt.id} pt={pt} />
                 ))}
                 {location.position && (
                     <Marker position={[location.position.lat, location.position.lng]} icon={userMarkerIcon}>
@@ -59,13 +59,18 @@ const Map = observer(() => {
                 color={location.error ? 'error' : 'primary'}
                 size="small"
                 aria-label="locate"
-                sx={{ position: 'fixed', right: 8, bottom: 128, zIndex: 100 }}
+                sx={{
+                    position: 'fixed',
+                    right: 8,
+                    bottom: 128,
+                    zIndex: 100,
+                }}
                 onClick={() => {
                     location.refresh();
                     map.center();
                 }}
             >
-                {location.loading ? <LocatingIcon /> : <LocatedIcon />}
+                {location.loading ? <LocatingIcon className="rotate" /> : <LocatedIcon />}
             </Fab>
         </>
     );

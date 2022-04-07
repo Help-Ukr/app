@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
 import { app } from '~/services/app';
+import { AppUIService } from '~/services/appui.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
 
 type Props = {
@@ -12,16 +13,22 @@ type Props = {
 const sxCard: SxProps = {
     flex: '1 0 auto',
     padding: { xs: 1, md: 2 },
+    pointerEvents: 'none',
     ':last-child': { paddingBottom: { xs: 1, md: 2 } },
 };
 
-const CollectionPointCard = observer(({ pt }: Props) => {
+export const DonationPointCard = observer(({ pt }: Props) => {
     const ptsvc = app.get(DontationPointsService);
     const ref = useRef<HTMLDivElement>(null);
+    const appUi = app.get(AppUIService);
 
     useEffect(() => {
-        if (ptsvc.selected === pt) ref.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [ptsvc.selected, pt]);
+        if (ptsvc.selected === pt) {
+            console.log('scroll', !!ref.current);
+
+            ref.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [ptsvc.selected, pt, appUi.donationsSidebarOpen]);
 
     return (
         <Card
@@ -32,8 +39,8 @@ const CollectionPointCard = observer(({ pt }: Props) => {
         >
             <CardMedia
                 component="img"
-                sx={{ width: { xs: 80, md: 120 } }}
-                image={pt.image as string}
+                sx={{ width: { xs: 80, md: 120 }, objectFit: 'scale-down' }}
+                image={pt.image}
                 alt={`Donations from ${pt.name}`}
             />
             <CardContent sx={sxCard}>
@@ -42,7 +49,7 @@ const CollectionPointCard = observer(({ pt }: Props) => {
                     {pt.location.address}
                 </Typography>
                 <Typography sx={{ mt: 1 }} variant="subtitle2">
-                    {pt.needed_items.map(item => item.item_category_icon as string)}
+                    {pt.needed_items.map(item => item.item_category_icon)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {pt.distanceStr}
@@ -51,5 +58,3 @@ const CollectionPointCard = observer(({ pt }: Props) => {
         </Card>
     );
 });
-
-export default CollectionPointCard;

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import Container, { Constructable, Token } from 'typedi';
 import { AbstractConstructable } from 'typedi/types/types/abstract-constructable.type';
 

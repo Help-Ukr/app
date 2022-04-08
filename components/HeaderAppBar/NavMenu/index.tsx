@@ -6,12 +6,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router';
 import { FC, MouseEvent, useState } from 'react';
+import { app } from '~/services/app';
+import { AppUIService } from '~/services/appui.service';
 import { useTr } from '~/texts';
-import { PageLink } from '..';
 
-const NavMenu: FC<{ pages: PageLink[] }> = ({ pages }) => {
+const NavMenu: FC = () => {
     const router = useRouter();
     const [tr] = useTr('routes');
+    const appUi = app.get(AppUIService);
 
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -55,7 +57,7 @@ const NavMenu: FC<{ pages: PageLink[] }> = ({ pages }) => {
                     display: { xs: 'block', md: 'none' },
                 }}
             >
-                {pages.map(page => (
+                {appUi.pages.map(page => (
                     <MenuItem key={page.href} onClick={() => handleCloseNavMenu(page.href)}>
                         <ListItemIcon>
                             <page.Icon color="secondary" />

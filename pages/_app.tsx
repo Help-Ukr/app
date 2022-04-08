@@ -3,7 +3,6 @@ import { configure } from 'mobx';
 import { enableStaticRendering } from 'mobx-react-lite';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import 'reflect-metadata';
 import '~/styles/globals.css';
 import { themeOptions } from '~/styles/theme';
 import { TrProvider } from '~/texts';

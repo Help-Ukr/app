@@ -1,5 +1,6 @@
 import { makeObservable, observable, runInAction } from 'mobx';
 import { useMemo } from 'react';
+import { O } from 'ts-toolbelt';
 import { Service } from 'typedi';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
@@ -28,7 +29,7 @@ export class ColletionPointService extends AsyncService {
         });
     };
 
-    useForm = (initialData?: Partial<CollectinPointDto>) => {
+    useForm = (initialData?: O.Partial<CollectinPointDto, 'deep'>) => {
         return useMemo(
             () =>
                 new MobXForm(CollectinPointDto, {

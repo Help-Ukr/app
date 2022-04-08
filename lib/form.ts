@@ -38,7 +38,13 @@ export class MobXForm<T extends DtoClass, Dto = InstanceType<T>> {
     protected readonly fields = new Map<keyof Dto, MobXFormField<T>>();
     protected readonly data = plainToClass(this.Dto, this.props?.initialData || {}, { enableImplicitConversion: true });
 
-    constructor(protected Dto: T, private props?: { initialData?: Partial<Dto>; onSubmit?: (data: Dto) => void }) {
+    constructor(
+        protected Dto: T,
+        private props?: {
+            initialData?: O.Partial<InstanceType<T>, 'deep'>;
+            onSubmit?: (data: Dto) => void;
+        },
+    ) {
         for (const f in this.data) {
             this.fields.set(f as any, new MobXFormField(this.data, f as any));
         }

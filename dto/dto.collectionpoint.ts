@@ -8,7 +8,7 @@ import {
     Length,
     MaxLength,
     MinLength,
-    ValidateNested,
+    ValidateNested
 } from 'class-validator';
 
 class LocationDto {
@@ -30,7 +30,7 @@ class ImageDto {
 
 class NeededItemsDto {
     @IsInt()
-    item_category_id?: number;
+    item_category_id!: number;
 }
 export class CollectinPointDto {
     @IsBoolean()

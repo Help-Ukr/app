@@ -33,7 +33,7 @@ export const en = {
         instagram: 'Instagram link',
     },
     form: {
-        infoLatLng: '(Latitude: {{latitude}}, Longitude: {{londitude}})' as Tr<{ latitude: number; londitude: number }>,
+        infoLatLng: '(Latitude: {{latitude}}, Longitude: {{longitude}})' as Tr<{ latitude: number; longitude: number }>,
         noOptions: 'No options',
         save: 'Save',
 

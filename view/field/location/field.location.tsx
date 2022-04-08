@@ -23,11 +23,15 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
         locationSvc.use();
 
         useEffect(() => {
+            if (!locationSvc.location && formField.value) {
+                locationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
+            }
+        }, [formField.value, locationSvc]);
+
+        useEffect(() => {
             if (locationSvc.location) {
                 const { display_name, latitude, longitude } = locationSvc.location;
                 formField.onChange?.({ address: display_name, latitude, longitude });
-            } else {
-                formField.onChange?.({ address: '', latitude: 0, longitude: 0 });
             }
         }, [formField, locationSvc.defaultMapLocation, locationSvc.location]);
 

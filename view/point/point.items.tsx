@@ -10,6 +10,7 @@ import {
     ListItemText,
     Switch,
 } from '@mui/material';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { FC, useCallback } from 'react';
 import { app } from '~/services/app';
@@ -37,15 +38,16 @@ const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Reado
         const { items } = item;
         const open = cisSvc.openId === item.id;
         const isCollapsed: boolean = !!items?.length;
-        const values = form.$.needed_items.value;
+        const values = toJS(form.$.needed_items.value);
         const idx = values.findIndex(v => v.item_category_id === item.id);
         const handleChange = useCallback(
             (_, checked: boolean) => {
-                if (checked && idx < 0) values.push({ item_category_id: item.item_category_id });
+                console.log(checked, idx, values);
+                if (checked && idx < 0) values.push({ item_category_id: item.id });
                 else if (idx >= 0) values.splice(idx, 1);
                 form.$.needed_items.onChange(values);
             },
-            [form.$.needed_items, idx, item.item_category_id, values],
+            [form.$.needed_items, idx, item.id, values],
         );
         return (
             <>

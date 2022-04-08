@@ -24,8 +24,6 @@ export const DonationPointCard = observer(({ pt }: Props) => {
 
     useEffect(() => {
         if (ptsvc.selected === pt) {
-            console.log('scroll', !!ref.current);
-
             ref.current?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [ptsvc.selected, pt, appUi.donationsSidebarOpen]);

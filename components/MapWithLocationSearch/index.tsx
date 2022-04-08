@@ -1,7 +1,6 @@
 import PinIcon from '@mui/icons-material/GpsFixedOutlined';
 import { Autocomplete, Box, CircularProgress, IconButton, TextField, Typography } from '@mui/material';
 import { DragEndEvent, Icon } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import React, { ComponentProps, useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMap, ZoomControl } from 'react-leaflet';
 import { extractStreetName, extragWgsPosition, Wgs84Location } from './geo-utils';

@@ -3,7 +3,7 @@ import IconInstagram from '@mui/icons-material/Instagram';
 import IconNavigate from '@mui/icons-material/Navigation';
 import IconShare from '@mui/icons-material/Share';
 import IconTelegram from '@mui/icons-material/Telegram';
-import { Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material';
 import { FC } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
 import { useTr } from '~/texts';
@@ -36,21 +36,31 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: 'center' }}>
-                <IconButton>
-                    <IconPhone />
-                </IconButton>
-                <IconButton>
-                    <IconTelegram />
-                </IconButton>
-                <IconButton>
-                    <IconInstagram />
-                </IconButton>
-                <IconButton>
-                    <IconNavigate />
-                </IconButton>
-                <IconButton>
-                    <IconShare />
-                </IconButton>
+                <Tooltip title="Call here">
+                    <IconButton disabled={!pt.phone} href={pt.phoneLink}>
+                        <IconPhone />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Telegram here">
+                    <IconButton disabled={!pt.telegram} href={pt.telegramLink} target="_blank">
+                        <IconTelegram />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Instagram here">
+                    <IconButton disabled={!pt.instagram} href={pt.instagramLink} target="_blank">
+                        <IconInstagram />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Navigate here">
+                    <IconButton href={pt.navigateLink} target="_blank">
+                        <IconNavigate />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Share this">
+                    <IconButton onClick={pt.share}>
+                        <IconShare />
+                    </IconButton>
+                </Tooltip>
             </CardActions>
         </Card>
     );

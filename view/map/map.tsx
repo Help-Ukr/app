@@ -3,7 +3,6 @@ import LocatedIcon from '@mui/icons-material/MyLocation';
 import IconOpenSidebar from '@mui/icons-material/ShareLocation';
 import { Box } from '@mui/material';
 import Fab from '@mui/material/Fab';
-import 'leaflet/dist/leaflet.css';
 import { observer } from 'mobx-react-lite';
 import { CSSProperties } from 'react';
 import { Circle, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';

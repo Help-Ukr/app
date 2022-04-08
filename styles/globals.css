@@ -1,4 +1,5 @@
 @import url(./fonts/index.css);
+@import 'leaflet/dist/leaflet.css';
 
 html,
 body {
@@ -49,23 +50,27 @@ a {
     background: transparent;
 }
 
+.leaflet-container a {
+    color: unset;
+}
+
 .leaflet-popup {
-    margin-bottom: 25px !important;
+    margin-bottom: 25px;
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-    color: #fff !important;
-    background-color: #373737 !important;
+    color: #fff;
+    background-color: #373737;
 }
 
 .leaflet-bar a {
-    background-color: #3f3f3f !important;
-    color: #ffd500 !important;
+    background-color: #3f3f3f;
+    color: #ffd500;
 }
 
 .leaflet-popup-content {
-    margin: 0 !important;
+    margin: 0;
 }
 
 .rotate {

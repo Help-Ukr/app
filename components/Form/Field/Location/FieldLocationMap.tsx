@@ -24,7 +24,7 @@ const FieldLocationMap: FC<{ locationSvc: Readonly<SearchLocationService> }> = o
             </Box>
             <Box py={1}>
                 <Typography textAlign="center" variant="caption" component="p" sx={{ fontStyle: 'italic' }}>
-                    {tr('infoLatLng', { lat: locationSvc.position.lat, lon: locationSvc.position.lng })}
+                    {tr('infoLatLng', locationSvc.position)}
                 </Typography>
             </Box>
         </>

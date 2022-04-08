@@ -5,9 +5,10 @@ import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
 import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { MobXForm } from '~/lib/form';
+import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
-import { useTrAny, validationTr } from '~/texts';
+import { useTrAny } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./FieldLocationMap'), { ssr: false });
 
@@ -34,7 +35,7 @@ export const FormFieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocatio
                 <TextField
                     {...params}
                     label={tr(formField.label)}
-                    helperText={validationTr(
+                    helperText={Tr.validationTr(
                         tr,
                         formField.validation?.children?.find(err => err.property === 'address'),
                     )}

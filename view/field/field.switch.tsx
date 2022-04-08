@@ -6,7 +6,7 @@ import { useTrAny } from '~/texts';
 
 export const FieldSwitch: FC<{ formField: MobXForm.InputProps<boolean>; switchProps?: SwitchProps }> = observer(
     ({ formField, switchProps }) => {
-        const [tr] = useTrAny('form');
+        const [tr] = useTrAny(formField.dtoname);
         return (
             <FormControlLabel
                 sx={{ justifyContent: 'space-between' }}

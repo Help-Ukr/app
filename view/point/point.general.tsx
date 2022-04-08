@@ -11,6 +11,7 @@ import { FieldSwitch } from '~/view/field/field.switch';
 import { FieldText } from '~/view/field/field.text';
 import { FieldLocation } from '~/view/field/location/field.location';
 import { CollectinPointForm } from '~/view/point/point.manage';
+import { FieldPhone } from '../field/field.phone';
 
 export const PointGeneral: FC<CollectinPointForm> = observer(({ form }) => {
     return (
@@ -18,7 +19,7 @@ export const PointGeneral: FC<CollectinPointForm> = observer(({ form }) => {
             <Box sx={{ pt: 4, pb: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <FieldText formField={form.$.name} />
                 <FieldLocation formField={form.$.location} />
-                <FieldText formField={form.$.phone} type="number" />
+                <FieldPhone formField={form.$.phone} />
                 <FieldText
                     formField={form.$.telegram}
                     InputProps={{

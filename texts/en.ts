@@ -33,11 +33,10 @@ export const en = {
         instagram: 'Instagram link',
     },
     form: {
-        infoLatLng: '(Latitude: {{lat}}, Longitude: {{lng}})' as Tr<{ lat: number; lng: number }>,
+        infoLatLng: '(Latitude: {{latitude}}, Longitude: {{londitude}})' as Tr<{ latitude: number; londitude: number }>,
         noOptions: 'No options',
         save: 'Save',
-    },
-    validations: {
+
         isInt: 'Enter an integer',
         isPhoneNumber: 'Enter phone number in international format ({{arg1}})',
         isLength: 'Minimum field length {{arg1}}, maximum - {{arg2}}',

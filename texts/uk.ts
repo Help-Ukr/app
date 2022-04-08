@@ -28,11 +28,10 @@ export const uk = {
         instagram: 'Посилання на інстаграм',
     },
     form: {
-        infoLatLng: '(широта: {{lat}}, довгота: {{lon}})',
+        infoLatLng: '(широта: {{latitude}}, довгота: {{longitude}})',
         noOptions: 'Немає параметрів',
         save: 'Зберегти',
-    },
-    validations: {
+
         isInt: 'Введіть ціле число',
         isPhoneNumber: 'Введіть номер телефону у міжнародному форматі ({{arg1}})',
         isLength: 'Мінімальна довжина поля {{arg1}}, максимальна - {{arg2}}',

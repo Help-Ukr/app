@@ -5,11 +5,10 @@ import {
     IsLatitude,
     IsLongitude,
     IsOptional,
-    IsPhoneNumber,
     Length,
     MaxLength,
     MinLength,
-    ValidateNested
+    ValidateNested,
 } from 'class-validator';
 
 class LocationDto {
@@ -43,7 +42,7 @@ export class CollectinPointDto {
     @ValidateNested()
     location!: LocationDto;
 
-    @IsPhoneNumber('UA') // TODO: UA
+    @Length(6, 18)
     phone: string = '';
 
     @Length(0, 64)

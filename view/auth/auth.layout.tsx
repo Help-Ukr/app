@@ -11,6 +11,8 @@ export const AuthLayout: FC = ({ children }) => {
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.replace('/signin');
+        } else if (status === 'authenticated' && router.pathname === '/signin') {
+            router.replace('/collect');
         }
     }, [router, status]);
 

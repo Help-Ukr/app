@@ -67,7 +67,7 @@ export namespace Tr {
             meta.constraints.forEach((arg, i) => {
                 args[`arg${i + 1}`] = arg;
             });
-            return tr('validations.' + constraint.name, args);
+            return tr(constraint.name, args);
         }
         return '';
     }

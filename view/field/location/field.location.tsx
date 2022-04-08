@@ -8,14 +8,15 @@ import { MobXForm } from '~/lib/form';
 import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
-import { useTrAny } from '~/texts';
+import { useTr, useTrAny } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./field.location.map'), { ssr: false });
 
 export type FieldLocationValue = { address: string; latitude: number; longitude: number };
 export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
     ({ formField, ...props }) => {
-        const [tr] = useTrAny('form');
+        const [tr] = useTrAny(formField.dtoname);
+        const [trForm] = useTr('form');
         const locationSvc = app.get(SearchLocationService);
         const [showMap, setShowMap] = useState(false);
 
@@ -36,7 +37,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     {...params}
                     label={tr(formField.label)}
                     helperText={Tr.validationTr(
-                        tr,
+                        trForm,
                         formField.validation?.children?.find(err => err.property === 'address'),
                     )}
                     error={formField.error}
@@ -51,7 +52,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     {...props}
                 />
             ),
-            [tr, formField.label, formField.validation?.children, formField.error, props, showMap],
+            [tr, formField.label, formField.validation?.children, formField.error, trForm, props, showMap],
         );
 
         const renderOption = useCallback(
@@ -74,7 +75,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     getOptionLabel={o => o.display_name}
                     renderInput={renderInput}
                     renderOption={renderOption}
-                    noOptionsText={tr('noOptions')}
+                    noOptionsText={trForm('noOptions')}
                 />
                 {showMap && <FieldLocationMap locationSvc={locationSvc} />}
             </Box>

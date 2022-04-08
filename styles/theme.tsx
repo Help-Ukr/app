@@ -18,6 +18,9 @@ export const themeOptions = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: '#3a3a3a',
+                    ':hover': {
+                        backgroundColor: '#6a6a6a',
+                    },
                 },
             },
         },

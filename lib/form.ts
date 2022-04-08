@@ -10,9 +10,10 @@ export class MobXFormField<T extends DtoClass> {
         makeObservable(this);
     }
 
-    @observable readonly label = `${this.dto.constructor.name}.${this.name}`;
-    @observable readonly value: any = undefined;
+    readonly label = this.name;
+    readonly dtoname = this.dto.constructor.name;
 
+    @observable readonly value: any = undefined;
     @observable readonly validation?: ValidationError;
     @observable readonly error: boolean = false;
 
@@ -78,6 +79,7 @@ export namespace MobXForm {
     };
     export interface InputProps<T = any> {
         readonly name: string;
+        readonly dtoname: string;
         readonly label: string;
         readonly error: boolean;
         readonly value: T;

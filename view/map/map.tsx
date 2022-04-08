@@ -66,8 +66,9 @@ export const Map = observer(() => {
                 sx={{
                     position: 'fixed',
                     top: 80,
-                    right: 20,
+                    right: 8,
                     zIndex: 100,
+                    display: { md: 'none' },
                 }}
                 onClick={appUi.openDonationSidebar}
             >

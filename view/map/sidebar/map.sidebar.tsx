@@ -1,7 +1,7 @@
 import { Paper, SwipeableDrawer, SxProps } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
@@ -18,12 +18,12 @@ export const MapSidebar = observer(() => {
     const ptsvc = app.get(DontationPointsService);
     const appUi = app.get(AppUIService);
     const isMobile = appUi.useIsMobile();
-
+    const props = useMemo(() => (isMobile ? { keepMounted: true } : undefined), [isMobile]);
     return (
         <>
             <SwipeableDrawer
+                {...props}
                 anchor="left"
-                keepMounted
                 open={appUi.donationsSidebarOpen}
                 onOpen={appUi.openDonationSidebar}
                 onClose={appUi.closeDonationSidebar}

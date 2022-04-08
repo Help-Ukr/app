@@ -59,6 +59,11 @@ a {
     background-color: #373737 !important;
 }
 
+.leaflet-bar a {
+    background-color: #3f3f3f !important;
+    color: #ffd500 !important;
+}
+
 .leaflet-popup-content {
     margin: 0 !important;
 }

@@ -13,4 +13,13 @@ export const themeOptions = createTheme({
             paper: '#262626',
         },
     },
+    components: {
+        MuiFab: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#3a3a3a',
+                },
+            },
+        },
+    },
 });

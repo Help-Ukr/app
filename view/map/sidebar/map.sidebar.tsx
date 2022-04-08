@@ -1,5 +1,4 @@
-import ShareLocationIcon from '@mui/icons-material/ShareLocation';
-import { IconButton, Paper, SwipeableDrawer, SxProps, useTheme } from '@mui/material';
+import { Paper, SwipeableDrawer, SxProps } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
@@ -16,27 +15,12 @@ const paperSxProps: SxProps = {
 };
 
 export const MapSidebar = observer(() => {
-    const theme = useTheme();
     const ptsvc = app.get(DontationPointsService);
     const appUi = app.get(AppUIService);
     const isMobile = appUi.useIsMobile();
 
     return (
         <>
-            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                <IconButton
-                    sx={{
-                        position: 'absolute',SwipeableDrawer
-                        top: 80,
-                        right: 20,
-                        backgroundColor: theme.palette.primary.main,
-                        ':hover': { backgroundColor: theme.palette.primary.main },
-                    }}
-                    onClick={appUi.openDonationSidebar}
-                >
-                    <ShareLocationIcon color="secondary" />
-                </IconButton>
-            </Box>
             <SwipeableDrawer
                 anchor="left"
                 keepMounted

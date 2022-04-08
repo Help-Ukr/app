@@ -55,17 +55,17 @@ export interface components {
        * Collect point telegram account
        * @example @jax21ukr
        */
-      telegram: string;
+      telegram?: string;
       /**
        * Collect point instagram account
        * @example @insta
        */
-      instagram: string;
+      instagram?: string;
       /**
        * Collect point logo image
        * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
        */
-      image: string;
+      image?: string;
       location: {
         /** @example Skalitzer Straße 80, 10990 Berlin */
         address: string;
@@ -231,13 +231,18 @@ export interface operations {
            */
           telegram?: string;
           /**
+           * Collect point instagram account
+           * @example @insta
+           */
+          instagram?: string;
+          /**
            * Collect point logo image
            * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
            */
           image?: string;
           needed_items?: {
             /** @example 2 */
-            item_category_id?: number;
+            item_category_id: number;
           }[];
           location: {
             /** @example Skalitzer Straße 80, 10990 Berlin */
@@ -289,6 +294,11 @@ export interface operations {
            */
           telegram?: string;
           /**
+           * Collect point instagram account
+           * @example @insta
+           */
+          instagram?: string;
+          /**
            * Collect point logo image
            * @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
            */
@@ -309,7 +319,7 @@ export interface operations {
           };
           needed_items?: {
             /** @example 2 */
-            item_category_id?: number;
+            item_category_id: number;
           }[];
         };
       };
@@ -320,7 +330,7 @@ export interface operations {
       /** Successful operation */
       200: {
         content: {
-          "application/json": components["schemas"]["CollectPoint"][];
+          "application/json": components["schemas"]["CollectPoint"];
         };
       };
       /** Unauthenticated */

@@ -90,29 +90,36 @@ export class HttpService<T extends ApiDescription<T>> {
     }
 
     protected async call(req: Request, originPath: keyof T) {
-        return await this.log.try(req.method, async p => {
-            p.finally({ url: req.url, body: req.body });
-            for (const m of this.middlewares) {
-                await m(req, originPath);
-            }
-            const resp = await fetch(req);
-            const contType = resp.headers.get('content-type') ?? '*/*';
-            let rv;
-            const isJson = contType === 'application/json';
-            if (isJson) {
-                rv = await resp.json();
-            } else {
-                rv = await resp.text();
-            }
-            p.finally({ rv });
-            if (resp.status >= 400) {
-                throw new HttpError(resp.status, rv);
-            } else {
-                const value = isJson ? rv : { [contType]: rv };
-                return resp.status === 200 ? value : { [resp.status]: value };
-            }
-        });
+        return await this.log
+            .try(req.method, async p => {
+                p.finally({ url: req.url, body: req.body });
+                for (const m of this.middlewares) {
+                    await m(req, originPath);
+                }
+                const resp = await fetch(req);
+                const contType = resp.headers.get('content-type') ?? '*/*';
+                let rv;
+                const isJson = contType === 'application/json';
+                if (isJson) {
+                    rv = await resp.json();
+                } else {
+                    rv = await resp.text();
+                }
+                p.finally({ rv });
+                if (resp.status >= 400) {
+                    throw new HttpError(resp.status, rv);
+                } else {
+                    const value = isJson ? rv : { [contType]: rv };
+                    return resp.status === 200 ? value : { [resp.status]: value };
+                }
+            })
+            .catch(err => {
+                this.onError(err);
+                throw err;
+            });
     }
+
+    protected onError(err: Error) {}
 
     private log = new Log('HTTP');
 }

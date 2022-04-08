@@ -14,13 +14,14 @@ export const DonationPointSearch = observer(() => {
             value={ptsvc.filter}
             placeholder="Find donation point"
             InputProps={{
-                startAdornment: ptsvc.loading ? (
-                    <CircularProgress sx={{ mr: 2 }} size={32} color="secondary" />
-                ) : (
-                    <IconButton>
-                        <PinIcon color="secondary" />
-                    </IconButton>
-                ),
+                startAdornment:
+                    ptsvc.loading || ptsvc.error ? (
+                        <CircularProgress sx={{ mr: 2 }} size={32} color="secondary" />
+                    ) : (
+                        <IconButton>
+                            <PinIcon color="secondary" />
+                        </IconButton>
+                    ),
             }}
         />
     );

@@ -26,7 +26,7 @@ export const MapSidebar = observer(() => {
             <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <IconButton
                     sx={{
-                        position: 'absolute',
+                        position: 'absolute',SwipeableDrawer
                         top: 80,
                         right: 20,
                         backgroundColor: theme.palette.primary.main,

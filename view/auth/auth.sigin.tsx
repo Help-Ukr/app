@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import { FC } from 'react';
 
-const AuthSignIn: FC<{ providers: ClientSafeProvider[] }> = ({ providers }) => {
+export const AuthSignIn: FC<{ providers: ClientSafeProvider[] }> = ({ providers }) => {
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
             <Grid
@@ -52,5 +52,3 @@ const AuthSignIn: FC<{ providers: ClientSafeProvider[] }> = ({ providers }) => {
         </Grid>
     );
 };
-
-export default AuthSignIn;

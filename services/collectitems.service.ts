@@ -15,7 +15,6 @@ export class CollectItemsService extends AsyncService {
     constructor(private api: ApiService) {
         super();
         makeObservable(this);
-        //        runInAction(() => this.items.replace(CollectItemsService.serialize(ITEM_CATEGORIES)));
     }
 
     use() {

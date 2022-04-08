@@ -1,7 +1,7 @@
 import PageLayout from '@cmts/PageLayout';
 import type { NextPage } from 'next';
 import { ClientSafeProvider, getProviders } from 'next-auth/react';
-import AuthSignIn from '~/components/Auth/SignIn';
+import { AuthSignIn } from '~/view/auth/auth.sigin';
 
 type SignInProps = { providers: ClientSafeProvider[] };
 
@@ -17,7 +17,7 @@ export default SignIn;
 
 export async function getServerSideProps() {
     const providers = await getProviders();
-    
+
     return {
         props: { providers },
     };

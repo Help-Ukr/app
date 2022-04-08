@@ -30,8 +30,6 @@ export const DonationPointMarker = observer<{ pt: DonationPoint }>(({ pt }) => {
         [],
     );
 
-    console.log({ isMobile });
-
     return (
         <Marker
             ref={refMarker}

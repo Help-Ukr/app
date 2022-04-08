@@ -1,12 +1,16 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import { useTr } from '~/texts';
 
 type Props = {
-    orgName: string;
-    bgImg: string;
+    title?: string;
+    bgImg?: string;
 };
 
-const CollectionPointHeader = ({ orgName, bgImg }: Props) => {
+const PointHeader = ({ title, bgImg }: Props) => {
+    const [tr] = useTr('collect');
+    const text = title || tr('creatingPoint');
+    const url = bgImg || tr('defaultBgImageUrl');
+
     return (
         <Box
             sx={{
@@ -15,7 +19,7 @@ const CollectionPointHeader = ({ orgName, bgImg }: Props) => {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${bgImg})`,
+                backgroundImage: `url(${url})`,
                 borderRadius: '0px',
             }}
         >
@@ -42,11 +46,11 @@ const CollectionPointHeader = ({ orgName, bgImg }: Props) => {
                 }}
             >
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }} color="inherit">
-                    {orgName}
+                    {text}
                 </Typography>
             </Box>
         </Box>
     );
 };
 
-export default CollectionPointHeader;
+export default PointHeader;

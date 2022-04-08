@@ -7,16 +7,16 @@ export type SearchLocation = {
     address: Exclude<Nominatim.SearchResultItem['address'], undefined>;
     osm_id: number;
     display_name: string;
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
 };
 
 @Service()
 export class SearchLocationService {
     readonly nominatim = new Nominatim();
     readonly defaultMapLocation = {
-        lat: 52.5188239,
-        lng: 13.4012708,
+        latitude: 52.5188239,
+        longitude: 13.4012708,
     };
 
     @observable
@@ -31,7 +31,11 @@ export class SearchLocationService {
 
     @computed
     get position() {
-        return this.location || this.defaultMapLocation;
+        const rv = this.location || this.defaultMapLocation;
+        return {
+            lat: rv.latitude,
+            lng: rv.longitude,
+        };
     }
 
     search = (query: string) => {
@@ -39,7 +43,7 @@ export class SearchLocationService {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
             runInAction(() => {
                 this.locationList = rv
-                    .map(item => ({ ...item, lat: +item.lat, lng: +item.lon }))
+                    .map(item => ({ ...item, latitude: +item.lat, longitude: +item.lon }))
                     .filter(item => !!item.address) as any;
             });
         });
@@ -49,7 +53,7 @@ export class SearchLocationService {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.reverse({ lat: props.lat, lon: props.lng });
             runInAction(() => {
-                const l = Object.assign(rv, props);
+                const l: SearchLocation = Object.assign(rv, { latitude: props.lat, longitude: props.lng });
                 this.location = l;
                 this.locationList = [l];
             });

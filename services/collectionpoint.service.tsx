@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable, runInAction } from 'mobx';
+import { makeObservable, observable, runInAction } from 'mobx';
 import { useMemo } from 'react';
 import { Service } from 'typedi';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
@@ -8,17 +8,12 @@ import { ApiService } from './api.service';
 import { AsyncService } from './base.service';
 
 @Service()
-export class ColletionPointsService extends AsyncService {
-    readonly points = observable.array<CollectionPoint>([], { deep: false });
+export class ColletionPointService extends AsyncService {
+    @observable point?: CollectionPoint;
 
     constructor(private api: ApiService) {
         super();
         makeObservable(this);
-    }
-
-    @computed
-    get point() {
-        return this.points.at(0);
     }
 
     use = () => {
@@ -27,9 +22,9 @@ export class ColletionPointsService extends AsyncService {
     };
 
     reload = async () => {
-        const pts = await this.api.get('/api/collect-point/my', {});
+        const pt = await this.api.get('/api/collect-point/my', {});
         runInAction(() => {
-            this.points.replace(pts.map(pt => new CollectionPoint(pt)));
+            this.point = new CollectionPoint(pt as any);
         });
     };
 
@@ -38,11 +33,32 @@ export class ColletionPointsService extends AsyncService {
             () =>
                 new MobXForm(CollectinPointDto, {
                     initialData,
-                    onSubmit: data => {
-                        console.log('onSubmit', data);
-                    },
+                    onSubmit: this.updatePoint,
                 }),
             [initialData],
         );
+    };
+
+    private updatePoint = async ({
+        enabled,
+        name,
+        location,
+        phone,
+        telegram,
+        instagram,
+        needed_items,
+    }: CollectinPointDto) => {
+        await this.api.patch('/api/collect-point', {
+            body: {
+                enabled,
+                name,
+                location,
+                phone,
+                telegram,
+                instagram,
+                needed_items,
+            },
+        });
+        await this.reload();
     };
 }

@@ -30,7 +30,7 @@ class ImageDto {
 
 class NeededItemsDto {
     @IsInt()
-    id!: number;
+    item_category_id?: number;
 }
 export class CollectinPointDto {
     @IsBoolean()
@@ -58,6 +58,5 @@ export class CollectinPointDto {
     @Exclude()
     imageFile?: ImageDto;
 
-    @ValidateNested({ each: true })
-    items: NeededItemsDto[] = [];
+    needed_items: NeededItemsDto[] = [];
 }

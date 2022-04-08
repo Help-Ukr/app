@@ -8,10 +8,10 @@ import {
     ListItemAvatar,
     ListItemSecondaryAction,
     ListItemText,
-    Switch
+    Switch,
 } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { app } from '~/services/app';
 import { CollectItem, CollectItemsService } from '~/services/collectitems.service';
 import { CollectinPointForm } from '~/view/point/point.manage';
@@ -24,7 +24,7 @@ export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
         <Container maxWidth="md" sx={{ mt: 4 }}>
             <List>
                 {cisSvc.items.map(item => (
-                    <RenderListItem key={item.id} item={item} cisSvc={cisSvc} />
+                    <RenderListItem key={item.id} item={item} cisSvc={cisSvc} form={form} />
                 ))}
             </List>
             <PointGeneralFormSave form={form} />
@@ -32,11 +32,21 @@ export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
     );
 });
 
-const RenderListItem: FC<{ item: CollectItem; cisSvc: Readonly<CollectItemsService> }> = observer(
-    ({ item, cisSvc }) => {
+const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Readonly<CollectItemsService> }> = observer(
+    ({ item, cisSvc, form }) => {
         const { items } = item;
         const open = cisSvc.openId === item.id;
         const isCollapsed: boolean = !!items?.length;
+        const values = form.$.needed_items.value;
+        const idx = values.findIndex(v => v.item_category_id === item.id);
+        const handleChange = useCallback(
+            (_, checked: boolean) => {
+                if (checked && idx < 0) values.push({ item_category_id: item.item_category_id });
+                else if (idx >= 0) values.splice(idx, 1);
+                form.$.needed_items.onChange(values);
+            },
+            [form.$.needed_items, idx, item.item_category_id, values],
+        );
         return (
             <>
                 <ListItem button onClick={() => isCollapsed && cisSvc.handleOpen(open ? undefined : item.id)}>
@@ -44,14 +54,14 @@ const RenderListItem: FC<{ item: CollectItem; cisSvc: Readonly<CollectItemsServi
                     {isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}
                     <ListItemText primary={item.name} />
                     <ListItemSecondaryAction>
-                        <Switch color="secondary" />
+                        <Switch color="secondary" onChange={handleChange} checked={idx >= 0} />
                     </ListItemSecondaryAction>
                 </ListItem>
                 {isCollapsed && (
                     <Collapse in={open} unmountOnExit sx={{ ml: 4 }}>
                         {items?.map(cItem => (
                             <List key={cItem.id} component="div" disablePadding>
-                                <RenderListItem item={cItem} cisSvc={cisSvc} />
+                                <RenderListItem item={cItem} cisSvc={cisSvc} form={form} />
                             </List>
                         ))}
                     </Collapse>

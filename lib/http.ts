@@ -14,6 +14,9 @@ type ApiDescription<T> = Record<
         put?: {
             responses: any;
         };
+        patch?: {
+            responses: any;
+        };
         delete?: {
             responses: any;
         };
@@ -44,6 +47,13 @@ export class HttpService<T extends ApiDescription<T>> {
         return await this.call(this.makeRequest(path, args, { method: 'PUT' }), path);
     }
 
+    async patch<U extends O.SelectKeys<T, { patch: any }>, TPost extends T[U]['patch'] = T[U]['patch']>(
+        path: U,
+        args: ConvertArgs<TPost>,
+    ): Promise<ConvertResponse<Exclude<TPost, undefined>['responses']>> {
+        return await this.call(this.makeRequest(path, args, { method: 'PATCH' }), path);
+    }
+
     async get<U extends O.SelectKeys<T, { get: any }>, TGet extends T[U]['get'] = T[U]['get']>(
         path: U,
         args: ConvertArgs<TGet>,
@@ -54,6 +64,7 @@ export class HttpService<T extends ApiDescription<T>> {
     protected makeRequest(path: string, args: any, init: RequestInit) {
         const headers = new Headers(init.headers);
         if (this.token) headers.set('authorization', this.token);
+        headers.set('accept', 'application/json');
         if (typeof args.body === 'object') headers.set('content-type', 'application/json');
         return new Request(this.getBackendUrl(path, args), {
             body: args.body ? JSON.stringify(args.body) : undefined,

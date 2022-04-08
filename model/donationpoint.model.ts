@@ -21,7 +21,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     @computed get telegramLink() {
-        return 'https://t.me/' + this.telegram.replace(/^@/, '');
+        return 'https://t.me/' + this.telegram?.replace(/^@/, '');
     }
 
     @computed get phoneLink() {

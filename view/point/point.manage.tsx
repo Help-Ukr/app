@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
 import { app } from '~/services/app';
-import { ColletionPointsService } from '~/services/collectionpoints.service';
+import { ColletionPointService } from '~/services/collectionpoint.service';
 import { useTr } from '~/texts';
 import { PointGeneral } from './point.general';
 import PointHeader from './point.header';
@@ -16,7 +16,7 @@ export const PointManage = observer(() => {
     const [tr] = useTr('collect');
     const [tabIdx, setTabIdx] = useState(0);
     const handleChange = (_: any, newValue: number) => setTabIdx(newValue);
-    const cpsSvc = app.get(ColletionPointsService);
+    const cpsSvc = app.get(ColletionPointService);
     const form = cpsSvc.useForm(cpsSvc.point);
     cpsSvc.use();
 

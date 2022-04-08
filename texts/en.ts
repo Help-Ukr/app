@@ -9,7 +9,9 @@ export const en = {
         donate: 'Donate goods',
         transport: 'Transport goods',
     },
-    app: {},
+    app: {
+        reload: 'Reload page',
+    },
     routes: {
         '/': 'Home',
         '/collect': 'Collect',
@@ -47,6 +49,14 @@ export const en = {
     },
     map: {
         itsyou: 'You are here',
+    },
+    pointDetails: {
         distance: '~{{dist}} from you' as Tr<{ dist: string }>,
+        copy: 'Copy to clipboard',
+        telegram: 'Contact through Telegram',
+        instagram: 'Contact through Instagram',
+        share: 'Share this point',
+        navigate: 'Navigate using Google Maps',
+        call: 'Make a phone call',
     },
 };

@@ -2,6 +2,7 @@ import { getDistance } from 'geolib';
 import { computed, makeObservable } from 'mobx';
 import { app } from '~/services/app';
 import { LocationService } from '~/services/location.service';
+import { NotificationService } from '~/services/notification.service';
 import { BaseModel } from './base.model';
 
 export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
@@ -37,14 +38,19 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     share = () => {
-        if (navigator.canShare && navigator.canShare()) {
+        if (this.canShare) {
             navigator.share({
                 url: window.location.href,
                 title: this.name,
                 text: `Share text`,
             });
         } else {
-            navigator.clipboard?.writeText('Clip text');
+            navigator.clipboard?.writeText('Clip text').catch(() => {});
+            app.get(NotificationService).notify({ message: 'Copied', autoHideDuration: 5000 });
         }
     };
+
+    get canShare() {
+        return navigator.canShare && navigator.canShare();
+    }
 }

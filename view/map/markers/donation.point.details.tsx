@@ -1,4 +1,5 @@
 import IconPhone from '@mui/icons-material/Call';
+import IconCopy from '@mui/icons-material/ContentCopy';
 import IconInstagram from '@mui/icons-material/Instagram';
 import IconNavigate from '@mui/icons-material/Navigation';
 import IconShare from '@mui/icons-material/Share';
@@ -9,7 +10,7 @@ import { DonationPoint } from '~/model/donationpoint.model';
 import { useTr } from '~/texts';
 
 export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
-    const [tr] = useTr('map');
+    const [tr] = useTr('pointDetails');
 
     return (
         <Card sx={{ backgroundColor: 'transparent', p: 0, m: 0, minWidth: 256, width: 256 }} elevation={0}>
@@ -36,30 +37,28 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: 'center' }}>
-                <Tooltip title="Call here">
+                <Tooltip title={tr('call')}>
                     <IconButton disabled={!pt.phone} href={pt.phoneLink}>
                         <IconPhone />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Telegram here">
+                <Tooltip title={tr('telegram')}>
                     <IconButton disabled={!pt.telegram} href={pt.telegramLink} target="_blank">
                         <IconTelegram />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Instagram here">
+                <Tooltip title={tr('instagram')}>
                     <IconButton disabled={!pt.instagram} href={pt.instagramLink} target="_blank">
                         <IconInstagram />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Navigate here">
+                <Tooltip title={tr('navigate')}>
                     <IconButton href={pt.navigateLink} target="_blank">
                         <IconNavigate />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Share this">
-                    <IconButton onClick={pt.share}>
-                        <IconShare />
-                    </IconButton>
+                <Tooltip title={pt.canShare ? tr('share') : tr('copy')}>
+                    <IconButton onClick={pt.share}>{pt.canShare ? <IconShare /> : <IconCopy />}</IconButton>
                 </Tooltip>
             </CardActions>
         </Card>

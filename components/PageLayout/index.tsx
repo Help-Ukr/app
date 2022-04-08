@@ -1,6 +1,7 @@
 import HeaderAppBar from '@cmts/HeaderAppBar';
 import Head from 'next/head';
 import { FC } from 'react';
+import { Notifications } from '~/view/notifications';
 
 const PageLayout: FC = ({ children }) => {
     return (
@@ -13,6 +14,7 @@ const PageLayout: FC = ({ children }) => {
             </Head>
             <HeaderAppBar />
             {children}
+            <Notifications />
         </>
     );
 };

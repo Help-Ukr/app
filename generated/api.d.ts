@@ -242,7 +242,7 @@ export interface operations {
           image?: string;
           needed_items?: {
             /** @example 2 */
-            item_category_id?: number;
+            item_category_id: number;
           }[];
           location: {
             /** @example Skalitzer Straße 80, 10990 Berlin */
@@ -319,7 +319,7 @@ export interface operations {
           };
           needed_items?: {
             /** @example 2 */
-            item_category_id?: number;
+            item_category_id: number;
           }[];
         };
       };

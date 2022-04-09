@@ -53,10 +53,10 @@ export const en = {
     pointDetails: {
         distance: '~{{dist}} from you' as Tr<{ dist: string }>,
         copy: 'Copy to clipboard',
-        telegram: 'Contact through Telegram',
-        instagram: 'Contact through Instagram',
+        telegram: 'Contact through Telegram {{tg}}' as Tr<{ tg?: string }>,
+        instagram: 'Contact through Instagram {{insta}}' as Tr<{ insta?: string }>,
         share: 'Share this point',
-        navigate: 'Navigate using Google Maps',
-        call: 'Make a phone call',
+        navigate: 'Navigate to "{{addr}}" using Google Maps' as Tr<{ addr: string }>,
+        call: 'Make a phone call to {{phone}}' as Tr<{ phone: string }>,
     },
 };

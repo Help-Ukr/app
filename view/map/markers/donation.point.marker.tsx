@@ -38,8 +38,8 @@ export const DonationPointMarker = observer<{ pt: DonationPoint }>(({ pt }) => {
             icon={donationMarkerIcon}
         >
             <Popup
-                autoPanPaddingTopLeft={isMobile ? [50, 100] : [450, 100]}
-                autoPanPaddingBottomRight={isMobile ? [50, 50] : [50, 50]}
+                autoPanPaddingTopLeft={isMobile ? [50, 150] : [500, 150]}
+                autoPanPaddingBottomRight={isMobile ? [50, 50] : [150, 150]}
                 onClose={() => ptsvc.selected === pt && ptsvc.setSelected(undefined)}
                 onOpen={() => ptsvc.setSelected(pt)}
             >

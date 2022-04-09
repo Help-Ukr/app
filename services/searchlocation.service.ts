@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { useEffect, useMemo } from 'react';
 import { Service } from 'typedi';
 import { Nominatim } from '~/lib/nominatim';
+import { AsyncService } from './base.service';
 
 export type SearchLocation = {
     address: Exclude<Nominatim.SearchResultItem['address'], undefined>;
@@ -12,7 +13,7 @@ export type SearchLocation = {
 };
 
 @Service()
-export class SearchLocationService {
+export class SearchLocationService extends AsyncService {
     readonly nominatim = new Nominatim();
     readonly defaultMapLocation = {
         latitude: 52.5188239,
@@ -23,9 +24,10 @@ export class SearchLocationService {
     location?: SearchLocation;
 
     @observable.ref
-    locationList: SearchLocation[] = [];
+    options: SearchLocation[] = [];
 
     constructor() {
+        super();
         makeObservable(this);
     }
 
@@ -42,7 +44,7 @@ export class SearchLocationService {
         this.setTimeOut(async () => {
             const rv = await this.nominatim.search({ q: query, addressdetails: 1 });
             runInAction(() => {
-                this.locationList = rv
+                this.options = rv
                     .map(item => ({ ...item, latitude: +item.lat, longitude: +item.lon }))
                     .filter(item => !!item.address) as any;
             });
@@ -55,9 +57,20 @@ export class SearchLocationService {
             runInAction(() => {
                 const l: SearchLocation = Object.assign(rv, { latitude: props.lat, longitude: props.lng });
                 this.location = l;
-                this.locationList = [l];
+                this.options = [l];
             });
         });
+    };
+
+    @action
+    setOptions = (opts?: SearchLocation | SearchLocation[]) => {
+        if (!opts) {
+            this.options = [];
+        } else if (Array.isArray(opts)) {
+            this.options = opts;
+        } else {
+            this.options = [opts];
+        }
     };
 
     @action
@@ -74,8 +87,17 @@ export class SearchLocationService {
     };
 
     private timemOut = 0;
-    private setTimeOut = (cb: (...args: any[]) => any) => {
+    private setTimeOut = (cb: () => Promise<any>) => {
         if (this.timemOut) clearTimeout(this.timemOut);
-        this.timemOut = setTimeout(cb, 400) as any;
+        this.timemOut = setTimeout(() => this.async(cb), 400) as any;
     };
+
+    static displayAddress(location: SearchLocation) {
+        const exclude: string[] = ['country_code', 'district', 'municipality', 'borough', 'postcode', 'state'];
+        return Object.entries(location.address)
+            .filter(([key]) => !exclude.includes(key))
+            .map(([_, value]) => value)
+            .sort()
+            .join(', ');
+    }
 }

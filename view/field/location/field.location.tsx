@@ -1,9 +1,10 @@
+import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import MapIcon from '@mui/icons-material/MapRounded';
 import { Autocomplete, AutocompleteRenderInputParams, IconButton, TextField, TextFieldProps } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
-import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react';
+import { FC, HTMLAttributes, useCallback, useEffect, useMemo, useState } from 'react';
 import { MobXForm } from '~/lib/form';
 import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
@@ -30,10 +31,30 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
 
         useEffect(() => {
             if (locationSvc.location) {
-                const { display_name, latitude, longitude } = locationSvc.location;
-                formField.onChange?.({ address: display_name, latitude, longitude });
+                const { latitude, longitude } = locationSvc.location;
+                formField.onChange?.({
+                    address: SearchLocationService.displayAddress(locationSvc.location),
+                    latitude,
+                    longitude,
+                });
             }
         }, [formField, locationSvc.defaultMapLocation, locationSvc.location]);
+
+        const StartAdornment = useMemo(() => {
+            if (locationSvc.loading) {
+                return (
+                    <IconButton>
+                        <LocationSearchingIcon color="secondary" className="rotate" />
+                    </IconButton>
+                );
+            } else {
+                return (
+                    <IconButton onClick={() => setShowMap(!showMap)}>
+                        <MapIcon />
+                    </IconButton>
+                );
+            }
+        }, [locationSvc.loading, showMap]);
 
         const renderInput = useCallback(
             (params: AutocompleteRenderInputParams) => (
@@ -47,16 +68,12 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     error={formField.error}
                     InputProps={{
                         ...params.InputProps,
-                        startAdornment: (
-                            <IconButton onClick={() => setShowMap(!showMap)}>
-                                <MapIcon />
-                            </IconButton>
-                        ),
+                        startAdornment: StartAdornment,
                     }}
                     {...props}
                 />
             ),
-            [tr, formField.label, formField.validation?.children, formField.error, trForm, props, showMap],
+            [tr, formField.label, formField.validation?.children, formField.error, trForm, StartAdornment, props],
         );
 
         const renderOption = useCallback(
@@ -67,16 +84,17 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
             ),
             [],
         );
+
         return (
             <Box>
                 <Autocomplete
-                    options={locationSvc.locationList}
+                    options={locationSvc.options}
                     filterOptions={x => x}
                     isOptionEqualToValue={(o, v) => o.osm_id === v.osm_id}
                     onInputChange={(_, value) => locationSvc.search(value)}
                     onChange={(_, value) => locationSvc.handleChange(value)}
                     value={locationSvc.location || null}
-                    getOptionLabel={o => o.display_name}
+                    getOptionLabel={o => SearchLocationService.displayAddress(o)}
                     renderInput={renderInput}
                     renderOption={renderOption}
                     noOptionsText={trForm('noOptions')}

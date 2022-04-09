@@ -36,7 +36,7 @@ export class CollectItemsService extends AsyncService {
 
     @action
     static serialize(items: ItemCategory[], parent?: number): CollectItem[] {
-        const rv = items.filter(c => c.item_category_id === parent);
+        const rv = items.filter(c => c.parent_id === parent);
         return rv.map(item => ({ ...item, items: CollectItemsService.serialize(items, item.id) }));
     }
 }

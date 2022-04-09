@@ -109,7 +109,7 @@ export interface components {
        * Parent Id
        * @example 1
        */
-      item_category_id: number;
+      parent_id: number;
       /**
        * Username
        * @example food

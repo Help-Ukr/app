@@ -9,6 +9,12 @@ export const en = {
         donate: 'Donate goods',
         transport: 'Transport goods',
     },
+    auth: {
+        logout: 'Logout',
+        login: 'Login',
+        title: 'Sign in to create a collection point',
+        action: 'Sign in with {{provider}}' as Tr<{ provider: string }>,
+    },
     app: {
         reload: 'Reload page',
     },

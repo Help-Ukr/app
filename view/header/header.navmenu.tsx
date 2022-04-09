@@ -10,7 +10,7 @@ import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
 import { useTr } from '~/texts';
 
-const NavMenu: FC = () => {
+export const NavMenu: FC = () => {
     const router = useRouter();
     const [tr] = useTr('routes');
     const appUi = app.get(AppUIService);
@@ -72,5 +72,3 @@ const NavMenu: FC = () => {
         </Box>
     );
 };
-
-export default NavMenu;

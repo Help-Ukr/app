@@ -1,9 +1,9 @@
-import HeroSection from '@cmts/HeroSection';
-import PageLayout from '@cmts/PageLayout';
-import SelectUserStory from '@cmts/SelectUserStory';
 import { Paper } from '@mui/material';
 import type { NextPage } from 'next';
 import { useTr } from '~/texts';
+import { HeroSection } from '~/view/herosection';
+import { PageLayout } from '~/view/pagelayout';
+import { SelectUserStory } from '~/view/selectuserstory';
 
 const Home: NextPage = () => {
     const [tr] = useTr('home');

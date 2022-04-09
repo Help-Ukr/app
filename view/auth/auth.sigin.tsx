@@ -5,8 +5,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ClientSafeProvider, signIn } from 'next-auth/react';
 import { FC } from 'react';
+import { useTr } from '~/texts';
 
 export const AuthSignIn: FC<{ providers: ClientSafeProvider[] }> = ({ providers }) => {
+    const [tr] = useTr('auth');
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
             <Grid
@@ -36,13 +38,13 @@ export const AuthSignIn: FC<{ providers: ClientSafeProvider[] }> = ({ providers 
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography variant="h6" textAlign="center">
-                        Sign in to create a collection point
+                        {tr('title')}
                     </Typography>
                     <Box sx={{ mt: 8 }}>
                         {Object.values(providers).map(provider => (
                             <Box key={provider.id}>
                                 <Button variant="outlined" color="secondary" onClick={() => signIn(provider.id)}>
-                                    Sign in with {provider.name}
+                                    {tr('action', { provider: provider.name })}
                                 </Button>
                             </Box>
                         ))}

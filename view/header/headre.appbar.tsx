@@ -8,9 +8,9 @@ import Link from 'next/link';
 import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
 import { useTr } from '~/texts';
-import LangMenu from './LangMenu';
-import NavMenu from './NavMenu';
-import UserMenu from './UserMenu';
+import { LangMenu } from './header.langmenu';
+import { NavMenu } from './header.navmenu';
+import { UserMenu } from './header.usermenu';
 import logoImg from '/images/logo.png';
 
 const Logo = (props: { sx: SxProps }) => {
@@ -21,7 +21,7 @@ const Logo = (props: { sx: SxProps }) => {
     );
 };
 
-const HeaderAppBar = () => {
+export const HeaderAppBar = () => {
     const [tr] = useTr('routes');
     const appUi = app.get(AppUIService);
 
@@ -30,7 +30,6 @@ const HeaderAppBar = () => {
             <Toolbar>
                 <Logo sx={{ display: { xs: 'none', md: 'block' } }} />
                 <NavMenu />
-                {/* <Logo sx={{ display: { xs: 'flex', md: 'none', flexGrow: '1' } }} /> */}
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     {appUi.pages.map(page => (
                         <Link key={page.href} href={page.href} passHref>
@@ -44,4 +43,3 @@ const HeaderAppBar = () => {
         </AppBar>
     );
 };
-export default HeaderAppBar;

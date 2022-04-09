@@ -2,7 +2,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { FC } from 'react';
 
 interface HeroSectionProps {
     title: string;
@@ -10,7 +10,7 @@ interface HeroSectionProps {
     imgSrc: string;
 }
 
-export default function HeroSection({ title, subtitle, imgSrc }: HeroSectionProps) {
+export const HeroSection: FC<HeroSectionProps> = ({ title, subtitle, imgSrc }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -59,4 +59,4 @@ export default function HeroSection({ title, subtitle, imgSrc }: HeroSectionProp
             </Box>
         </Paper>
     );
-}
+};

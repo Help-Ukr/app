@@ -10,8 +10,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { MouseEvent, useCallback, useState } from 'react';
+import { useTr } from '~/texts';
 
-const UserMenu = () => {
+export const UserMenu = () => {
+    const [tr] = useTr('auth');
     const router = useRouter();
     const { data: session, status } = useSession();
     const isLoggedIn = status === 'authenticated';
@@ -40,7 +42,7 @@ const UserMenu = () => {
                 </Tooltip>
             ) : (
                 <Button color="secondary" variant="text" onClick={() => signIn()}>
-                    Login
+                    {tr('login')}
                 </Button>
             )}
             <Menu
@@ -63,12 +65,10 @@ const UserMenu = () => {
                         <LogoutIcon color="secondary" />
                     </ListItemIcon>
                     <Typography color="secondary" variant="button">
-                        Logout
+                        {tr('logout')}
                     </Typography>
                 </MenuItem>
             </Menu>
         </Box>
     );
 };
-
-export default UserMenu;

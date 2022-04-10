@@ -6,9 +6,10 @@ import {
     List,
     ListItem,
     ListItemAvatar,
+    ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
-    Switch,
+    Switch
 } from '@mui/material';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -42,7 +43,6 @@ const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Reado
         const idx = values.findIndex(v => v.item_category_id === item.id);
         const handleChange = useCallback(
             (_, checked: boolean) => {
-                console.log(checked, idx, values);
                 if (checked && idx < 0) values.push({ item_category_id: item.id });
                 else if (idx >= 0) values.splice(idx, 1);
                 form.$.needed_items.onChange(values);
@@ -52,8 +52,8 @@ const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Reado
         return (
             <>
                 <ListItem button onClick={() => isCollapsed && cisSvc.handleOpen(open ? undefined : item.id)}>
+                    <ListItemIcon>{isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}</ListItemIcon>
                     <ListItemAvatar>{item.icon}</ListItemAvatar>
-                    {isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}
                     <ListItemText primary={item.name} />
                     <ListItemSecondaryAction>
                         <Switch color="secondary" onChange={handleChange} checked={idx >= 0} />

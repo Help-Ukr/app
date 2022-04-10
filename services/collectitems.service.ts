@@ -25,7 +25,12 @@ export class CollectItemsService extends AsyncService {
     reload = async () => {
         const cis = await this.api.get('/api/item-category', { query: {} });
         runInAction(() => {
-            this.items.replace(cis.map(p => new ItemCategory(p)));
+            this.items.replace(
+                CollectItemsService.serialize(
+                    cis.map(p => new ItemCategory(p)),
+                    null,
+                ),
+            );
         });
     };
 
@@ -35,7 +40,7 @@ export class CollectItemsService extends AsyncService {
     };
 
     @action
-    static serialize(items: ItemCategory[], parent?: number): CollectItem[] {
+    static serialize(items: ItemCategory[], parent: number | null): CollectItem[] {
         const rv = items.filter(c => c.parent_id === parent);
         return rv.map(item => ({ ...item, items: CollectItemsService.serialize(items, item.id) }));
     }

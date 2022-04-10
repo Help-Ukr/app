@@ -23,7 +23,7 @@ export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
     const cisSvc = app.get(CollectItemsService);
     cisSvc.use();
     return (
-        <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Container maxWidth="md" sx={{ mt: 4, pb: 4 }}>
             <List>
                 {cisSvc.items.map(item => (
                     <RenderListItem key={item.id} item={item} cisSvc={cisSvc} form={form} />
@@ -60,7 +60,7 @@ const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Reado
                     </ListItemSecondaryAction>
                 </ListItem>
                 {isCollapsed && (
-                    <Collapse in={open} unmountOnExit sx={{ ml: 4 }}>
+                    <Collapse in={open} unmountOnExit>
                         {items?.map(cItem => (
                             <List key={cItem.id} component="div" disablePadding>
                                 <RenderListItem item={cItem} cisSvc={cisSvc} form={form} />

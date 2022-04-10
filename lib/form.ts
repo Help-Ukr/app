@@ -1,3 +1,4 @@
+import Log from '@uk/log';
 import { plainToClass } from 'class-transformer';
 import { validateSync, ValidationError } from 'class-validator';
 import { action, makeObservable, observable, toJS } from 'mobx';
@@ -37,6 +38,7 @@ export class MobXFormField<T extends DtoClass> {
 export class MobXForm<T extends DtoClass, Dto = InstanceType<T>> {
     protected readonly fields = new Map<keyof Dto, MobXFormField<T>>();
     protected readonly data = plainToClass(this.Dto, this.props?.initialData || {}, { enableImplicitConversion: true });
+    protected log = new Log('FORM');
 
     constructor(
         protected Dto: T,
@@ -59,23 +61,25 @@ export class MobXForm<T extends DtoClass, Dto = InstanceType<T>> {
     }
 
     readonly handleSubmit = () => {
-        for (const fName in this.data) {
-            const f = this.fields.get(fName as any);
-            f?.setValidation();
-            this.data[fName] = f?.value;
-        }
-        const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
-        if (errors.length) {
-            console.error('handleSubmit', { errors, data: toJS(this.data) });
-            errors.forEach(error => {
-                const f = this.fields.get(error.property as any);
-                f?.setValidation(error);
-            });
-            return;
-        } else {
-            console.info('handleSubmit', { errors, data: toJS(this.data) });
-            this.props?.onSubmit?.(this.data);
-        }
+        return this.log.try('handleSubmit', p => {
+            for (const fName in this.data) {
+                const f = this.fields.get(fName as any);
+                f?.setValidation();
+                this.data[fName] = f?.value;
+            }
+            p.finally({ data: toJS(this.data) });
+            const errors = validateSync(plainToClass(this.Dto, this.data, { enableImplicitConversion: true }));
+            p.finally({ errors });
+            if (errors.length) {
+                errors.forEach(error => {
+                    const f = this.fields.get(error.property as any);
+                    f?.setValidation(error);
+                });
+                return;
+            } else {
+                this.props?.onSubmit?.(this.data);
+            }
+        });
     };
 }
 

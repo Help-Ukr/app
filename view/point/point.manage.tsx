@@ -16,13 +16,13 @@ export const PointManage = observer(() => {
     const [tr] = useTr('collect');
     const [tabIdx, setTabIdx] = useState(0);
     const handleChange = (_: any, newValue: number) => setTabIdx(newValue);
-    const cpsSvc = app.get(ColletionPointService);
-    const form = cpsSvc.useForm(cpsSvc.point);
-    cpsSvc.use();
+    const cpSvc = app.get(ColletionPointService);
+    const form = cpSvc.useForm(cpSvc.point);
+    cpSvc.use();
 
     return (
         <Paper>
-            <PointHeader title={cpsSvc.point?.name} bgImg={cpsSvc.point?.image} />
+            <PointHeader title={cpSvc.point?.name} bgImg={cpSvc.point?.image} />
             <Tabs
                 value={tabIdx}
                 onChange={handleChange}
@@ -31,7 +31,7 @@ export const PointManage = observer(() => {
                 variant="fullWidth"
             >
                 <Tab value={0} label={tr('tabGeneral')} />
-                <Tab value={1} label={tr('tabItems')} />
+                <Tab value={1} label={tr('tabItems')} disabled={!cpSvc.point} />
             </Tabs>
             <TabPanel index={0} value={tabIdx}>
                 <PointGeneral form={form} />

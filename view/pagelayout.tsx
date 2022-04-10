@@ -1,9 +1,9 @@
-import HeaderAppBar from '@cmts/HeaderAppBar';
 import Head from 'next/head';
 import { FC } from 'react';
+import { HeaderAppBar } from '~/view/header/headre.appbar';
 import { Notifications } from '~/view/notifications';
 
-const PageLayout: FC = ({ children }) => {
+export const PageLayout: FC = ({ children }) => {
     return (
         <>
             <Head>
@@ -18,5 +18,3 @@ const PageLayout: FC = ({ children }) => {
         </>
     );
 };
-
-export default PageLayout;

@@ -1,6 +1,6 @@
-import PageLayout from '@cmts/PageLayout';
 import { Box } from '@mui/material';
 import type { NextPage } from 'next';
+import { PageLayout } from '~/view/pagelayout';
 import { ComingSoon } from '~/view/soon';
 
 const Transport: NextPage = () => {

@@ -20,7 +20,7 @@ const sxBox: SxProps = {
     },
 };
 
-const SelectUserStory = () => {
+export const SelectUserStory = () => {
     const [tr] = useTr('home');
     return (
         <Container>
@@ -47,5 +47,3 @@ const SelectUserStory = () => {
         </Container>
     );
 };
-
-export default SelectUserStory;

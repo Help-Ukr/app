@@ -55,7 +55,7 @@ export const Map = observer(() => {
                 {location.position && (
                     <Marker position={[location.position.lat, location.position.lng]} icon={userMarkerIcon}>
                         <Popup>
-                            <Box sx={{ p: 2 }}>{tr('itsyou')}</Box>
+                            <Box sx={{ p: 4 }}>{tr('itsyou')}</Box>
                         </Popup>
                     </Marker>
                 )}

@@ -45,7 +45,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
                 text: `Share text`,
             });
         } else {
-            navigator.clipboard?.writeText('Clip text').catch(() => {});
+            navigator.clipboard?.writeText('Clip text').catch(console.error);
             app.get(NotificationService).notify({ message: 'Copied', autoHideDuration: 5000 });
         }
     };

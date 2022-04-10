@@ -37,7 +37,7 @@ export const DonationPointCard = observer(({ pt }: Props) => {
         >
             <CardMedia
                 component="img"
-                sx={{ width: { xs: 80, md: 120 }, objectFit: 'scale-down' }}
+                sx={{ width: { xs: 80, md: 120 }, objectFit: 'cover' }}
                 image={pt.image}
                 alt={`Donations from ${pt.name}`}
             />

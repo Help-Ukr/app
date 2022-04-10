@@ -24,7 +24,18 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 title={<Typography variant="body1">{pt.name}</Typography>}
             />
             <CardContent sx={{ py: 0 }}>
-                <Box minHeight="10vh" maxHeight="20vh" overflow="auto" mb={1}>
+                <Box
+                    sx={{
+                        overflowY: 'scroll',
+                        marginBottom: 8,
+                        boxSizing: 'content-box',
+                        paddingRight: 25,
+                        width: '100%',
+                        minHeight: '10vh',
+                        maxHeight: '20vh',
+                        mb: 1,
+                    }}
+                >
                     {pt.needed_items.map(item => (
                         <div key={item.item_category_id}>
                             <Typography display="inline">{item.item_category_icon}</Typography>
@@ -40,26 +51,21 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
             </CardContent>
             <Fab
                 id="123"
+                className="collapse-fab"
+                disableRipple
                 sx={{
                     position: 'absolute',
-                    right: 14,
-                    bottom: 58,
-                    width: '20%',
-                    height: 'unset',
                     backgroundImage: `url(${pt.image})`,
                     backgroundPosition: 'center',
-                    backgroundSize: 'contain',
+                    backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     boxShadow:
                         '0px 2px 3px -1px rgb(0 0 0 / 10%), 0px 3px 5px 0px rgb(0 0 0 / 7%), 0px 1px 9px 0px rgb(0 0 0 / 6%)',
-                    ':after': {
-                        content: '""',
-                        display: 'block',
-                        paddingBottom: '100%',
-                    },
                 }}
                 onClick={e => {
-                    (e.target as any).classList.add('expand-fab');
+                    const target = e.target as HTMLButtonElement;
+                    target.classList.toggle('expand-fab');
+                    target.classList.toggle('collapse-fab');
                 }}
             ></Fab>
             <CardActions sx={{ justifyContent: 'center' }}>

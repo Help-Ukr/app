@@ -1,18 +1,24 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import queryString from 'query-string';
 import { Service } from 'typedi';
 import { EventOrValue } from '~/lib/types';
 import { DonationPoint } from '~/model/donationpoint.model';
 import { ApiService } from './api.service';
 import { AppUIService } from './appui.service';
 import { AsyncService } from './base.service';
-import { MapService } from './map.service';
 
 @Service()
 export class DontationPointsService extends AsyncService {
     points = observable.array([] as DonationPoint[], { deep: false });
 
-    @observable.ref
-    selected?: DonationPoint;
+    @observable
+    private selectedId = 0;
+
+    @computed
+    get selected(): DonationPoint | undefined {
+        console.log('selected', this.selectedId);
+        return this.points.find(p => p.id === this.selectedId);
+    }
 
     @observable
     filter = '';
@@ -24,9 +30,12 @@ export class DontationPointsService extends AsyncService {
         return pts.slice().sort((a, b) => a.distance - b.distance);
     }
 
-    constructor(private api: ApiService, private map: MapService, private appUi: AppUIService) {
+    constructor(private api: ApiService, private appUi: AppUIService) {
         super();
         makeObservable(this);
+        const { id } = queryString.parse(window.location.search);
+        const i = +id!;
+        if (i > 0) runInAction(() => (this.selectedId = i));
     }
 
     use() {
@@ -40,9 +49,10 @@ export class DontationPointsService extends AsyncService {
             for (let i = 0; i < 10; i++) {
                 const pt = Object.assign({}, pts[i] ?? pts[0]);
                 pt.location = Object.assign({}, pts[i]?.location ?? pts[0].location);
-                pt.id = i;
+                pt.id = i + 1;
                 pt.location!.latitude! = +pt.location!.latitude! + Math.random();
                 pt.location!.longitude! = +pt.location!.longitude! + Math.random();
+                pt.image = 'https://picsum.photos/300/300?random=' + Math.random();
                 this.points.push(new DonationPoint(pt as any));
             }
             //            this.points.replace(pts.map(p => new DonationPoint(p as any)));
@@ -56,8 +66,13 @@ export class DontationPointsService extends AsyncService {
 
     @action
     setSelected(pt: DonationPoint | undefined) {
-        this.selected = pt;
-        this.appUi.closeDonationSidebar();
+        this.selectedId = pt?.id ?? 0;
+        if (pt) {
+            this.appUi.closeDonationSidebar();
+            window.history.replaceState(null, '', '/donate?' + queryString.stringify({ id: pt.id }));
+        } else {
+            window.history.replaceState(null, '', '/donate');
+        }
         this.log.debug('setSelected', pt);
     }
 }

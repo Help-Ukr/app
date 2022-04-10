@@ -7,9 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { MouseEvent, useCallback, useState } from 'react';
+import { ApiService } from '~/services/api.service';
+import { app } from '~/services/app';
 import { useTr } from '~/texts';
 
 export const UserMenu = () => {
@@ -26,11 +28,13 @@ export const UserMenu = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    const api = app.get(ApiService);
     const logOut = useCallback(async () => {
         handleCloseUserMenu();
+        await api.logout();
         await signOut({ redirect: false });
         router.push('/signin');
-    }, [router]);
+    }, [api, router]);
 
     return (
         <Box sx={{ flexGrow: 0 }}>
@@ -41,7 +45,7 @@ export const UserMenu = () => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Button color="secondary" variant="text" onClick={() => signIn()}>
+                <Button color="secondary" variant="text" onClick={() => router.push('/signin')}>
                     {tr('login')}
                 </Button>
             )}

@@ -34,13 +34,13 @@ export class ColletionPointService extends AsyncService {
             () =>
                 new MobXForm(CollectinPointDto, {
                     initialData,
-                    onSubmit: this.updatePoint,
+                    onSubmit: this.onSubmit,
                 }),
             [initialData],
         );
     };
 
-    private updatePoint = async ({
+    private onSubmit = async ({
         enabled,
         name,
         location,
@@ -49,17 +49,20 @@ export class ColletionPointService extends AsyncService {
         instagram,
         needed_items,
     }: CollectinPointDto) => {
-        await this.api.patch('/api/collect-point', {
-            body: {
-                enabled,
-                name,
-                location,
-                phone,
-                telegram,
-                instagram,
-                needed_items,
-            },
-        });
+        const body: CollectinPointDto = {
+            enabled,
+            name,
+            location,
+            phone,
+            telegram,
+            instagram,
+            needed_items,
+        };
+        if (this.point) {
+            await this.api.patch('/api/collect-point', { body });
+        } else {
+            await this.api.post('/api/collect-point', { body });
+        }
         await this.reload();
     };
 }

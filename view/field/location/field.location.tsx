@@ -43,7 +43,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     longitude,
                 });
             }
-        }, [formField, searchLocationSvc.defaultMapLocation, searchLocationSvc.location]);
+        }, [formField, searchLocationSvc.location]);
 
         const StartAdornment = useMemo(() => {
             if (searchLocationSvc.loading) {

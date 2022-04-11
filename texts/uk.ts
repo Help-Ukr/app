@@ -12,9 +12,16 @@ export const uk = {
         login: 'Увійти',
         title: 'Увійдіть, щоб створити пункт збору',
         action: 'Увійти за допомогою {{provider}}',
+        userMenu: 'Відкрийте меню користувача',
     },
     app: {
         reload: 'Перезавантажити',
+    },
+    errors: {
+        ERR_NOT_AUTHORIZED: 'Не авторизований',
+        ERR_HTTP_401: 'Не авторизований',
+        ERR_HTTP_404: 'Не знайдено',
+        ERR_HTTP_500: 'Щось пішло не так',
     },
     routes: {
         '/': 'Головна',
@@ -48,5 +55,20 @@ export const uk = {
         max: 'Число повинно бути менше або дорівнювати {{arg1}}',
         minLength: 'Мінімальна довжина поля {{arg1}}',
         maxLength: 'Максимальна довжина поля {{arg1}}',
+    },
+    pointDetails: {
+        distance: '~{{dist}} від тебе',
+        copy: 'Копіювати в буфер обміну',
+        telegram: `Зв'язатися через Telegram {{tg}}`,
+        instagram: `Зв'язатися через Instagram {{insta}}`,
+        share: 'Поділіться цією точкою',
+        navigate: 'Прокласти маршрут до "{{addr}}" через Google Maps',
+        call: 'Зателефонувати за номером {{phone}}',
+    },
+    donate: {
+        filterPlaceholder: 'Знайдіть пункт пожертв',
+    },
+    notify: {
+        copied: 'Скопійовано',
     },
 };

@@ -39,7 +39,7 @@ export const UserMenu = () => {
     return (
         <Box sx={{ flexGrow: 0 }}>
             {isLoggedIn ? (
-                <Tooltip title="Open settings">
+                <Tooltip title={tr('userMenu')}>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <Avatar alt="User avatar" src={user?.image || undefined} />
                     </IconButton>

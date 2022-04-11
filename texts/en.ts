@@ -14,9 +14,16 @@ export const en = {
         login: 'Login',
         title: 'Sign in to create a collection point',
         action: 'Sign in with {{provider}}' as Tr<{ provider: string }>,
+        userMenu: 'Open the user menu',
     },
     app: {
         reload: 'Reload page',
+    },
+    errors: {
+        ERR_NOT_AUTHORIZED: 'Unauthorized',
+        ERR_HTTP_401: 'Unauthorized',
+        ERR_HTTP_404: 'Not found',
+        ERR_HTTP_500: 'Something went wrong',
     },
     routes: {
         '/': 'Home',
@@ -64,5 +71,11 @@ export const en = {
         share: 'Share this point',
         navigate: 'Navigate to "{{addr}}" using Google Maps' as Tr<{ addr: string }>,
         call: 'Make a phone call to {{phone}}' as Tr<{ phone: string }>,
+    },
+    donate: {
+        filterPlaceholder: 'Find donation point',
+    },
+    notify: {
+        copied: 'Copied',
     },
 };

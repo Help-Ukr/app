@@ -8,7 +8,7 @@ import {
     Length,
     MaxLength,
     MinLength,
-    ValidateNested
+    ValidateNested,
 } from 'class-validator';
 
 class LocationDto {

@@ -8,6 +8,7 @@ import { FC, HTMLAttributes, useCallback, useEffect, useMemo, useState } from 'r
 import { MobXForm } from '~/lib/form';
 import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
+import { LocationService } from '~/services/location.service';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
 import { useTr, useTrAny } from '~/texts';
 
@@ -18,30 +19,34 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
     ({ formField, ...props }) => {
         const [tr] = useTrAny(formField.dtoname);
         const [trForm] = useTr('form');
-        const locationSvc = app.get(SearchLocationService);
+        const searchLocationSvc = app.get(SearchLocationService);
+        const userLocationSvc = app.get(LocationService);
         const [showMap, setShowMap] = useState(false);
 
-        locationSvc.use();
+        userLocationSvc.use();
+        searchLocationSvc.use();
 
         useEffect(() => {
-            if (!locationSvc.location && formField.value) {
-                locationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
+            if (!searchLocationSvc.location && formField.value) {
+                searchLocationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
+            } else if (!searchLocationSvc.location && userLocationSvc.position) {
+                searchLocationSvc.reverse(userLocationSvc.position);
             }
-        }, [formField.value, locationSvc]);
+        }, [formField.value, searchLocationSvc, userLocationSvc.position]);
 
         useEffect(() => {
-            if (locationSvc.location) {
-                const { latitude, longitude } = locationSvc.location;
+            if (searchLocationSvc.location) {
+                const { latitude, longitude } = searchLocationSvc.location;
                 formField.onChange?.({
-                    address: SearchLocationService.displayAddress(locationSvc.location),
+                    address: SearchLocationService.displayAddress(searchLocationSvc.location),
                     latitude,
                     longitude,
                 });
             }
-        }, [formField, locationSvc.defaultMapLocation, locationSvc.location]);
+        }, [formField, searchLocationSvc.defaultMapLocation, searchLocationSvc.location]);
 
         const StartAdornment = useMemo(() => {
-            if (locationSvc.loading) {
+            if (searchLocationSvc.loading) {
                 return (
                     <IconButton>
                         <LocationSearchingIcon color="secondary" className="rotate" />
@@ -54,7 +59,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
                     </IconButton>
                 );
             }
-        }, [locationSvc.loading, showMap]);
+        }, [searchLocationSvc.loading, showMap]);
 
         const renderInput = useCallback(
             (params: AutocompleteRenderInputParams) => (
@@ -88,18 +93,18 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
         return (
             <Box>
                 <Autocomplete
-                    options={locationSvc.options}
+                    options={searchLocationSvc.options}
                     filterOptions={x => x}
                     isOptionEqualToValue={(o, v) => o.osm_id === v.osm_id}
-                    onInputChange={(_, value) => locationSvc.search(value)}
-                    onChange={(_, value) => locationSvc.handleChange(value)}
-                    value={locationSvc.location || null}
+                    onInputChange={(_, value) => searchLocationSvc.search(value)}
+                    onChange={(_, value) => searchLocationSvc.handleChange(value)}
+                    value={searchLocationSvc.location || null}
                     getOptionLabel={o => SearchLocationService.displayAddress(o)}
                     renderInput={renderInput}
                     renderOption={renderOption}
                     noOptionsText={trForm('noOptions')}
                 />
-                {showMap && <FieldLocationMap locationSvc={locationSvc} />}
+                {showMap && <FieldLocationMap locationSvc={searchLocationSvc} />}
             </Box>
         );
     },

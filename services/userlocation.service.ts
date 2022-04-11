@@ -5,7 +5,7 @@ import { GeoPosition } from '~/lib/types';
 import { AsyncService } from './base.service';
 
 @Service()
-export class LocationService extends AsyncService {
+export class UserLocationService extends AsyncService {
     @observable.ref
     position?: GeoPosition = undefined;
 

@@ -12,11 +12,10 @@ export class DontationPointsService extends AsyncService {
     points = observable.array([] as DonationPoint[], { deep: false });
 
     @observable
-    private selectedId = 0;
+    selectedId = 0;
 
     @computed
     get selected(): DonationPoint | undefined {
-        console.log('selected', this.selectedId);
         return this.points.find(p => p.id === this.selectedId);
     }
 
@@ -25,8 +24,14 @@ export class DontationPointsService extends AsyncService {
 
     @computed
     get filtered() {
-        const filt = this.filter.toLowerCase();
-        const pts = filt ? this.points.filter(p => p.name.toLowerCase().includes(filt)) : this.points;
+        const filt = this.filter.toLocaleLowerCase();
+        const pts = filt
+            ? this.points.filter(
+                  p =>
+                      p.name.toLocaleLowerCase().includes(filt) ||
+                      p.location.address.toLocaleLowerCase().includes(filt),
+              )
+            : this.points;
         return pts.slice().sort((a, b) => a.distance - b.distance);
     }
 
@@ -46,7 +51,7 @@ export class DontationPointsService extends AsyncService {
     reload = async () => {
         const pts = await this.api.get('/api/collect-point', { query: {} });
         runInAction(() => {
-            for (let i = 0; i < 10; i++) {
+            /*            for (let i = 0; i < 10; i++) {
                 const pt = Object.assign({}, pts[i] ?? pts[0]);
                 pt.location = Object.assign({}, pts[i]?.location ?? pts[0].location);
                 pt.id = i + 1;
@@ -54,8 +59,8 @@ export class DontationPointsService extends AsyncService {
                 pt.location!.longitude! = +pt.location!.longitude! + Math.random();
                 pt.image = 'https://picsum.photos/300/300?random=' + Math.random();
                 this.points.push(new DonationPoint(pt as any));
-            }
-            //            this.points.replace(pts.map(p => new DonationPoint(p as any)));
+            }*/
+            this.points.replace(pts.map(p => new DonationPoint(p as any)));
         });
     };
 

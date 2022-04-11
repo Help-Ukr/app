@@ -8,8 +8,8 @@ import { FC, HTMLAttributes, useCallback, useEffect, useMemo, useState } from 'r
 import { MobXForm } from '~/lib/form';
 import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
-import { LocationService } from '~/services/location.service';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
+import { UserLocationService } from '~/services/userlocation.service';
 import { useTr, useTrAny } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./field.location.map'), { ssr: false });
@@ -20,7 +20,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
         const [tr] = useTrAny(formField.dtoname);
         const [trForm] = useTr('form');
         const searchLocationSvc = app.get(SearchLocationService);
-        const userLocationSvc = app.get(LocationService);
+        const userLocationSvc = app.get(UserLocationService);
         const [showMap, setShowMap] = useState(false);
 
         userLocationSvc.use();
@@ -30,6 +30,7 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
             if (!searchLocationSvc.location && formField.value) {
                 searchLocationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
             } else if (!searchLocationSvc.location && userLocationSvc.position) {
+                debugger;
                 searchLocationSvc.reverse(userLocationSvc.position);
             }
         }, [formField.value, searchLocationSvc, userLocationSvc.position]);

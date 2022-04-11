@@ -1,5 +1,5 @@
-import ClearIcon from '@mui/icons-material/Clear';
-import PinIcon from '@mui/icons-material/FilterAlt';
+import IconReset from '@mui/icons-material/Close';
+import IconFilter from '@mui/icons-material/FilterAlt';
 import { CircularProgress, IconButton, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { app } from '~/services/app';
@@ -22,12 +22,12 @@ export const DonationPointSearch = observer(() => {
                         <CircularProgress sx={{ mr: 2 }} size={32} color="secondary" />
                     ) : (
                         <IconButton>
-                            <PinIcon color="secondary" />
+                            <IconFilter color="secondary" />
                         </IconButton>
                     ),
                 endAdornment: !!ptsvc.filter.length && (
                     <IconButton onClick={ptsvc.resetFilter}>
-                        <ClearIcon color="secondary" />
+                        <IconReset color="secondary" />
                     </IconButton>
                 ),
             }}

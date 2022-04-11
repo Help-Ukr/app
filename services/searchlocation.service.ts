@@ -94,7 +94,7 @@ export class SearchLocationService extends AsyncService {
 
     static displayAddress(location: SearchLocation) {
         const exclude: string[] = ['country_code', 'district', 'municipality', 'borough', 'postcode', 'state'];
-        return Object.entries(location.address)
+        return Object.entries(location.address || {})
             .filter(([key]) => !exclude.includes(key))
             .map(([_, value]) => value)
             .sort()

@@ -70,6 +70,11 @@ export class DontationPointsService extends AsyncService {
     };
 
     @action
+    resetFilter = () => {
+        this.filter = '';
+    };
+
+    @action
     setSelected(pt: DonationPoint | undefined) {
         this.selectedId = pt?.id ?? 0;
         if (pt) {

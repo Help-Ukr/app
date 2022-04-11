@@ -7,6 +7,7 @@ import { AppUIService } from '~/services/appui.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
 
 const sxCardContent: SxProps = {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     px: { xs: 1, md: 2 },

@@ -13,12 +13,12 @@ import { FieldLocation } from '~/view/field/location/field.location';
 import { CollectinPointForm } from '~/view/point/point.manage';
 import { FieldPhone } from '../field/field.phone';
 
-export const PointGeneral: FC<CollectinPointForm> = observer(({ form }) => {
+export const PointGeneral: FC<CollectinPointForm> = observer(({ form, point }) => {
     return (
         <Container maxWidth="md">
             <Box sx={{ pt: 4, pb: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <FieldText formField={form.$.name} />
-                <FieldLocation formField={form.$.location} />
+                <FieldLocation formField={form.$.location} initial={point?.location} />
                 <FieldPhone formField={form.$.phone} />
                 <FieldText
                     formField={form.$.telegram}

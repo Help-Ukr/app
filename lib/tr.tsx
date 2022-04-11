@@ -75,7 +75,7 @@ export namespace Tr {
             const constraint = constraints.find(c => c.name === errContstraint[0]);
             if (!constraint) continue;
             const args: { [key: string]: any } = {};
-            meta.constraints.forEach((arg, i) => {
+            meta.constraints?.forEach((arg, i) => {
                 args[`arg${i + 1}`] = arg;
             });
             return tr(constraint.name, args);

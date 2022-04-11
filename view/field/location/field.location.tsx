@@ -9,103 +9,106 @@ import { MobXForm } from '~/lib/form';
 import { Tr } from '~/lib/tr';
 import { app } from '~/services/app';
 import { SearchLocation, SearchLocationService } from '~/services/searchlocation.service';
-import { UserLocationService } from '~/services/userlocation.service';
 import { useTr, useTrAny } from '~/texts';
 
 const FieldLocationMap = dynamic(() => import('./field.location.map'), { ssr: false });
 
 export type FieldLocationValue = { address: string; latitude: number; longitude: number };
-export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationValue> } & TextFieldProps> = observer(
-    ({ formField, ...props }) => {
-        const [tr] = useTrAny(formField.dtoname);
-        const [trForm] = useTr('form');
-        const searchLocationSvc = app.get(SearchLocationService);
-        const userLocationSvc = app.get(UserLocationService);
-        const [showMap, setShowMap] = useState(false);
+export const FieldLocation: FC<
+    { formField: MobXForm.InputProps<FieldLocationValue>; initial?: FieldLocationValue } & TextFieldProps
+> = observer(({ formField, initial, ...props }) => {
+    const [tr] = useTrAny(formField.dtoname);
+    const [trForm] = useTr('form');
+    const slSvc = app.get(SearchLocationService);
+    const [showMap, setShowMap] = useState(false);
 
-        userLocationSvc.use();
-        searchLocationSvc.use();
+    slSvc.use();
 
-        useEffect(() => {
-            if (!searchLocationSvc.location && formField.value) {
-                searchLocationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
-            } else if (!searchLocationSvc.location && userLocationSvc.position) {
-                searchLocationSvc.reverse(userLocationSvc.position);
-            }
-        }, [formField.value, searchLocationSvc, userLocationSvc.position]);
+    useEffect(() => {
+        if (initial) slSvc.reverse({ lat: initial.latitude, lng: initial.longitude });
+    }, [initial, slSvc]);
 
-        useEffect(() => {
-            if (searchLocationSvc.location) {
-                const { latitude, longitude } = searchLocationSvc.location;
-                formField.onChange?.({
-                    address: SearchLocationService.displayAddress(searchLocationSvc.location),
-                    latitude,
-                    longitude,
-                });
-            }
-        }, [formField, searchLocationSvc.location]);
+    useEffect(() => {
+        if (slSvc.location) {
+            const { latitude, longitude } = slSvc.location;
+            formField.onChange?.({
+                address: SearchLocationService.displayAddress(slSvc.location),
+                latitude,
+                longitude,
+            });
+        }
+    }, [formField, slSvc.location]);
 
-        const StartAdornment = useMemo(() => {
-            if (searchLocationSvc.loading) {
-                return (
-                    <IconButton>
-                        <LocationSearchingIcon color="secondary" className="rotate" />
-                    </IconButton>
+    const StartAdornment = useMemo(() => {
+        if (slSvc.loading) {
+            return (
+                <IconButton>
+                    <LocationSearchingIcon color="secondary" className="rotate" />
+                </IconButton>
+            );
+        } else {
+            return (
+                <IconButton onClick={() => setShowMap(!showMap)}>
+                    <MapIcon />
+                </IconButton>
+            );
+        }
+    }, [slSvc.loading, showMap]);
+
+    const helperText = useMemo(() => {
+        if (formField.validation) {
+            if (formField.validation.children?.length) {
+                return Tr.validationTr(
+                    trForm,
+                    formField.validation?.children?.find(err => err.property === 'address'),
                 );
             } else {
-                return (
-                    <IconButton onClick={() => setShowMap(!showMap)}>
-                        <MapIcon />
-                    </IconButton>
-                );
+                return Tr.validationTr(trForm, formField.validation);
             }
-        }, [searchLocationSvc.loading, showMap]);
+        }
+    }, [formField.validation, trForm]);
 
-        const renderInput = useCallback(
-            (params: AutocompleteRenderInputParams) => (
-                <TextField
-                    {...params}
-                    label={tr(formField.label)}
-                    helperText={Tr.validationTr(
-                        trForm,
-                        formField.validation?.children?.find(err => err.property === 'address'),
-                    )}
-                    error={formField.error}
-                    InputProps={{
-                        ...params.InputProps,
-                        startAdornment: StartAdornment,
-                    }}
-                    {...props}
-                />
-            ),
-            [tr, formField.label, formField.validation?.children, formField.error, trForm, StartAdornment, props],
-        );
+    const renderInput = useCallback(
+        (params: AutocompleteRenderInputParams) => (
+            <TextField
+                {...params}
+                label={tr(formField.label)}
+                helperText={helperText}
+                error={formField.error}
+                InputProps={{
+                    ...params.InputProps,
+                    startAdornment: StartAdornment,
+                }}
+                {...props}
+            />
+        ),
+        [tr, formField.label, formField.error, helperText, StartAdornment, props],
+    );
 
-        const renderOption = useCallback(
-            (props: HTMLAttributes<HTMLLIElement>, o: SearchLocation) => (
-                <li {...props} key={o.osm_id}>
-                    {o.display_name}
-                </li>
-            ),
-            [],
-        );
+    const renderOption = useCallback(
+        (props: HTMLAttributes<HTMLLIElement>, o: SearchLocation) => (
+            <li {...props} key={o.osm_id}>
+                {o.display_name}
+            </li>
+        ),
+        [],
+    );
 
-        return (
-            <Box>
-                <Autocomplete
-                    options={searchLocationSvc.options}
-                    filterOptions={x => x}
-                    isOptionEqualToValue={(o, v) => o.osm_id === v.osm_id}
-                    onInputChange={(_, value) => searchLocationSvc.search(value)}
-                    onChange={(_, value) => searchLocationSvc.handleChange(value)}
-                    value={searchLocationSvc.location || null}
-                    getOptionLabel={o => SearchLocationService.displayAddress(o)}
-                    renderInput={renderInput}
-                    renderOption={renderOption}
-                    noOptionsText={trForm('noOptions')}
-                />
-                {showMap && <FieldLocationMap locationSvc={searchLocationSvc} />}
-            </Box>
-        );
-    },
-);
+    return (
+        <Box>
+            <Autocomplete
+                options={slSvc.options}
+                filterOptions={x => x}
+                isOptionEqualToValue={(o, v) => o.osm_id === v.osm_id}
+                onInputChange={(_, value) => slSvc.search(value)}
+                onChange={(_, value) => slSvc.handleChange(value)}
+                value={slSvc.location || null}
+                getOptionLabel={o => SearchLocationService.displayAddress(o)}
+                renderInput={renderInput}
+                renderOption={renderOption}
+                noOptionsText={trForm('noOptions')}
+            />
+            {showMap && <FieldLocationMap locationSvc={slSvc} />}
+        </Box>
+    );
+});

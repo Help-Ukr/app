@@ -1,14 +1,14 @@
 import { Exclude } from 'class-transformer';
 import {
     IsBoolean,
+    IsDefined,
     IsInt,
     IsLatitude,
-    IsLongitude,
-    IsOptional,
+    IsLongitude, IsOptional,
     Length,
     MaxLength,
     MinLength,
-    ValidateNested,
+    ValidateNested
 } from 'class-validator';
 
 class LocationDto {
@@ -40,6 +40,7 @@ export class CollectinPointDto {
     name: string = '';
 
     @ValidateNested()
+    @IsDefined()
     location!: LocationDto;
 
     @Length(6, 18)

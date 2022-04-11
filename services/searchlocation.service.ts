@@ -1,8 +1,10 @@
+import Log from '@uk/log';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Service } from 'typedi';
 import { Nominatim } from '~/lib/nominatim';
 import { AsyncService } from './base.service';
+import { UserLocationService } from './userlocation.service';
 
 export type SearchLocation = {
     address: Exclude<Nominatim.SearchResultItem['address'], undefined>;
@@ -14,6 +16,7 @@ export type SearchLocation = {
 
 @Service()
 export class SearchLocationService extends AsyncService {
+    readonly log = new Log('SEARCHLOCATION');
     readonly nominatim = new Nominatim();
     readonly defaultMapLocation = {
         latitude: 52.5188239,
@@ -26,14 +29,26 @@ export class SearchLocationService extends AsyncService {
     @observable.ref
     options: SearchLocation[] = [];
 
-    constructor() {
+    constructor(private userLocationSvc: UserLocationService) {
         super();
         makeObservable(this);
     }
 
     @computed
+    get userPosition() {
+        if (this.userLocationSvc.position) {
+            return {
+                latitude: this.userLocationSvc.position.lat,
+                longitude: this.userLocationSvc.position.lng,
+            };
+        } else {
+            return;
+        }
+    }
+
+    @computed
     get position() {
-        const rv = this.location || this.defaultMapLocation;
+        const rv = this.location || this.userPosition || this.defaultMapLocation;
         return {
             lat: rv.latitude,
             lng: rv.longitude,
@@ -63,27 +78,15 @@ export class SearchLocationService extends AsyncService {
     };
 
     @action
-    setOptions = (opts?: SearchLocation | SearchLocation[]) => {
-        if (!opts) {
-            this.options = [];
-        } else if (Array.isArray(opts)) {
-            this.options = opts;
-        } else {
-            this.options = [opts];
-        }
-    };
-
-    @action
     handleChange = (value?: SearchLocation | null) => {
         this.location = value || undefined;
     };
 
     use = () => {
-        const model = useMemo(() => this, []);
+        this.userLocationSvc.use();
         useEffect(() => {
-            return () => clearTimeout(model.timemOut);
+            return () => clearTimeout(this.timemOut);
         });
-        return model;
     };
 
     private timemOut = 0;

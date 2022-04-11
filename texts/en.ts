@@ -53,6 +53,7 @@ export const en = {
         save: 'Save',
 
         isInt: 'Enter an integer',
+        isDefined: 'The field cannot be empty',
         isPhoneNumber: 'Enter phone number in international format ({{arg1}})',
         isLength: 'Minimum field length {{arg1}}, maximum - {{arg2}}',
         min: 'Number must be greater than or equal to {{arg1}}',

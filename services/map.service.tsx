@@ -1,14 +1,12 @@
-import { autorun } from 'mobx';
 import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import { Service } from 'typedi';
 import { GeoPosition } from '~/lib/types';
 import { BaseService } from './base.service';
-import { LocationService } from './location.service';
 
 @Service()
 export class MapService extends BaseService {
-    constructor(private location: LocationService) {
+    constructor() {
         super();
     }
 
@@ -16,19 +14,21 @@ export class MapService extends BaseService {
         const map = useMap();
         useEffect(() => {
             this.map = map;
-            const dispose = autorun(() => this.center());
+            this.map.on('zoomend', () => (this.zoom = map.getZoom()));
+            this.map.on('moveend', () => (this.centerPos = map.getCenter()));
+            if (this.centerPos && this.zoom) this.map.setView(this.centerPos, this.zoom);
             return () => {
-                dispose();
-                this.map = undefined!;
+                this.map = undefined;
             };
         }, [map]);
         return null;
     };
 
-    center = (pos?: GeoPosition) => {
-        pos ??= this.location.position;
-        pos && this.map.flyTo(pos, undefined, { duration: 1 });
+    center = (pos: GeoPosition) => {
+        this.map?.flyTo(pos, undefined, { duration: 1 });
     };
 
-    private map!: L.Map;
+    private map?: L.Map;
+    private zoom?: number;
+    private centerPos?: L.LatLng;
 }

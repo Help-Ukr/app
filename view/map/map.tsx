@@ -9,9 +9,10 @@ import { Circle, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'rea
 import { userMarkerIcon } from '~/lib/markers';
 import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
+import { DonationMapInitService } from '~/services/donationmapinit.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
-import { LocationService } from '~/services/location.service';
 import { MapService } from '~/services/map.service';
+import { UserLocationService } from '~/services/userlocation.service';
 import { useTr } from '~/texts';
 import { DonationPointMarker } from './markers/donation.point.marker';
 
@@ -20,7 +21,8 @@ const styleMap: CSSProperties = { width: '100%', height: '100%', position: 'fixe
 export const Map = observer(() => {
     const ptsvc = app.get(DontationPointsService).use();
     const map = app.get(MapService);
-    const location = app.get(LocationService).use();
+    const location = app.get(UserLocationService).use();
+    app.get(DonationMapInitService).use();
     const appUi = app.get(AppUIService);
     const [tr] = useTr('map');
 
@@ -86,7 +88,7 @@ export const Map = observer(() => {
                 }}
                 onClick={() => {
                     location.refresh();
-                    map.center();
+                    location.position && map.center(location.position);
                 }}
             >
                 {location.loading ? (

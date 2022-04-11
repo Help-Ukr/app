@@ -9,9 +9,10 @@ import { StrKey } from './types';
 export type Tr<T extends Tr.Args> = string & { [Tr.Sym]: T };
 
 export function Tr<R extends Record<string, Tr.NS>, L extends StrKey<R>>(resources: R, fallbackLng: L) {
+    let i18n: i18n;
     const TrProvider: FC = ({ children }) => {
         const { locale } = useRouter();
-        const i18n = useMemo(() => {
+        i18n = useMemo(() => {
             const inst = i18next.createInstance();
 
             inst.use(initReactI18next).init({
@@ -30,7 +31,14 @@ export function Tr<R extends Record<string, Tr.NS>, L extends StrKey<R>>(resourc
         return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
     };
 
-    return { useTr: useTranslation as Tr.UseTr<R[L]>, TrProvider, useTrAny: useTranslation };
+    return {
+        useTr: useTranslation as Tr.UseTr<R[L]>,
+        TrProvider,
+        useTrAny: useTranslation,
+        getTr<N extends keyof R[L]>(ns: N): Tr.Func<R[L][N]> {
+            return ((key: string, args: any) => i18n.t(key, { ...args, ns })) as any;
+        },
+    };
 }
 
 export namespace Tr {

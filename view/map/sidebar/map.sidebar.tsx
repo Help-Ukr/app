@@ -33,7 +33,7 @@ export const MapSidebar = observer(() => {
                 <Paper sx={{ m: 1 }}>
                     <DonationPointSearch />
                 </Paper>
-                <Box sx={{ px: 1, overflowY: 'auto', height: 'calc(100vh - 135px)' }}>
+                <Box sx={{ pl: 1, pr: 0.5, overflowY: 'auto', height: 'calc(100vh - 135px)' }}>
                     {ptsvc.filtered.map(pt => (
                         <Box sx={{ mt: 1 }} key={pt.id}>
                             <DonationPointCard pt={pt} />

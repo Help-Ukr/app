@@ -1,8 +1,11 @@
 import { getDistance } from 'geolib';
 import { computed, makeObservable } from 'mobx';
+import { GeoPosition } from '~/lib/types';
 import { app } from '~/services/app';
-import { LocationService } from '~/services/location.service';
+import { EnvService } from '~/services/env.service';
 import { NotificationService } from '~/services/notification.service';
+import { UserLocationService } from '~/services/userlocation.service';
+import { getTr } from '~/texts';
 import { BaseModel } from './base.model';
 
 export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
@@ -11,8 +14,16 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
         makeObservable(this);
     }
 
+    @computed get img() {
+        return 'https://picsum.photos/300/300?random=' + Math.random();
+    }
+
+    @computed get geoPosition(): GeoPosition {
+        return { lat: this.location.latitude, lng: this.location.longitude };
+    }
+
     @computed get distance() {
-        const { position } = app.get(LocationService);
+        const { position } = app.get(UserLocationService);
         return position ? getDistance(position, this.location) : 0;
     }
 
@@ -22,7 +33,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     @computed get telegramLink() {
-        return 'https://t.me/' + this.telegram?.replace(/^@/, '');
+        return this.telegram ? 'https://t.me/' + this.telegram.replace(/^@/, '') : '';
     }
 
     @computed get phoneLink() {
@@ -30,22 +41,34 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     @computed get instagramLink() {
-        return 'https://instagram.com/' + this.instagram?.replace(/^@/, '');
+        return this.instagram ? 'https://instagram.com/' + this.instagram.replace(/^@/, '') : '';
     }
 
     @computed get navigateLink() {
         return `https://www.google.com/maps/dir/?api=1&destination=${this.location.latitude},${this.location.longitude}`;
     }
 
+    @computed get url() {
+        return `${app.get(EnvService).NEXT_PUBLIC_BACKEND_URL}/donate?id=${this.id}`;
+    }
+
     share = () => {
+        const text = getTr('pointDetails')('shareContent', {
+            addr: this.location.address,
+            insta: this.instagramLink,
+            phone: this.phone,
+            tg: this.telegramLink,
+            url: this.url,
+            name: this.name,
+        });
         if (this.canShare) {
             navigator.share({
                 url: window.location.href,
                 title: this.name,
-                text: `Share text`,
+                text,
             });
         } else {
-            navigator.clipboard?.writeText('Clip text').catch(console.error);
+            navigator.clipboard?.writeText(text).catch(console.error);
             app.get(NotificationService).notify({ message: 'Copied', autoHideDuration: 5000 });
         }
     };

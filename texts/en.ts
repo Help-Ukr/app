@@ -64,5 +64,14 @@ export const en = {
         share: 'Share this point',
         navigate: 'Navigate to "{{addr}}" using Google Maps' as Tr<{ addr: string }>,
         call: 'Make a phone call to {{phone}}' as Tr<{ phone: string }>,
+        shareContent:
+            'Donation point {{name}}\n\n{{addr}}\n\nPhone: {{phone}}\nTelegram: {{tg}}\nInstagram: {{insta}}\nURL: {{url}}' as Tr<{
+                tg: string;
+                phone: string;
+                insta: string;
+                url: string;
+                addr: string;
+                name: string;
+            }>,
     },
 };

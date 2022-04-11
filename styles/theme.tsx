@@ -24,5 +24,14 @@ export const themeOptions = createTheme({
                 },
             },
         },
+        MuiCardContent: {
+            styleOverrides: {
+                root: {
+                    '&:last-child': {
+                        paddingBottom: 4,
+                    },
+                },
+            },
+        },
     },
 });

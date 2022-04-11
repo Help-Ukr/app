@@ -6,18 +6,15 @@ import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
 
-type Props = {
-    pt: DonationPoint;
-};
-
-const sxCard: SxProps = {
-    flex: '1 0 auto',
-    padding: { xs: 1, md: 2 },
+const sxCardContent: SxProps = {
+    display: 'flex',
+    flexDirection: 'column',
+    px: { xs: 1, md: 2 },
+    py: 1,
     pointerEvents: 'none',
-    ':last-child': { paddingBottom: { xs: 1, md: 2 } },
 };
 
-export const DonationPointCard = observer(({ pt }: Props) => {
+export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
     const ptsvc = app.get(DontationPointsService);
     const ref = useRef<HTMLDivElement>(null);
     const appUi = app.get(AppUIService);
@@ -37,17 +34,23 @@ export const DonationPointCard = observer(({ pt }: Props) => {
         >
             <CardMedia
                 component="img"
-                sx={{ width: { xs: 80, md: 120 }, objectFit: 'cover' }}
-                image={pt.image}
+                sx={{ width: { xs: 80, md: 120 }, objectFit: 'cover', display: { xs: 'none', md: 'block' } }}
+                image={pt.img}
                 alt={`Donations from ${pt.name}`}
             />
-            <CardContent sx={sxCard}>
-                <Typography variant="subtitle1">{pt.name}</Typography>
+            <CardContent sx={sxCardContent}>
+                <Typography sx={{ whiteSpace: { xs: 'nowrap' } }} variant="subtitle1">
+                    {pt.name}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {pt.location.address}
                 </Typography>
                 <Typography sx={{ mt: 1 }} variant="subtitle2">
-                    {pt.needed_items.map(item => item.item_category_icon)}
+                    {pt.needed_items.map(item => (
+                        <span key={item.item_category_id} title={item.item_category_name ?? ''}>
+                            {item.item_category_icon}
+                        </span>
+                    ))}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {pt.distanceStr}

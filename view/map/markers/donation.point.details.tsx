@@ -11,7 +11,6 @@ import { useTr } from '~/texts';
 
 export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
     const [tr] = useTr('pointDetails');
-    console.log(pt.image);
 
     return (
         <Card sx={{ backgroundColor: 'transparent', p: 0, m: 0, minWidth: 256, width: 256 }} elevation={0}>
@@ -55,7 +54,7 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 disableRipple
                 sx={{
                     position: 'absolute',
-                    backgroundImage: `url(${pt.image})`,
+                    backgroundImage: `url(${pt.img})`,
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',

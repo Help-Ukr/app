@@ -30,7 +30,6 @@ export const FieldLocation: FC<{ formField: MobXForm.InputProps<FieldLocationVal
             if (!searchLocationSvc.location && formField.value) {
                 searchLocationSvc.reverse({ lat: formField.value.latitude, lng: formField.value.longitude });
             } else if (!searchLocationSvc.location && userLocationSvc.position) {
-                debugger;
                 searchLocationSvc.reverse(userLocationSvc.position);
             }
         }, [formField.value, searchLocationSvc, userLocationSvc.position]);

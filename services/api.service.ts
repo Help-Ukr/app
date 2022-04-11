@@ -4,6 +4,7 @@
 import { getSession } from 'next-auth/react';
 import { Service } from 'typedi';
 import { HttpService } from '~/lib/http';
+import { getTrAny } from '~/texts';
 import { ReloadButton } from '~/view/reloadbutton';
 import { EnvService } from './env.service';
 import { NotificationService } from './notification.service';
@@ -39,7 +40,7 @@ export class ApiService extends HttpService<API.paths> {
 
     protected override onError(err: Error) {
         this.notification.notify({
-            message: err.message,
+            message: getTrAny('errors')(err.message),
             severity: 'error',
             button: ReloadButton,
         });

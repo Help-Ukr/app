@@ -3,7 +3,7 @@ import { de } from './de';
 import { en } from './en';
 import { uk } from './uk';
 
-export const { useTr, TrProvider, useTrAny, getTr } = Tr({ en, uk, de }, 'en');
+export const { useTr, TrProvider, useTrAny, getTr, getTrAny } = Tr({ en, uk, de }, 'en');
 export const languages = [
     { key: 'en', title: 'English' },
     { key: 'de', title: 'Deutsch' },

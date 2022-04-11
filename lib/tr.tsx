@@ -38,6 +38,9 @@ export function Tr<R extends Record<string, Tr.NS>, L extends StrKey<R>>(resourc
         getTr<N extends keyof R[L]>(ns: N): Tr.Func<R[L][N]> {
             return ((key: string, args: any) => i18n.t(key, { ...args, ns })) as any;
         },
+        getTrAny<N extends keyof R[L]>(ns: N): Tr.Func<Record<string, string>> {
+            return ((key: string, args: any) => i18n.t(key, { ...args, ns })) as any;
+        },
     };
 }
 

@@ -49,7 +49,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     @computed get url() {
-        return `${app.get(EnvService).NEXT_PUBLIC_BACKEND_URL}/donate?id=${this.id}`;
+        return `${app.get(EnvService).NEXT_PUBLIC_DOMAIN}/donate?id=${this.id}`;
     }
 
     share = () => {

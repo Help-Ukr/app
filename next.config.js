@@ -10,6 +10,9 @@ const nextConfig = {
         locales: ['en', 'de', 'uk'],
         defaultLocale: 'en',
     },
+    experimental: {
+        outputStandalone: true,
+    },
 };
 
 module.exports = withPlugins([withBundleAnalyzer], nextConfig);

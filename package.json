@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "gen-api": "./scripts/generate-api.sh"
+        "gen-api": "./scripts/generate-api.sh",
+        "docker": "docker build --pull . -t registry.softdrive.com.ua/donation && read && docker push registry.softdrive.com.ua/donation"
     },
     "dependencies": {
         "@emotion/react": "^11.9.0",

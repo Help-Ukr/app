@@ -4,6 +4,7 @@ import { Service } from 'typedi';
 @Service()
 export class EnvService {
     NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
+    NEXT_PUBLIC_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
     NEXT_PUBLIC_DEV_TOKEN = process.env.NEXT_PUBLIC_DEV_TOKEN ?? null;
     GOOGLE_ID = process.env.GOOGLE_ID!;
     GOOGLE_SECRET = process.env.GOOGLE_SECRET!;

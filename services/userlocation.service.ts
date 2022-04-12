@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { useEffect } from 'react';
 import { Service } from 'typedi';
-import { GeoPosition } from '~/lib/types';
+import type { GeoPosition } from '~/lib/types';
 import { AsyncService } from './base.service';
 
 @Service()
@@ -14,13 +14,12 @@ export class UserLocationService extends AsyncService {
         makeObservable(this);
     }
 
-    use() {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+    use = () => {
         useEffect(() => {
             this.refresh();
         }, []);
         return this;
-    }
+    };
 
     refresh = () => {
         this.async(() =>

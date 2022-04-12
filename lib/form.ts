@@ -6,13 +6,13 @@ import { O } from 'ts-toolbelt';
 
 type DtoClass = new (...args: any[]) => any;
 export class MobXFormField<T extends DtoClass> {
-    constructor(private dto: T, public name: keyof T) {
+    constructor(private dto: T, public name: keyof T, private props: { className: string }) {
         this.value = dto[name];
         makeObservable(this);
     }
 
     readonly label = this.name;
-    readonly dtoname = this.dto.constructor.name;
+    readonly dtoname = this.props.className;
 
     @observable readonly value: any = undefined;
     @observable readonly validation?: ValidationError;
@@ -48,7 +48,7 @@ export class MobXForm<T extends DtoClass, Dto = InstanceType<T>> {
         },
     ) {
         for (const f in this.data) {
-            this.fields.set(f as any, new MobXFormField(this.data, f as any));
+            this.fields.set(f as any, new MobXFormField(this.data, f as any, Dto as any));
         }
     }
 

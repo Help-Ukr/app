@@ -4,7 +4,8 @@ import {
     IsDefined,
     IsInt,
     IsLatitude,
-    IsLongitude, IsOptional,
+    IsLongitude,
+    IsOptional,
     Length,
     MaxLength,
     MinLength,
@@ -33,6 +34,7 @@ class NeededItemsDto {
     item_category_id!: number;
 }
 export class CollectinPointDto {
+    static readonly className: string = 'CollectinPointDto';
     @IsBoolean()
     enabled: boolean = false;
 

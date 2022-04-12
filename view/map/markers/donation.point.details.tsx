@@ -4,10 +4,32 @@ import IconInstagram from '@mui/icons-material/Instagram';
 import IconNavigate from '@mui/icons-material/Navigation';
 import IconShare from '@mui/icons-material/Share';
 import IconTelegram from '@mui/icons-material/Telegram';
-import { Box, Card, CardActions, CardContent, CardHeader, Fab, IconButton, Tooltip, Typography } from '@mui/material';
+import {
+    Box,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Fab,
+    IconButton,
+    SxProps,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import { FC } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
 import { useTr } from '~/texts';
+
+const contentBoxSx: SxProps = {
+    overflowY: 'scroll',
+    marginBottom: 8,
+    boxSizing: 'content-box',
+    paddingRight: 25,
+    width: '100%',
+    minHeight: '10vh',
+    maxHeight: '20vh',
+    mb: 1,
+};
 
 export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
     const [tr] = useTr('pointDetails');
@@ -23,19 +45,8 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 title={<Typography variant="body1">{pt.name}</Typography>}
             />
             <CardContent sx={{ py: 0 }}>
-                <Box
-                    sx={{
-                        overflowY: 'scroll',
-                        marginBottom: 8,
-                        boxSizing: 'content-box',
-                        paddingRight: 25,
-                        width: '100%',
-                        minHeight: '10vh',
-                        maxHeight: '20vh',
-                        mb: 1,
-                    }}
-                >
-                    {pt.needed_items.map(item => (
+                <Box sx={contentBoxSx}>
+                    {pt.items.map(item => (
                         <div key={item.item_category_id}>
                             <Typography display="inline">{item.item_category_icon}</Typography>
                             <Typography display="inline" variant="subtitle2" sx={{ ml: 2 }}>

@@ -5,6 +5,7 @@ import { DonationPoint } from '~/model/donationpoint.model';
 import { app } from '~/services/app';
 import { AppUIService } from '~/services/appui.service';
 import { DontationPointsService } from '~/services/donationpoints.service';
+import { useTr } from '~/texts';
 
 const sxCardContent: SxProps = {
     flex: 1,
@@ -18,6 +19,7 @@ export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
     const ptsvc = app.get(DontationPointsService);
     const ref = useRef<HTMLDivElement>(null);
     const appUi = app.get(AppUIService);
+    const [tr] = useTr('pointDetails');
 
     useEffect(() => {
         if (ptsvc.selected === pt) {
@@ -54,7 +56,7 @@ export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
                         ))}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {pt.distanceStr}
+                        {tr('distance', { dist: pt.distanceStr })}
                     </Typography>
                 </CardContent>
             </CardActionArea>

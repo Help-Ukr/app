@@ -77,7 +77,7 @@ export const en = {
         navigate: 'Navigate to "{{addr}}" using Google Maps' as Tr<{ addr: string }>,
         call: 'Make a phone call to {{phone}}' as Tr<{ phone: string }>,
         shareContent:
-            'Donation point {{name}}\n\n{{addr}}\n\nPhone: {{phone}}\nTelegram: {{tg}}\nInstagram: {{insta}}\nURL: {{url}}' as Tr<{
+            'Donation point "{{name}}"\n\n{{addr}}\n\nURL: {{url}}\n\nPhone: {{phone}}\n\nTelegram: {{tg}}\n\nInstagram: {{insta}}' as Tr<{
                 tg: string;
                 phone: string;
                 insta: string;
@@ -85,6 +85,7 @@ export const en = {
                 addr: string;
                 name: string;
             }>,
+        copied: 'Copied',
     },
     donate: {
         filterPlaceholder: 'Find donation point',

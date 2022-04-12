@@ -107,7 +107,16 @@ export class HttpService<T extends ApiDescription<T>> {
                 for (const m of this.middlewares) {
                     await m(req, originPath);
                 }
-                const resp = await fetch(req);
+                let init: RequestInit;
+                const { method } = req;
+                if (method === 'POST' || method === 'PATCH' || method === 'PUT') {
+                    const body = await req.clone().text();
+                    const { cache, credentials, headers, integrity, mode, redirect, referrer } = req;
+                    init = { body, cache, credentials, headers, integrity, mode, redirect, referrer, method };
+                } else {
+                    init = req;
+                }
+                const resp = await fetch(req.url, init);
                 const contType = resp.headers.get('content-type') ?? '*/*';
                 let rv;
                 const isJson = contType === 'application/json';

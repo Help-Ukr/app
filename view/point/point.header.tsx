@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { useTr } from '~/texts';
 
 type Props = {
@@ -12,7 +12,7 @@ const PointHeader = ({ title, bgImg }: Props) => {
     const url = bgImg || tr('defaultBgImageUrl');
 
     return (
-        <Box
+        <Paper
             sx={{
                 position: 'relative',
                 color: '#fff',
@@ -49,7 +49,7 @@ const PointHeader = ({ title, bgImg }: Props) => {
                     {text}
                 </Typography>
             </Box>
-        </Box>
+        </Paper>
     );
 };
 

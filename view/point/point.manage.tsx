@@ -1,4 +1,4 @@
-import { Box, Paper, Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { CollectinPointDto } from '~/dto/dto.collectionpoint';
@@ -7,6 +7,7 @@ import { CollectionPoint } from '~/model/collectionpoint.model';
 import { app } from '~/services/app';
 import { ColletionPointService } from '~/services/collectionpoint.service';
 import { useTr } from '~/texts';
+import { AsyncView } from '../asyncview';
 import { PointGeneral } from './point.general';
 import PointHeader from './point.header';
 import { PointItems } from './point.items';
@@ -20,9 +21,8 @@ export const PointManage = observer(() => {
     const cpSvc = app.get(ColletionPointService);
     const form = cpSvc.useForm(cpSvc.point);
     cpSvc.use();
-
     return (
-        <Paper>
+        <AsyncView call={cpSvc}>
             <PointHeader title={cpSvc.point?.name} bgImg={cpSvc.point?.image} />
             <Tabs
                 value={tabIdx}
@@ -40,7 +40,7 @@ export const PointManage = observer(() => {
             <TabPanel index={1} value={tabIdx}>
                 <PointItems form={form} />
             </TabPanel>
-        </Paper>
+        </AsyncView>
     );
 });
 
@@ -54,14 +54,14 @@ function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
     return (
-        <div
+        <Box
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && <Box>{children}</Box>}
-        </div>
+            {value === index && <>{children}</>}
+        </Box>
     );
 }

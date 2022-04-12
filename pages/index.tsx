@@ -1,4 +1,3 @@
-import { Paper } from '@mui/material';
 import type { NextPage } from 'next';
 import { useTr } from '~/texts';
 import { HeroSection } from '~/view/herosection';
@@ -10,10 +9,8 @@ const Home: NextPage = () => {
 
     return (
         <PageLayout>
-            <Paper>
-                <HeroSection title={tr('title')} subtitle={tr('subtitle')} imgSrc="/images/hero.jpg" />
-                <SelectUserStory />
-            </Paper>
+            <HeroSection title={tr('title')} subtitle={tr('subtitle')} imgSrc="/images/hero.jpg" />
+            <SelectUserStory />
         </PageLayout>
     );
 };

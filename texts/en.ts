@@ -1,6 +1,10 @@
 import { Tr } from '~/lib/tr';
 
 export const en = {
+    meta: {
+        title: 'Stand with Ukraine',
+        description: 'Centralized Donations Management',
+    },
     home: {
         title: 'Managing all material donations in one place',
         subtitle: 'Take part and help the Ukraine now!',

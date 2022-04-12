@@ -11,7 +11,6 @@ const ThemeFieldPhone = styled('div')(({ theme }) => ({
     '.react-tel-input': {
         '.special-label': {
             backgroundColor: theme.palette.background.paper,
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
             color: theme.palette.text.secondary,
             left: theme.spacing(1),
         },
@@ -30,7 +29,6 @@ const ThemeFieldPhone = styled('div')(({ theme }) => ({
         },
         '.country-list': {
             backgroundColor: theme.palette.background.paper,
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
             '.country.highlight': {
                 backgroundColor: theme.palette.background.paper,
                 backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))',

@@ -18,7 +18,7 @@ export class ColletionPointService extends AsyncService {
     }
 
     use = () => {
-        this.useAsync(this.reload);
+        this.useAsync(() => this.reload());
         return this;
     };
 
@@ -40,15 +40,7 @@ export class ColletionPointService extends AsyncService {
         );
     };
 
-    private onSubmit = async ({
-        enabled,
-        name,
-        location,
-        phone,
-        telegram,
-        instagram,
-        needed_items,
-    }: CollectinPointDto) => {
+    private onSubmit = ({ enabled, name, location, phone, telegram, instagram, needed_items }: CollectinPointDto) => {
         const body: CollectinPointDto = {
             enabled,
             name,
@@ -58,11 +50,13 @@ export class ColletionPointService extends AsyncService {
             instagram,
             needed_items,
         };
-        if (this.point) {
-            await this.api.patch('/api/collect-point', { body });
-        } else {
-            await this.api.post('/api/collect-point', { body });
-        }
-        await this.reload();
+        this.async(async () => {
+            if (this.point) {
+                await this.api.patch('/api/collect-point', { body });
+            } else {
+                await this.api.post('/api/collect-point', { body });
+            }
+            return await this.reload();
+        });
     };
 }

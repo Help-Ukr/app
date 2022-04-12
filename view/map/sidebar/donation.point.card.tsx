@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, SxProps, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, SxProps, Tooltip, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
@@ -12,7 +12,6 @@ const sxCardContent: SxProps = {
     flexDirection: 'column',
     px: { xs: 1, md: 2 },
     py: 1,
-    pointerEvents: 'none',
 };
 
 export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
@@ -28,35 +27,37 @@ export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
 
     return (
         <Card
+            sx={{ maxHeight: 135 }}
             ref={ref}
-            sx={{ display: 'flex', width: '100%' }}
             elevation={ptsvc.selected === pt ? 17 : 3}
             onClick={() => ptsvc.setSelected(pt)}
         >
-            <CardMedia
-                component="img"
-                sx={{ width: { xs: 80, md: 120 }, objectFit: 'cover', display: { xs: 'none', md: 'block' } }}
-                image={pt.img}
-                alt={`Donations from ${pt.name}`}
-            />
-            <CardContent sx={sxCardContent}>
-                <Typography sx={{ whiteSpace: { xs: 'nowrap' } }} variant="subtitle1">
-                    {pt.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {pt.location.address}
-                </Typography>
-                <Typography sx={{ mt: 1 }} variant="subtitle2">
-                    {pt.needed_items.map(item => (
-                        <span key={item.item_category_id} title={item.item_category_name ?? ''}>
-                            {item.item_category_icon}
-                        </span>
-                    ))}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {pt.distanceStr}
-                </Typography>
-            </CardContent>
+            <CardActionArea sx={{ display: 'flex' }}>
+                <CardMedia
+                    component="img"
+                    sx={{ maxWidth: 135, objectFit: 'cover', display: { xs: 'none', md: 'flex' } }}
+                    image={pt.img}
+                    alt={`Donations from ${pt.name}`}
+                />
+                <CardContent sx={sxCardContent}>
+                    <Typography variant="subtitle1" overflow="hidden" height={28}>
+                        {pt.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" overflow="hidden" height={40}>
+                        {pt.location.address}
+                    </Typography>
+                    <Typography sx={{ mt: 1 }} variant="subtitle2" overflow="hidden" height={22}>
+                        {pt.needed_items.map(item => (
+                            <Tooltip key={item.item_category_id} title={item.item_category_name || ''}>
+                                <span>{item.item_category_icon}</span>
+                            </Tooltip>
+                        ))}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {pt.distanceStr}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
         </Card>
     );
 });

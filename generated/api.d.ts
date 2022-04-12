@@ -82,11 +82,11 @@ export interface components {
       };
       needed_items: {
         /** @example 2 */
-        item_category_id?: number;
+        item_category_id: number;
         /** @example University */
-        item_category_name?: string;
+        item_category_name: string;
         /** @example 🔦 */
-        item_category_icon?: string;
+        item_category_icon: string;
       }[];
       /**
        * Format: date-time
@@ -333,6 +333,8 @@ export interface operations {
           "application/json": components["schemas"]["CollectPoint"];
         };
       };
+      /** No data found */
+      204: never;
       /** Unauthenticated */
       401: unknown;
       /** Too Many Requests */

@@ -1,5 +1,13 @@
 import Log from '@uk/log';
-import { action, computed, CreateObservableOptions, IObservableArray, makeObservable, observable } from 'mobx';
+import {
+    action,
+    computed,
+    CreateObservableOptions,
+    IObservableArray,
+    makeObservable,
+    observable,
+    runInAction,
+} from 'mobx';
 import React from 'react';
 import { O } from 'ts-toolbelt';
 
@@ -92,6 +100,9 @@ export abstract class AsyncService extends BaseService {
             if (this.asyncState === 'idle') {
                 this.async(req);
             }
+            return () => {
+                runInAction(() => (this.self.asyncState = 'idle'));
+            };
         }, []);
         return this;
     }

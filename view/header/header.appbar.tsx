@@ -1,4 +1,3 @@
-import { SxProps } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,15 +10,6 @@ import { useTr } from '~/texts';
 import { LangMenu } from './header.langmenu';
 import { NavMenu } from './header.navmenu';
 import { UserMenu } from './header.usermenu';
-import logoImg from '/images/logo.png';
-
-const Logo = (props: { sx: SxProps }) => {
-    return (
-        <Box sx={props.sx}>
-            <Image src={logoImg} width={40} height={40} alt="logoImg" />
-        </Box>
-    );
-};
 
 export const HeaderAppBar = () => {
     const [tr] = useTr('routes');
@@ -28,7 +18,9 @@ export const HeaderAppBar = () => {
     return (
         <AppBar position="sticky">
             <Toolbar>
-                <Logo sx={{ display: { xs: 'none', md: 'block' } }} />
+                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                    <Image src={'/images/logo.png'} width={40} height={40} alt="logoImg" />
+                </Box>
                 <NavMenu />
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     {appUi.pages.map(page => (

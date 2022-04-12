@@ -85,14 +85,18 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={tr('telegram', { tg: pt.telegram })}>
-                    <IconButton disabled={!pt.telegram} href={pt.telegramLink} target="_blank">
-                        <IconTelegram />
-                    </IconButton>
+                    <span>
+                        <IconButton disabled={!pt.telegram} href={pt.telegramLink} target="_blank">
+                            <IconTelegram />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title={tr('instagram', { insta: pt.instagram })}>
-                    <IconButton disabled={!pt.instagram} href={pt.instagramLink} target="_blank">
-                        <IconInstagram />
-                    </IconButton>
+                    <span>
+                        <IconButton disabled={!pt.instagram} href={pt.instagramLink} target="_blank">
+                            <IconInstagram />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title={tr('navigate', { addr: pt.location.address })}>
                     <IconButton href={pt.navigateLink} target="_blank">

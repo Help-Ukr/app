@@ -2,7 +2,7 @@ import { Paper } from '@mui/material';
 import Head from 'next/head';
 import { FC } from 'react';
 import { useTr } from '~/texts';
-import { HeaderAppBar } from '~/view/header/headre.appbar';
+import { HeaderAppBar } from '~/view/header/header.appbar';
 import { Notifications } from '~/view/notifications';
 
 export const PageLayout: FC = ({ children }) => {

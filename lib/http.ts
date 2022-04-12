@@ -130,7 +130,9 @@ export class HttpService<T extends ApiDescription<T>> {
                     throw new HttpError(resp.status, rv);
                 } else {
                     const value = isJson ? rv : { [contType]: rv };
-                    return resp.status === 200 ? value : { [resp.status]: value };
+                    const ret = resp.status === 200 ? value : { [resp.status]: value };
+                    p.finally({ rv: ret });
+                    return ret;
                 }
             })
             .catch(err => {
@@ -145,8 +147,8 @@ export class HttpService<T extends ApiDescription<T>> {
 }
 
 export class HttpError extends Error {
-    constructor(readonly status: number, readonly extra: any) {
-        super('ERR_HTTP_' + status);
+    constructor(readonly status: number, readonly extra?: any) {
+        super(extra?.message ?? 'ERR_HTTP_' + status);
     }
 }
 
@@ -156,14 +158,17 @@ type ConvertArgs<T> = (T extends { requestBody: { content: { 'application/json':
     (T extends { parameters: { path: any } } ? { params: T['parameters']['path'] } : {}) &
     (T extends { parameters: { query: any } } ? { query: T['parameters']['query'] } : {});
 
-type ConvertResponse<T> = 200 extends keyof T
-    ? T extends { 200: any }
-        ? ConvertContent<T[200]>
-        : never
-    : { [P in keyof T]: ConvertContent<T[P]> };
+type ConvertResponse<T> = Extract<keyof T, HttpSuccess> extends 200
+    ? Get200<T>
+    : Extract<keyof T, HttpSuccess> extends HttpSuccess
+    ? Get200<T> | { [P in Exclude<Extract<keyof T, HttpSuccess>, 200>]: ConvertContent<T[P]> }
+    : 'NO_FATE';
+type Get200<T> = T extends { 200: any } ? ConvertContent<T[200]> : never;
 type ConvertContent<T> = T extends { content: any } ? ConvertContentType<T['content']> : never;
 type ConvertContentType<T> = keyof T extends 'application/json'
     ? T extends { 'application/json': any }
         ? T['application/json']
         : never
     : T;
+
+type HttpSuccess = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;

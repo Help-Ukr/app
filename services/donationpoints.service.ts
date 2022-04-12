@@ -51,16 +51,7 @@ export class DontationPointsService extends AsyncService {
     reload = async () => {
         const pts = await this.api.get('/api/collect-point', { query: {} });
         runInAction(() => {
-            /*            for (let i = 0; i < 10; i++) {
-                const pt = Object.assign({}, pts[i] ?? pts[0]);
-                pt.location = Object.assign({}, pts[i]?.location ?? pts[0].location);
-                pt.id = i + 1;
-                pt.location!.latitude! = +pt.location!.latitude! + Math.random();
-                pt.location!.longitude! = +pt.location!.longitude! + Math.random();
-                pt.image = 'https://picsum.photos/300/300?random=' + Math.random();
-                this.points.push(new DonationPoint(pt as any));
-            }*/
-            this.points.replace(pts.map(p => new DonationPoint(p as any)));
+            this.points.replace(pts.map(p => new DonationPoint(p)));
         });
     };
 

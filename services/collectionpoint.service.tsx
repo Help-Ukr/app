@@ -24,9 +24,11 @@ export class ColletionPointService extends AsyncService {
 
     reload = async () => {
         const pt = await this.api.get('/api/collect-point/my', {});
-        runInAction(() => {
-            this.point = new CollectionPoint(pt as any);
-        });
+        if (!('204' in pt)) {
+            runInAction(() => {
+                this.point = new CollectionPoint(pt);
+            });
+        }
     };
 
     useForm = (initialData?: O.Partial<CollectinPointDto, 'deep'>) => {

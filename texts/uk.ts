@@ -65,6 +65,9 @@ export const uk = {
         share: 'Поділіться цією точкою',
         navigate: 'Прокласти маршрут до "{{addr}}" через Google Maps',
         call: 'Зателефонувати за номером {{phone}}',
+        shareContent:
+            'Точка збору пожертв "{{name}}"\n\n{{addr}}\n\nЛінк: {{url}}\n\nТелефон: {{phone}}\n\nTelegram: {{tg}}\n\nInstagram: {{insta}}',
+        copied: 'Скопійовано',
     },
     donate: {
         filterPlaceholder: 'Знайдіть пункт пожертв',

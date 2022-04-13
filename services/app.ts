@@ -1,3 +1,4 @@
+import Log from '@uk/log';
 import 'reflect-metadata';
 import Container, { Constructable, Token } from 'typedi';
 import { AbstractConstructable } from 'typedi/types/types/abstract-constructable.type';
@@ -12,3 +13,5 @@ export const app: Omit<typeof Container, 'get'> & {
 } = Container;
 
 app.reset();
+
+process.env.NODE_ENV === 'production' && (Log.loggers.length = 0);

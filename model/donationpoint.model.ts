@@ -72,6 +72,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
                     text,
                 })
                 .catch(err => {
+                    if (err instanceof DOMException && err.code === err.ABORT_ERR) return;
                     console.error(err);
                     app.get(NotificationService).notify({ message: err.message });
                 });
@@ -84,6 +85,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
                     });
                 },
                 err => {
+                    if (err instanceof DOMException && err.code === err.ABORT_ERR) return;
                     console.error(err);
                     app.get(NotificationService).notify({ message: err.message });
                 },

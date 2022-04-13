@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 
@@ -11,8 +11,11 @@ export const AuthLayout: FC = ({ children }) => {
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.replace('/signin');
+        } else if (session && !session.token) {
+            signOut();
+            router.replace('/signin');
         }
-    }, [router, status]);
+    }, [router, session, status]);
 
     return <Box>{isLoggedIn ? children : null}</Box>;
 };

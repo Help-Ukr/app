@@ -1,9 +1,9 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
 import { CollectionPoint } from '~/model/collectionpoint.model';
+import { CollectinPointDto } from '~/model/dto/dto.collectionpoint';
 import { app } from '~/services/app';
 import { ColletionPointService } from '~/services/collectionpoint.service';
 import { useTr } from '~/texts';

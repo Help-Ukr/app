@@ -13,6 +13,7 @@ export const PageLayout: FC = ({ children }) => {
                 <title>{tr('title')}</title>
                 <meta name="description" content={tr('description')} />
                 <link rel="icon" href="/favicon.ico" />
+                <link rel="manifest" href="/site.webmanifest" />
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
             <HeaderAppBar />

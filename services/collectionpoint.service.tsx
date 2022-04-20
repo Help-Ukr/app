@@ -42,10 +42,20 @@ export class ColletionPointService extends AsyncService {
         );
     };
 
-    private onSubmit = ({ enabled, name, location, phone, telegram, instagram, needed_items }: CollectinPointDto) => {
+    private onSubmit = ({
+        enabled,
+        name,
+        description,
+        location,
+        phone,
+        telegram,
+        instagram,
+        needed_items,
+    }: CollectinPointDto) => {
         const body: CollectinPointDto = {
             enabled,
             name,
+            description,
             location,
             phone,
             telegram,

@@ -41,6 +41,9 @@ export class CollectinPointDto {
     @Length(3, 64)
     name: string = '';
 
+    @MaxLength(512)
+    description: string = '';
+
     @ValidateNested()
     @IsDefined()
     location!: LocationDto;

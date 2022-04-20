@@ -18,6 +18,7 @@ export const PointGeneral: FC<CollectinPointForm> = observer(({ form, point }) =
         <Container maxWidth="md">
             <Box sx={{ pt: 4, pb: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <FieldText formField={form.$.name} />
+                <FieldText formField={form.$.description} multiline minRows={2} />
                 <FieldLocation formField={form.$.location} initial={point?.location} />
                 <FieldPhone formField={form.$.phone} />
                 <FieldText

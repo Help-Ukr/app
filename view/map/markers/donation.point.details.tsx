@@ -14,7 +14,7 @@ import {
     IconButton,
     SxProps,
     Tooltip,
-    Typography,
+    Typography
 } from '@mui/material';
 import { FC } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
@@ -37,12 +37,12 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
     return (
         <Card sx={{ backgroundColor: 'transparent', p: 0, m: 0, minWidth: 256, width: 256 }} elevation={0}>
             <CardHeader
+                title={<Typography variant="subtitle1">{pt.name}</Typography>}
                 subheader={
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary">
                         {pt.location.address}
                     </Typography>
                 }
-                title={<Typography variant="body1">{pt.name}</Typography>}
             />
             <CardContent sx={{ py: 0 }}>
                 <Box sx={contentBoxSx}>

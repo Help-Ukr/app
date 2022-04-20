@@ -47,6 +47,7 @@ export const en = {
         enabled: 'Enable',
         location: 'Address',
         name: 'Point name',
+        description: 'Short description',
         phone: 'Phone number',
         telegram: 'Telegram link',
         instagram: 'Instagram link',

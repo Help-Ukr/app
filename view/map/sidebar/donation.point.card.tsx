@@ -45,9 +45,6 @@ export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
                     <Typography variant="subtitle1" overflow="hidden" height={28}>
                         {pt.name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" overflow="hidden" height={40}>
-                        {pt.location.address}
-                    </Typography>
                     <Typography sx={{ mt: 1 }} variant="subtitle2" overflow="hidden" height={22}>
                         {pt.needed_items.map(item => (
                             <Tooltip key={item.item_category_id} title={item.item_category_name || ''}>
@@ -55,7 +52,10 @@ export const DonationPointCard = observer<{ pt: DonationPoint }>(({ pt }) => {
                             </Tooltip>
                         ))}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="caption" color="text.secondary" overflow="hidden" height={40}>
+                        {pt.location.address}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
                         {tr('distance', { dist: pt.distanceStr })}
                     </Typography>
                 </CardContent>

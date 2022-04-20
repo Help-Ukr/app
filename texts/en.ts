@@ -1,4 +1,4 @@
-import { Tr } from '~/lib/tr';
+import type { Tr } from '~/lib/tr';
 
 export const en = {
     meta: {

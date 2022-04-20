@@ -8,6 +8,9 @@
         "start": "next start",
         "lint": "next lint",
         "gen-api": "./scripts/generate-api.sh",
+        "gen-tr": "yarn --silent ts-node -P tsconfig.scripts.json scripts/generate-translations.ts > texts/_$LANG.ts; mv -f texts/_$LANG.ts texts/$LANG.ts",
+        "gen-tr-uk": "LANG=uk yarn --silent gen-tr",
+        "gen-tr-de": "LANG=de yarn --silent gen-tr",
         "docker": "docker build --pull . -t registry.softdrive.com.ua/donation && read && docker push registry.softdrive.com.ua/donation"
     },
     "dependencies": {
@@ -45,6 +48,7 @@
         "eslint-config-next": "12.1.4",
         "next-compose-plugins": "^2.2.1",
         "openapi-typescript": "^5.2.0",
+        "ts-node": "^10.7.0",
         "ts-toolbelt": "^9.6.0",
         "typescript": "4.6.3"
     },

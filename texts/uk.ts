@@ -38,11 +38,14 @@ export const uk = {
         tabGeneral: 'Інформація',
         tabItems: 'Речі',
         creatingPoint: 'Створення нового пункту збору',
+        defaultBgImageUrl:
+            '----- https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920',
     },
     CollectinPointDto: {
         enabled: 'Увімкнути',
         location: 'Адреса',
         name: 'Назва точки',
+        description: '----- Short description',
         phone: 'Номер телефону',
         telegram: 'Посилання на телеграм',
         instagram: 'Посилання на інстаграм',
@@ -51,7 +54,6 @@ export const uk = {
         infoLatLng: '(широта: {{latitude}}, довгота: {{longitude}})',
         noOptions: 'Немає параметрів',
         save: 'Зберегти',
-
         isInt: 'Введіть ціле число',
         isDefined: 'Поле не може бути порожнім',
         isPhoneNumber: 'Введіть номер телефону у міжнародному форматі ({{arg1}})',
@@ -61,6 +63,9 @@ export const uk = {
         minLength: 'Мінімальна довжина поля {{arg1}}',
         maxLength: 'Максимальна довжина поля {{arg1}}',
     },
+    map: {
+        itsyou: '----- You are here',
+    },
     pointDetails: {
         distance: '~{{dist}} від тебе',
         copy: 'Копіювати в буфер обміну',
@@ -69,8 +74,17 @@ export const uk = {
         share: 'Поділіться цією точкою',
         navigate: 'Прокласти маршрут до "{{addr}}" через Google Maps',
         call: 'Зателефонувати за номером {{phone}}',
-        shareContent:
-            'Точка збору пожертв "{{name}}"\n\n{{addr}}\n\nЛінк: {{url}}\n\nТелефон: {{phone}}\n\nTelegram: {{tg}}\n\nInstagram: {{insta}}',
+        shareContent: `Точка збору пожертв "{{name}}"
+
+{{addr}}
+
+Лінк: {{url}}
+
+Телефон: {{phone}}
+
+Telegram: {{tg}}
+
+Instagram: {{insta}}`,
         copied: 'Скопійовано',
     },
     donate: {

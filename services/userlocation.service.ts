@@ -3,13 +3,14 @@ import { useEffect } from 'react';
 import { Service } from 'typedi';
 import type { GeoPosition } from '~/lib/types';
 import { AsyncService } from './base.service';
+import { EnvService } from './env.service';
 
 @Service()
 export class UserLocationService extends AsyncService {
     @observable.ref
     position?: GeoPosition = undefined;
 
-    constructor() {
+    constructor(private env: EnvService) {
         super();
         makeObservable(this);
     }
@@ -36,10 +37,10 @@ export class UserLocationService extends AsyncService {
                         },
                     );
                 }),
-                fetch('http://ip-api.com/json?fields=status,message,lat,lon')
-                    .then(r => r.json())
+                fetch(`/api/geoip`)
+                    .then(r => (r.status === 200 ? r.json() : null))
                     .then(
-                        (r: any) => !this.position && this.setPosition({ hdop: 5000, lat: r.lat, lng: r.lon }),
+                        (r: any) => r && !this.position && this.setPosition(r),
                         err => this.log.error('GeoIPError', err),
                     ),
             ]),

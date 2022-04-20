@@ -9,7 +9,7 @@ import {
     ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
-    Switch
+    Switch,
 } from '@mui/material';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -23,7 +23,7 @@ export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
     const cisSvc = app.get(CollectItemsService);
     cisSvc.use();
     return (
-        <Container maxWidth="md" sx={{ mt: 4, pb: 4 }}>
+        <Container maxWidth="md" sx={{ mt: 4, pb: 4, pr: 0, pl: 0 }}>
             <List>
                 {cisSvc.items.map(item => (
                     <RenderListItem key={item.id} item={item} cisSvc={cisSvc} form={form} />
@@ -52,8 +52,10 @@ const RenderListItem: FC<CollectinPointForm & { item: CollectItem; cisSvc: Reado
         return (
             <>
                 <ListItem button onClick={() => isCollapsed && cisSvc.handleOpen(open ? undefined : item.id)}>
-                    <ListItemIcon>{isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}</ListItemIcon>
-                    <ListItemAvatar>{item.icon}</ListItemAvatar>
+                    <ListItemIcon sx={{ minWidth: 28 }}>
+                        {isCollapsed && (open ? <ExpandLess /> : <ExpandMore />)}
+                    </ListItemIcon>
+                    <ListItemAvatar sx={{ minWidth: 28 }}>{item.icon}</ListItemAvatar>
                     <ListItemText primary={item.name} />
                     <ListItemSecondaryAction>
                         <Switch color="secondary" onChange={handleChange} checked={idx >= 0} />

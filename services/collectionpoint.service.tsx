@@ -2,9 +2,9 @@ import { makeObservable, observable, runInAction } from 'mobx';
 import { useMemo } from 'react';
 import { O } from 'ts-toolbelt';
 import { Service } from 'typedi';
-import { CollectinPointDto } from '~/dto/dto.collectionpoint';
 import { MobXForm } from '~/lib/form';
 import { CollectionPoint } from '~/model/collectionpoint.model';
+import { CollectinPointDto } from '~/model/dto/dto.collectionpoint';
 import { ApiService } from './api.service';
 import { AsyncService } from './base.service';
 

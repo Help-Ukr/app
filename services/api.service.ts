@@ -8,7 +8,7 @@ import { getTrAny } from '~/texts';
 import { ReloadButton } from '~/view/reloadbutton';
 import { EnvService } from './env.service';
 import { NotificationService } from './notification.service';
-const nonAuthrizedURLs: (keyof API.paths)[] = ['/api/login', '/api/collect-point'];
+const nonAuthrizedURLs: (keyof API.paths)[] = ['/api-v1/login', '/api-v1/collect-point'];
 @Service()
 export class ApiService extends HttpService<API.paths> {
     constructor(env: EnvService, private notification: NotificationService) {
@@ -17,7 +17,7 @@ export class ApiService extends HttpService<API.paths> {
     }
 
     logout = async () => {
-        await this.get('/api/logout', {});
+        await this.get('/api-v1/logout', {});
         this.token = null;
     };
 

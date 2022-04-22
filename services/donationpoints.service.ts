@@ -49,7 +49,7 @@ export class DontationPointsService extends AsyncService {
     }
 
     reload = async () => {
-        const pts = await this.api.get('/api/collect-point', { query: {} });
+        const pts = await this.api.get('/api-v1/collect-point', { query: {} });
         runInAction(() => {
             this.points.replace(pts.map(p => new DonationPoint(p)));
         });

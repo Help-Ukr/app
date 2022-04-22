@@ -23,7 +23,7 @@ export class CollectItemsService extends AsyncService {
     }
 
     reload = async () => {
-        const cis = await this.api.get('/api/item-category', { query: {} });
+        const cis = await this.api.get('/api-v1/item-category', { query: {} });
         runInAction(() => {
             this.items.replace(
                 CollectItemsService.serialize(

@@ -7,23 +7,26 @@ namespace API {
  */
 
 export interface paths {
-  "/api/login": {
+  "/api-v1/login": {
     /** Login by email, password */
     post: operations["authLogin"];
   };
-  "/api/logout": {
+  "/api-v1/logout": {
     /** Logout user current token */
     get: operations["authLogout"];
   };
-  "/api/collect-point": {
+  "/api-v1/collect-point": {
     get: operations["getCollectionPoint"];
     post: operations["createCollectionPoint"];
     patch: operations["updateCollectionPoint"];
   };
-  "/api/collect-point/my": {
+  "/api-v1/collect-point/my": {
     get: operations["getCollectionPointsMy"];
   };
-  "/api/item-category": {
+  "/api-v1/collect-point/photo": {
+    post: operations["storeCollectionPointPhoto"];
+  };
+  "/api-v1/item-category": {
     get: operations["getItemCategories"];
   };
 }
@@ -339,6 +342,36 @@ export interface operations {
       401: unknown;
       /** Too Many Requests */
       429: unknown;
+    };
+  };
+  storeCollectionPointPhoto: {
+    responses: {
+      /** Successful operation */
+      200: {
+        content: {
+          "application/json": {
+            /** @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png */
+            url: string;
+          };
+        };
+      };
+      /** Unauthenticated */
+      401: unknown;
+      /** Unprocessable Entity */
+      422: unknown;
+      /** Too Many Requests */
+      429: unknown;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description collect point photo to upload. Max size 2M.
+           */
+          photo: string;
+        };
+      };
     };
   };
   getItemCategories: {

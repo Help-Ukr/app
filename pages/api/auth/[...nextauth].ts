@@ -25,7 +25,7 @@ export default NextAuth({
     callbacks: {
         jwt: async ({ token, account }) => {
             if (account?.provider && account?.access_token) {
-                const resp = await api.post('/api/login', {
+                const resp = await api.post('/api-v1/login', {
                     body: { name: account.provider, token: account.access_token },
                 });
                 if (resp.token) {

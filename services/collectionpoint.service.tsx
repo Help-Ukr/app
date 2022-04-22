@@ -23,7 +23,7 @@ export class ColletionPointService extends AsyncService {
     };
 
     reload = async () => {
-        const pt = await this.api.get('/api/collect-point/my', {});
+        const pt = await this.api.get('/api-v1/collect-point/my', {});
         if (!('204' in pt)) {
             runInAction(() => {
                 this.point = new CollectionPoint(pt);
@@ -64,9 +64,9 @@ export class ColletionPointService extends AsyncService {
         };
         this.async(async () => {
             if (this.point) {
-                await this.api.patch('/api/collect-point', { body });
+                await this.api.patch('/api-v1/collect-point', { body });
             } else {
-                await this.api.post('/api/collect-point', { body });
+                await this.api.post('/api-v1/collect-point', { body });
             }
             return await this.reload();
         });

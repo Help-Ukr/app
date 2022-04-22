@@ -19,7 +19,7 @@ export class DonationPoint extends BaseModel.factory<API.CollectPoint>() {
     }
 
     @computed get img() {
-        return 'https://picsum.photos/300/300?random=' + Math.random();
+        return this.image || 'https://picsum.photos/300/300?random=' + Math.random();
     }
 
     @computed get geoPosition(): GeoPosition {

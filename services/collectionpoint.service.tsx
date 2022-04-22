@@ -65,12 +65,12 @@ export class ColletionPointService extends AsyncService {
             needed_items,
         };
         this.async(async () => {
-            await this.uploadImage(imageFile?.file);
             if (this.point) {
                 await this.api.patch('/api-v1/collect-point', { body });
             } else {
                 await this.api.post('/api-v1/collect-point', { body });
             }
+            await this.uploadImage(imageFile?.file);
             return await this.reload();
         });
     };

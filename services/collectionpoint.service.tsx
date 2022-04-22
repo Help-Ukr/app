@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import { makeObservable, observable, runInAction } from 'mobx';
 import { useMemo } from 'react';
 import { O } from 'ts-toolbelt';
@@ -51,6 +52,7 @@ export class ColletionPointService extends AsyncService {
         telegram,
         instagram,
         needed_items,
+        imageFile,
     }: CollectinPointDto) => {
         const body: CollectinPointDto = {
             enabled,
@@ -63,6 +65,7 @@ export class ColletionPointService extends AsyncService {
             needed_items,
         };
         this.async(async () => {
+            await this.uploadImage(imageFile?.file);
             if (this.point) {
                 await this.api.patch('/api-v1/collect-point', { body });
             } else {
@@ -71,4 +74,10 @@ export class ColletionPointService extends AsyncService {
             return await this.reload();
         });
     };
+
+    private async uploadImage(file?: File) {
+        if (!file) return;
+        const blob = await imageCompression(file, { maxSizeMB: 2 });
+        console.log('blob', blob);
+    }
 }

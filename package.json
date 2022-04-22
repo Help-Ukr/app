@@ -19,6 +19,7 @@
         "@mui/icons-material": "^5.6.0",
         "@mui/material": "^5.6.0",
         "@uk/log": "^2.1.0",
+        "browser-image-compression": "^2.0.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.13.2",
         "geolib": "^3.3.3",

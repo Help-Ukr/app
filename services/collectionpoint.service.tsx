@@ -78,6 +78,8 @@ export class ColletionPointService extends AsyncService {
     private async uploadImage(file?: File) {
         if (!file) return;
         const blob = await imageCompression(file, { maxSizeMB: 2 });
-        console.log('blob', blob);
+        const formData = new FormData();
+        formData.append('photo', blob, blob.name);
+        await this.api.post('/api-v1/collect-point/photo', { formData });
     }
 }

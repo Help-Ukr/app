@@ -65,9 +65,11 @@ export class HttpService<T extends ApiDescription<T>> {
         const headers = new Headers(init.headers);
         if (this.token) headers.set('authorization', this.token);
         headers.set('accept', 'application/json');
-        if (typeof args.body === 'object') headers.set('content-type', 'application/json');
+        if (typeof args.body === 'object') {
+            headers.set('content-type', 'application/json');
+        }
         return new Request(this.getBackendUrl(path, args), {
-            body: args.body ? JSON.stringify(args.body) : undefined,
+            body: args.body ? JSON.stringify(args.body) : args.formData,
             credentials: this.opts.credentials,
             ...init,
             headers,
@@ -110,13 +112,14 @@ export class HttpService<T extends ApiDescription<T>> {
                 let init: RequestInit;
                 const { method } = req;
                 if (method === 'POST' || method === 'PATCH' || method === 'PUT') {
-                    const body = await req.clone().text();
+                    const reqClone = req.clone();
+                    const body = (await reqClone.blob()) || (await reqClone.text());
                     const { cache, credentials, headers, integrity, mode, redirect, referrer } = req;
                     init = { body, cache, credentials, headers, integrity, mode, redirect, referrer, method };
                 } else {
                     init = req;
                 }
-                const resp = await fetch(req.url, init);
+                const resp = await fetch(req, init);
                 const contType = resp.headers.get('content-type') ?? '*/*';
                 let rv;
                 const isJson = contType === 'application/json';
@@ -156,7 +159,8 @@ type ConvertArgs<T> = (T extends { requestBody: { content: { 'application/json':
     ? { body: T['requestBody']['content']['application/json'] }
     : {}) &
     (T extends { parameters: { path: any } } ? { params: T['parameters']['path'] } : {}) &
-    (T extends { parameters: { query: any } } ? { query: T['parameters']['query'] } : {});
+    (T extends { parameters: { query: any } } ? { query: T['parameters']['query'] } : {}) &
+    (T extends { requestBody: { content: { 'multipart/form-data': any } } } ? { formData: FormData } : {});
 
 type ConvertResponse<T> = Extract<keyof T, HttpSuccess> extends 200
     ? Get200<T>

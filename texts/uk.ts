@@ -39,13 +39,13 @@ export const uk = {
         tabItems: 'Речі',
         creatingPoint: 'Створення нового пункту збору',
         defaultBgImageUrl:
-            '----- https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920',
+            'https://unsplash.com/photos/pNIgH0y3upM/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjQ2NDY3OTkw&force=true&w=1920',
     },
     CollectinPointDto: {
         enabled: 'Увімкнути',
         location: 'Адреса',
         name: 'Назва точки',
-        description: '----- Short description',
+        description: 'Короткий опис',
         phone: 'Номер телефону',
         telegram: 'Посилання на телеграм',
         instagram: 'Посилання на інстаграм',
@@ -64,7 +64,7 @@ export const uk = {
         maxLength: 'Максимальна довжина поля {{arg1}}',
     },
     map: {
-        itsyou: '----- You are here',
+        itsyou: 'Ти тут',
     },
     pointDetails: {
         distance: '~{{dist}} від тебе',

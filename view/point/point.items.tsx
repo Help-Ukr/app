@@ -23,7 +23,7 @@ export const PointItems: FC<CollectinPointForm> = observer(({ form }) => {
     const cisSvc = app.get(CollectItemsService);
     cisSvc.use();
     return (
-        <Container maxWidth="md" sx={{ mt: 4, pb: 4, pr: 0, pl: 0 }}>
+        <Container maxWidth="md" sx={{ mt: 4, pb: 16, pr: 0, pl: 0 }}>
             <List>
                 {cisSvc.items.map(item => (
                     <RenderListItem key={item.id} item={item} cisSvc={cisSvc} form={form} />

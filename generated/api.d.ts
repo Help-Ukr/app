@@ -50,6 +50,11 @@ export interface components {
        */
       name: string;
       /**
+       * Collect point description (max:512)
+       * @example Volunteers uniting to bring aid, donations & transport to Refugees and people in need. Sends convoys to the border regularly
+       */
+      description?: string;
+      /**
        * Collect point contact phone number
        * @example +491767890123
        */
@@ -223,6 +228,8 @@ export interface operations {
           enabled?: boolean;
           /** @example Space Meduza */
           name: string;
+          /** @example Volunteers uniting to bring aid, donations & transport to Refugees and people in need. Sends convoys to the border regularly */
+          description?: string;
           /**
            * Collect point contact phone number
            * @example +491767890123
@@ -286,6 +293,8 @@ export interface operations {
           enabled?: boolean;
           /** @example new name */
           name: string;
+          /** @example description updated: Volunteers uniting to bring aid, donations & transport to Refugees and people in need. Sends convoys to the border regularly */
+          description?: string;
           /**
            * Collect point contact phone number
            * @example +491767890123
@@ -347,14 +356,7 @@ export interface operations {
   storeCollectionPointPhoto: {
     responses: {
       /** Successful operation */
-      200: {
-        content: {
-          "application/json": {
-            /** @example https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png */
-            url: string;
-          };
-        };
-      };
+      200: unknown;
       /** Unauthenticated */
       401: unknown;
       /** Unprocessable Entity */

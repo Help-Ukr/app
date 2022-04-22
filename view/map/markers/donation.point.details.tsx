@@ -14,7 +14,7 @@ import {
     IconButton,
     SxProps,
     Tooltip,
-    Typography
+    Typography,
 } from '@mui/material';
 import { FC } from 'react';
 import { DonationPoint } from '~/model/donationpoint.model';
@@ -24,7 +24,6 @@ const contentBoxSx: SxProps = {
     overflowY: 'scroll',
     marginBottom: 8,
     boxSizing: 'content-box',
-    paddingRight: 25,
     width: '100%',
     minHeight: '10vh',
     maxHeight: '20vh',
@@ -45,14 +44,19 @@ export const DonationPointDetails: FC<{ pt: DonationPoint }> = ({ pt }) => {
                 }
             />
             <CardContent sx={{ py: 0 }}>
+                {!!pt.description && (
+                    <Box marginBottom={1}>
+                        <Typography variant="caption">{pt.description}</Typography>
+                    </Box>
+                )}
                 <Box sx={contentBoxSx}>
                     {pt.items.map(item => (
-                        <div key={item.item_category_id}>
+                        <Box key={item.item_category_id}>
                             <Typography display="inline">{item.item_category_icon}</Typography>
                             <Typography display="inline" variant="subtitle2" sx={{ ml: 2 }}>
                                 {item.item_category_name}
                             </Typography>
-                        </div>
+                        </Box>
                     ))}
                 </Box>
                 <Typography sx={{ m: 0 }} variant="body2" color="text.secondary">

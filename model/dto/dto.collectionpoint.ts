@@ -9,7 +9,7 @@ import {
     Length,
     MaxLength,
     MinLength,
-    ValidateNested
+    ValidateNested,
 } from 'class-validator';
 
 class LocationDto {
@@ -41,8 +41,9 @@ export class CollectinPointDto {
     @Length(3, 64)
     name: string = '';
 
-    @MaxLength(512)
-    description: string = '';
+    @MaxLength(128)
+    @IsOptional()
+    description?: string = '';
 
     @ValidateNested()
     @IsDefined()

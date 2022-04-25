@@ -84,10 +84,7 @@ a {
     border-radius: 12px;
     font: 22px/19px Tahoma, Verdana, sans-serif;
 }
-::selection {
-    color: none;
-    background: none;
-}
+
 .rotate {
     animation: rotating 2s linear infinite;
 }

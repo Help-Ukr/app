@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import CollectIcon from '@mui/icons-material/CategoryOutlined';
 import TransportIcon from '@mui/icons-material/DirectionsBusFilled';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import HomeIcon from '@mui/icons-material/Home';
 import DonateIcon from '@mui/icons-material/VolunteerActivism';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -17,6 +18,7 @@ export class AppUIService {
         { href: '/donate', Icon: DonateIcon },
         { href: '/collect', Icon: CollectIcon },
         { href: '/transport', Icon: TransportIcon },
+        { href: '/feedback', Icon: FeedbackIcon, url: 'mailto:your@goatbaker.com' },
     ] as const;
 
     constructor() {

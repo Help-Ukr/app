@@ -24,7 +24,7 @@ export const HeaderAppBar = () => {
                 <NavMenu />
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     {appUi.pages.map(page => (
-                        <Link key={page.href} href={page.href} passHref>
+                        <Link key={page.href} href={'url' in page ? page.url : page.href} passHref>
                             <Button color="secondary">{tr(page.href)}</Button>
                         </Link>
                     ))}

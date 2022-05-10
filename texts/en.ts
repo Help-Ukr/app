@@ -35,6 +35,7 @@ export const en = {
         '/donate': 'Donate',
         '/transport': 'Transport',
         '/signin': 'SignIn',
+        '/feedback': 'Feedback',
     },
     collect: {
         tabGeneral: 'General',

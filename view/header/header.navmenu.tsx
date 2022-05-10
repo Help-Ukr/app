@@ -21,9 +21,13 @@ export const NavMenu: FC = () => {
         setAnchorElNav(event.currentTarget);
     };
 
-    const handleCloseNavMenu = (href?: string) => {
-        if (href) {
-            router.push(href);
+    const handleCloseNavMenu = (page?: { href: string; url?: string }) => {
+        if (page) {
+            if (page.url) {
+                window.open(page.url);
+            } else {
+                router.push(page.href);
+            }
         }
         setAnchorElNav(null);
     };
@@ -58,7 +62,7 @@ export const NavMenu: FC = () => {
                 }}
             >
                 {appUi.pages.map(page => (
-                    <MenuItem key={page.href} onClick={() => handleCloseNavMenu(page.href)}>
+                    <MenuItem key={page.href} onClick={() => handleCloseNavMenu(page)}>
                         <ListItemIcon>
                             <page.Icon color="secondary" />
                         </ListItemIcon>

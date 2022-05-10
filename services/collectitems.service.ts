@@ -1,0 +1,47 @@
+import { action, makeObservable, observable, runInAction } from 'mobx';
+import { Service } from 'typedi';
+import { ItemCategory } from '~/model/itemcategory.model';
+import { ApiService } from './api.service';
+import { AsyncService } from './base.service';
+
+export type CollectItem = ItemCategory & { items?: CollectItem[] };
+@Service()
+export class CollectItemsService extends AsyncService {
+    items = observable.array<CollectItem>([], { deep: false });
+
+    @observable
+    openId?: number;
+
+    constructor(private api: ApiService) {
+        super();
+        makeObservable(this);
+    }
+
+    use() {
+        this.useAsync(this.reload);
+        return this;
+    }
+
+    reload = async () => {
+        const cis = await this.api.get('/api-v1/item-category', { query: {} });
+        runInAction(() => {
+            this.items.replace(
+                CollectItemsService.serialize(
+                    cis.map(p => new ItemCategory(p)),
+                    null,
+                ),
+            );
+        });
+    };
+
+    @action
+    handleOpen = (id?: number) => {
+        this.openId = id;
+    };
+
+    @action
+    static serialize(items: ItemCategory[], parent: number | null): CollectItem[] {
+        const rv = items.filter(c => c.parent_id === parent);
+        return rv.map(item => ({ ...item, items: CollectItemsService.serialize(items, item.id) }));
+    }
+}

@@ -1,25 +1,29 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from '@mui/material';
+import { configure } from 'mobx';
+import { enableStaticRendering } from 'mobx-react-lite';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+import '~/styles/globals.css';
+import { themeOptions } from '~/styles/theme';
+import { TrProvider } from '~/texts';
 
-export const themeOptions = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#393939",
-    },
-    secondary: {
-      main: "#FFD500",
-    },
-  },
+enableStaticRendering(typeof window === 'undefined');
+
+configure({
+    enforceActions: 'always',
+    useProxies: 'never',
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ThemeProvider theme={themeOptions}>
-      <Component {...pageProps} />
-    </ThemeProvider>
-  );
+    return (
+        <TrProvider>
+            <ThemeProvider theme={themeOptions}>
+                <SessionProvider session={pageProps.session}>
+                    <Component {...pageProps} />
+                </SessionProvider>
+            </ThemeProvider>
+        </TrProvider>
+    );
 }
 
 export default MyApp;
